@@ -17,10 +17,11 @@ test:
 	python3 -m pytest -v
 
 # Phase 2 / V2 gate: exhaustive checkers over the enumerated finite model.
-formal:
-	@echo "V2 gate: exhaustive checkers (participation soundness+minimality, pair-test recovery) + proof lint..."
+formal: derive
+	@echo "V2 gate: exhaustive checkers (participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
 	python3 -m checkers.participation_check
 	python3 -m checkers.pairtest_check
+	python3 -m checkers.grant_check
 	python3 -m checkers.proof_status_lint
 	@echo "See appendix-a-proofs.md for the proofs these checkers verify."
 

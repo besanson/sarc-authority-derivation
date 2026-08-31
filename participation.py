@@ -43,15 +43,21 @@ itself deterministic and seed-independent)
 from __future__ import annotations
 
 from collections import defaultdict
-from dataclasses import asdict
+from dataclasses import asdict, fields
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from domain import CANDIDATE_PROPERTIES, StateTuple, field_names
+from domain import CANDIDATE_PROPERTIES, StateTuple
 from losses import m_verdict
 
 
-def _fingerprint(t: StateTuple, exclude: str) -> Tuple[Any, ...]:
-    return tuple(getattr(t, name) for name in field_names() if name != exclude)
+def _fingerprint(t: Any, exclude: str) -> Tuple[Any, ...]:
+    """Deliberately domain-agnostic: field names come from t's own
+    dataclass definition, not from domain.StateTuple specifically, so
+    this module implements Definitions 1-3 as a general mechanism over
+    any frozen dataclass exposing with_property() -- test_participation.py
+    exercises it against a synthetic tuple type unrelated to StateTuple
+    precisely to keep this independent of domain.py's own field list."""
+    return tuple((f.name, getattr(t, f.name)) for f in fields(t) if f.name != exclude)
 
 
 def find_witness(

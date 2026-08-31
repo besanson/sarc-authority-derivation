@@ -1,0 +1,30 @@
+{
+  "blind_spot_note": "Pair testing probes the representation, not the loss model: it can only detect participation that a witness pair constructible from pair-test-grid.yaml's declared domain values actually exhibits. A hazard whose true threshold falls strictly between two declared domain values, or a property never represented in the grid at all, is invisible to this method regardless of how exhaustively the declared grid itself is swept.",
+  "ch_a2_exact_recovery": true,
+  "derived_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "order_value",
+    "resource_class"
+  ],
+  "false_participants": [],
+  "missed_participants": [],
+  "pairtest_coverage_list": [
+    "workflow"
+  ],
+  "pairtest_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "order_value",
+    "resource_class"
+  ],
+  "reachable_tuples_swept": 7776
+}

@@ -1,0 +1,271 @@
+{
+  "candidate_properties": [
+    "actor_role",
+    "resource_class",
+    "order_value",
+    "day",
+    "workflow",
+    "grant_id",
+    "consumed_grant_ids",
+    "budget_remaining",
+    "frozen"
+  ],
+  "coverage_list": [
+    "workflow"
+  ],
+  "generated_at_head_sha": "96d6c6909ac0edcfdd1e6f7624fba42ecf79f55d",
+  "grid_sha256": "f69534cf70d166d97a9fb6cb1388f44138c3bb3de705e2efad6dd6cb43cee77b",
+  "grid_size_reachable": 7776,
+  "loss_model_sha256": "0c2cfef0c7a5084259e0d551561ddcf32505ab2c7b82f6dacb7d25a96f07fadf",
+  "participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "order_value",
+    "resource_class"
+  ],
+  "schema_version": 1,
+  "witnesses": {
+    "actor_role": [
+      {
+        "loss_id": "procurement_outside_temporal_window",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-delegate",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "budget_remaining": [
+      {
+        "loss_id": "spend_against_depleted_delegated_budget",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 0.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": true,
+        "verdict_a_prime": false
+      }
+    ],
+    "consumed_grant_ids": [
+      {
+        "loss_id": "replayed_consumed_grant",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": "g-consumed",
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [
+            "g-consumed"
+          ],
+          "day": 50,
+          "frozen": false,
+          "grant_id": "g-consumed",
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "day": [
+      {
+        "loss_id": "procurement_outside_temporal_window",
+        "tuple_a": {
+          "actor_role": "agent-delegate",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-delegate",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 140,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": true,
+        "verdict_a_prime": false
+      }
+    ],
+    "frozen": [
+      {
+        "loss_id": "action_on_frozen_control_state",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": true,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "grant_id": [
+      {
+        "loss_id": "replayed_consumed_grant",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [
+            "g-consumed"
+          ],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [
+            "g-consumed"
+          ],
+          "day": 50,
+          "frozen": false,
+          "grant_id": "g-consumed",
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "order_value": [
+      {
+        "loss_id": "spend_against_depleted_delegated_budget",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 1200.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "resource_class": [
+      {
+        "loss_id": "resource_class_not_entitled",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W1"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "order_value": 600.0,
+          "resource_class": "capital-equipment",
+          "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ]
+  }
+}

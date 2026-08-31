@@ -1,0 +1,6 @@
+{
+  "max_sequence_length": 3,
+  "sequences_checked": 85,
+  "single_use_holds_exhaustively": true,
+  "violations": []
+}
