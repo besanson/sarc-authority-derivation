@@ -1,0 +1,130 @@
+{
+  "_schema_note": "Phase R gate (task spec, ported from sarc-suite-one-pass's V4 gate): a citation may enter the paper only after it is verified by fetching its source page and recording url, title, first_author, year into this file. arxiv_id/doi are the machine-checkable tokens a future citation_check.py matches against paper text; verified_via records how/when the fetch was done (WebSearch snippets that quote the source's own indexed text, and/or a direct WebFetch of the source page, both dated). entry_type is one of article/inproceedings/incollection/misc; misc is used for arXiv preprints (no formal venue yet), technical reports/handbooks, and standards/webpages where no DOI-backed venue exists.",
+  "citations": [
+    {
+      "id": "stpa-handbook",
+      "url": "http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf",
+      "title": "STPA Handbook",
+      "entry_type": "misc",
+      "authors": ["Nancy G. Leveson", "John P. Thomas"],
+      "first_author": "Nancy G. Leveson",
+      "year": 2018,
+      "verified_via": "WebSearch, 2026-08-31: two independent search snippets quote the document's own title-page text ('NANCY G. LEVESON JOHN P. THOMAS MARCH 2018') from the flighttestsafety.org mirror; MIT PSAS canonical URL (psas.scripts.mit.edu) located and recorded as the citation url. Direct WebFetch of the PDF returned only undecoded binary/stream data, so verification rests on the indexed title-page text, not a rendered fetch -- flagged for a human to re-confirm by opening the PDF directly."
+    },
+    {
+      "id": "stpa-sec",
+      "doi": "10.1145/2556938",
+      "url": "https://doi.org/10.1145/2556938",
+      "title": "An Integrated Approach to Safety and Security Based on Systems Theory",
+      "entry_type": "article",
+      "authors": ["William Young", "Nancy G. Leveson"],
+      "first_author": "William Young",
+      "year": 2014,
+      "venue": "Communications of the ACM 57(2), pp. 31-35",
+      "verified_via": "WebSearch, 2026-08-31: title/authors/venue/year/DOI corroborated across cacm.acm.org, Semantic Scholar, and dblp-indexed snippets; this CACM piece is the canonical citation for STPA-Sec, distinct from the earlier informal 2013 workshop write-up."
+    },
+    {
+      "id": "phase-rismani-2024",
+      "arxiv_id": "2410.22526",
+      "url": "https://arxiv.org/abs/2410.22526",
+      "title": "From Silos to Systems: Process-Oriented Hazard Analysis for AI Systems",
+      "entry_type": "misc",
+      "authors": ["Shalaleh Rismani", "Roel Dobbe", "AJung Moon"],
+      "first_author": "Shalaleh Rismani",
+      "year": 2024,
+      "verified_via": "WebFetch of https://arxiv.org/abs/2410.22526, 2026-08-31: confirmed exact title, full author order, 2024 submission, and that this is the paper defining the PHASE guideline (abstract states it directly)."
+    },
+    {
+      "id": "mylius-2025",
+      "arxiv_id": "2506.01782",
+      "url": "https://arxiv.org/abs/2506.01782",
+      "title": "Systematic Hazard Analysis for Frontier AI using STPA",
+      "entry_type": "misc",
+      "authors": ["Simon Mylius"],
+      "first_author": "Simon Mylius",
+      "year": 2025,
+      "verified_via": "WebFetch of https://arxiv.org/abs/2506.01782, 2026-08-31: confirmed exact title, sole authorship by Simon Mylius, and June 2025 submission date."
+    },
+    {
+      "id": "deepstpa",
+      "arxiv_id": "2302.10588",
+      "url": "https://arxiv.org/abs/2302.10588",
+      "title": "STPA for Learning-Enabled Systems: A Survey and A New Practice",
+      "entry_type": "misc",
+      "authors": ["Yi Qi", "Yi Dong", "Siddartha Khastgir", "Paul Jennings", "Xingyu Zhao", "Xiaowei Huang"],
+      "first_author": "Yi Qi",
+      "year": 2023,
+      "verified_via": "WebFetch of https://arxiv.org/abs/2302.10588, 2026-08-31: confirmed exact title, full author order, 2023, and that the abstract itself introduces DeepSTPA as this paper's extension of STPA's control-loop model to the ML development lifecycle."
+    },
+    {
+      "id": "xu-stoller-abac-mining",
+      "doi": "10.1109/TDSC.2014.2369048",
+      "url": "https://doi.org/10.1109/TDSC.2014.2369048",
+      "title": "Mining Attribute-Based Access Control Policies",
+      "entry_type": "article",
+      "authors": ["Zhongyuan Xu", "Scott D. Stoller"],
+      "first_author": "Zhongyuan Xu",
+      "year": 2015,
+      "venue": "IEEE Transactions on Dependable and Secure Computing 12(5), pp. 533-545",
+      "verified_via": "WebSearch, 2026-08-31: title/authors/venue/volume/issue/pages/DOI corroborated across the authors' own Stony Brook policy-mining page (www3.cs.stonybrook.edu/~stoller/policy-mining/) and independent bibliographic indexes; distinguished from the authors' earlier 2013/2014 conference-track pieces (CEWIT 2013, DBSec 2014) on the same problem, per the task brief's '2014-2015' framing."
+    },
+    {
+      "id": "abac-mining-survey-2022",
+      "arxiv_id": "2207.01739",
+      "url": "https://arxiv.org/abs/2207.01739",
+      "title": "Machine Learning in Access Control: A Taxonomy and Survey",
+      "entry_type": "misc",
+      "authors": ["Mohammad Nur Nobi", "Maanak Gupta", "Lopamudra Praharaj", "Mahmoud Abdelsalam", "Ram Krishnan", "Ravi Sandhu"],
+      "first_author": "Mohammad Nur Nobi",
+      "year": 2022,
+      "verified_via": "WebFetch of https://arxiv.org/abs/2207.01739, 2026-08-31: confirmed exact title, full author order, 2022 submission, and that policy mining (including ABAC) is an explicit surveyed category; used as the brief's 'one recent survey' of ABAC policy mining, since it is the most recent taxonomy-level survey found covering that problem (see NOVELTY.md for why the 2017 Servos & Osborn ABAC survey was not used instead: broader scope, not recent)."
+    },
+    {
+      "id": "ptacl",
+      "doi": "10.1007/978-3-642-28641-4_21",
+      "url": "https://doi.org/10.1007/978-3-642-28641-4_21",
+      "title": "PTaCL: A Language for Attribute-Based Access Control in Open Systems",
+      "entry_type": "inproceedings",
+      "authors": ["Jason Crampton", "Charles Morisset"],
+      "first_author": "Jason Crampton",
+      "year": 2012,
+      "venue": "POST 2012 (1st International Conference on Principles of Security and Trust), LNCS 7215, pp. 390-409",
+      "verified_via": "WebSearch, 2026-08-31: title/authors/venue/DOI corroborated across Royal Holloway's PURE research portal, Semantic Scholar, and Springer's own chapter page."
+    },
+    {
+      "id": "sacmat16-completeness",
+      "doi": "10.1145/2914642.2914654",
+      "url": "https://doi.org/10.1145/2914642.2914654",
+      "title": "On Completeness in Languages for Attribute-Based Access Control",
+      "entry_type": "inproceedings",
+      "authors": ["Jason Crampton", "Conrad Williams"],
+      "first_author": "Jason Crampton",
+      "year": 2016,
+      "venue": "SACMAT 2016 (21st ACM Symposium on Access Control Models and Technologies), pp. 149-160",
+      "verified_via": "WebFetch of https://pure.royalholloway.ac.uk/en/publications/on-completeness-in-languages-for-attribute-based-access-control, 2026-08-31: confirmed exact title, authors, venue, and year directly from Royal Holloway's research portal record."
+    },
+    {
+      "id": "goguen-meseguer-1982",
+      "doi": "10.1109/SP.1982.10014",
+      "url": "https://doi.org/10.1109/SP.1982.10014",
+      "title": "Security Policies and Security Models",
+      "entry_type": "inproceedings",
+      "authors": ["Joseph A. Goguen", "José Meseguer"],
+      "first_author": "Joseph A. Goguen",
+      "year": 1982,
+      "venue": "3rd IEEE Symposium on Security and Privacy, pp. 11-20",
+      "verified_via": "WebFetch of https://dblp.org/db/conf/sp/sp1982.html, 2026-08-31: confirmed exact title, author order, venue, year, pages, and DOI directly from the dblp proceedings listing."
+    },
+    {
+      "id": "counterfactual-fairness",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html",
+      "title": "Counterfactual Fairness",
+      "entry_type": "inproceedings",
+      "authors": ["Matt J. Kusner", "Joshua Loftus", "Chris Russell", "Ricardo Silva"],
+      "first_author": "Matt J. Kusner",
+      "year": 2017,
+      "venue": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
+      "verified_via": "WebFetch of https://proceedings.neurips.cc/paper_files/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html, 2026-08-31: confirmed exact title, full author order, and year directly from the NeurIPS proceedings page."
+    }
+  ]
+}
