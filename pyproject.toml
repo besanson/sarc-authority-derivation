@@ -1,0 +1,43 @@
+# Copyright 2026 SARC Suite Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Ported with attribution from sarc-suite-one-pass's pyproject.toml
+# (commit 782261e) -- see ADR-001. This repo has no packaging config of
+# its own (it is run in place, not installed) -- this file exists solely
+# to hold [tool.mutmut]'s configuration (Phase 2 / release-check mutation
+# gate, target participation.py + derive.py, >=0.85) and
+# [tool.pytest.ini_options]'s marker registration.
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: exercises a full-scenario simulation end to end rather than a unit-scoped check -- included in the default `make test` run, but selectable/deselectable via -m 'slow' / -m 'not slow'.",
+]
+
+[tool.mutmut]
+# Mirrors sarc-suite-one-pass's ADR-002 pattern: source_paths names exactly
+# the mutation-testing target files (mutmut's file walk does not respect
+# .gitignore, so source_paths = ["."] would blindly copy .git/, out/, and
+# the pinned sibling clones). also_copy lists the additional files
+# participation.py/derive.py's imports need at test time.
+source_paths = ["participation.py", "derive.py"]
+only_mutate = ["participation.py", "derive.py"]
+also_copy = [
+    "grant.py",
+    "prereg/",
+    "schemas/",
+]
+pytest_add_cli_args_test_selection = [
+    "test_participation.py",
+    "test_derive.py",
+]

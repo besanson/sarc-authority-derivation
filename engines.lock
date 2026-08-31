@@ -1,0 +1,19 @@
+# Pinned repo commits for bootstrap.sh.
+# Format: <sibling-dir-name> <clone-url> <commit-sha>
+#
+# Unlike sarc-suite-one-pass's engines.lock (which pins only the three
+# governance engines), this file also pins sarc-suite-one-pass itself:
+# paper 5 imports its retail simulation, both workflows (W1/W2), and the
+# remediate-regate composition as a read-only baseline (task brief Phase 0)
+# and must never edit it. Pinning the demo repo alongside the three engines
+# it composes keeps the whole stack -- demo + engines -- reproducible from
+# one lockfile.
+#
+# Regenerate by reading the current sibling clones' HEADs; do not hand-edit
+# the shas without re-verifying the imported-baseline release-check
+# afterward.
+
+sarc-suite-one-pass https://github.com/besanson/sarc-suite-one-pass 782261ebea60a2f742889a1dc7fec0b122becf28
+dqSarc https://github.com/besanson/dqSarc db6c396128a4df7fe12d13be163b1e7d32087177
+sarc-governance https://github.com/besanson/sarc-governance 74df5de29a305a76bf3cc97a185ece2f11b1b833
+Greensarc https://github.com/besanson/Greensarc 8482226b461ccbf91971f90ea6de42cd7a931e5c

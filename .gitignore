@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+mutants/
+.mutmut-cache
+
+# Regenerable build output, same policy as sarc-suite-one-pass's own
+# .gitignore: everything under out/ is reproducible from the pinned
+# siblings (engines.lock) + the frozen seed list (prereg/seeds.json) +
+# this repo's code, so raw per-decision logs are not committed. Small
+# aggregated summaries later steps read directly ARE committed as an
+# exception -- see the negated patterns below.
+out/*
+!out/metrics.json
+!out/quality.json
+!out/results/
+!out/checkers/
