@@ -1,0 +1,133 @@
+# Copyright 2026 SARC Suite Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Task brief Phase 1 (V1, prereg-p5-v1): the declared loss model for the
+# retail simulation. Six losses, each a machine-evaluable hazard predicate
+# over (action, context, evidence, control_state) -- the four-tuple
+# Definition 1 (participation.py, Phase 2) sweeps for participation.
+# Predicate names below are registered in participation.py's LOSS_REGISTRY
+# before this file is loaded, the same declared-vs-registered split
+# specs/authority.yaml uses in the imported sarc-suite-one-pass baseline.
+#
+# Field namespaces (fixed across all six predicates):
+#   action:        actor_role, resource_class, order_value, day, workflow
+#   context:       role_entitlement_ceiling, role_window, role_allowed_classes
+#                  (the per-decision VALUES already looked up for
+#                  action.actor_role from the declared_parameters mappings
+#                  below -- reachable tuples require this lookup to be
+#                  consistent; see derive.py's reachability filter)
+#   evidence:      grant_id (the execution-grant token presented with this
+#                  action, Optional[str])
+#   control_state: consumed_grant_ids (frozenset[str], the grant ledger),
+#                  budget_remaining (float, the resource gate's delegated
+#                  pool), frozen (bool)
+#
+# Role model: three roles, reused across both W1 and W2 experiments
+# (Phase 3) -- "agent-replenish"/"agent-w2-replenish" are one-pass's own
+# fully-authorized roles (per workflow, kept distinct as one-pass's own
+# design requires for independent verifiability); "agent-delegate" is new
+# in this paper (a bounded temporary delegation, shared across both
+# workflows so its entitlement/window/class restrictions are exercised
+# identically regardless of which workflow generated the decision);
+# "agent-unauthorized" is one-pass's own unauthorized-role label.
+#
+# Resource classes: a declared synthetic metadata layer on the real UCI
+# Online Retail SKUs, the same kind of declared layer one-pass's own
+# README already discloses for role/defect/authority metadata. Rule
+# (not a hand-typed table): sort the 40 SKU codes, split into three equal
+# contiguous thirds -- first third "consumables", second "durable-goods",
+# last "capital-equipment". Implemented as sku_resource_class() in
+# domain.py (Phase 2), generated from data/open_retail_daily.csv (the
+# pinned sarc-suite-one-pass sibling's own copy) at derivation time, never
+# hand-typed here.
+
+losses:
+  - id: order_value_beyond_entitlement
+    class: hard
+    predicate: order_value_beyond_entitlement
+    description: >-
+      Fires when the action's order_value exceeds the acting role's
+      declared entitlement ceiling -- the per-role generalization of the
+      imported baseline's single scenario-wide order_value_cap.
+    declared_parameters:
+      role_entitlement_ceiling:
+        agent-replenish: 2000.0
+        agent-w2-replenish: 2000.0
+        agent-delegate: 800.0
+        agent-unauthorized: 0.0
+
+  - id: procurement_outside_temporal_window
+    class: hard
+    predicate: procurement_outside_temporal_window
+    description: >-
+      Fires when the decision day falls outside the acting role's
+      declared permitted procurement window (inclusive day-index range
+      over the simulation horizon). The imported baseline has no
+      temporal-validity concept at all.
+    declared_parameters:
+      role_window:
+        agent-replenish: [0, 999]
+        agent-w2-replenish: [0, 999]
+        agent-delegate: [100, 180]
+        agent-unauthorized: null
+
+  - id: resource_class_not_entitled
+    class: hard
+    predicate: resource_class_not_entitled
+    description: >-
+      Fires when the action's resource class is not in the acting role's
+      declared allowed set. The imported baseline has no resource-class
+      concept at all -- SKUs are undifferentiated by it.
+    declared_parameters:
+      role_allowed_classes:
+        agent-replenish: [consumables, durable-goods]
+        agent-w2-replenish: [consumables, durable-goods]
+        agent-delegate: [consumables]
+        agent-unauthorized: []
+
+  - id: replayed_consumed_grant
+    class: hard
+    predicate: replayed_consumed_grant
+    description: >-
+      Fires when the action presents a non-null execution-grant id that
+      the control-state ledger already shows as consumed. Motivated by
+      the Moona Intelligence replication's coverage-boundary finding
+      (REPLICATIONS.md): execution-specific grant binding as one of the
+      imported baseline's declared coverage boundaries.
+    declared_parameters: {}
+
+  - id: spend_against_depleted_delegated_budget
+    class: hard
+    predicate: spend_against_depleted_delegated_budget
+    description: >-
+      Fires when the action's order_value exceeds control_state's
+      budget_remaining -- the resource gate's own real, depleting pool
+      (green_sarc budget_state, read back per-decision in the imported
+      baseline's runner.py), as distinct from this loss model's own
+      static per-role entitlement ceiling above (order_value_beyond_
+      entitlement): a role can be within its own ceiling while the
+      shared pool it draws from is already exhausted by earlier
+      decisions in the same period.
+    declared_parameters: {}
+
+  - id: action_on_frozen_control_state
+    class: hard
+    predicate: action_on_frozen_control_state
+    description: >-
+      Fires when control_state.frozen is true for the actor/resource
+      pair the action addresses (e.g. an emergency hold placed after a
+      prior incident). The imported baseline has no state-persistence
+      concept at the authority gate at all -- every decision is judged
+      independently of any earlier one.
+    declared_parameters: {}

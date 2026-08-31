@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/besanson/sarc-authority-derivation/schemas/grant_state.schema.json",
+  "title": "Execution-grant ledger record",
+  "description": "One entry in the append-only grant ledger (Phase 2), mirroring sarc-suite-one-pass's governed-buffer write-history design (composition.py / the Evidence Set's remediation records): every issuance and every consumption is a new appended entry, never an in-place mutation, so replay detection (loss-model.yaml's replayed_consumed_grant) can be verified by scanning the ledger rather than trusting a single mutable flag.",
+  "type": "object",
+  "required": ["schema_version", "grant_id", "sealed_action_content_hash", "event", "decision_id", "day"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "grant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque token identifying one consumable per-execution grant."
+    },
+    "sealed_action_content_hash": {
+      "type": "string",
+      "description": "sha256 of the sealed final (post-remediation) action this grant is bound to -- the single-use binding: this grant_id authorizes execution of exactly this content hash, nothing else, and exactly once (see 'event')."
+    },
+    "event": {
+      "type": "string",
+      "enum": ["issued", "consumed", "consumption_rejected_replay"],
+      "description": "issued: a fresh grant was minted for a sealed action, not yet used. consumed: the grant was presented at execution time, matched an 'issued' entry with no prior 'consumed' entry for the same grant_id, and admission proceeded -- this is the one legitimate use. consumption_rejected_replay: the grant was presented again after a 'consumed' entry already existed for the same grant_id (loss-model.yaml's replayed_consumed_grant fired) -- recorded, not silently dropped, so CH-A3's replay-admission count is auditable from the ledger alone."
+    },
+    "decision_id": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The decision this ledger entry is about."
+    },
+    "day": { "type": "integer", "minimum": 0 }
+  }
+}

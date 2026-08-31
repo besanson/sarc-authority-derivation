@@ -1,0 +1,122 @@
+# Copyright 2026 SARC Suite Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Task brief Phase 1 (V1, prereg-p5-v1): the property enumeration and
+# variation domains for the exhaustive finite model that
+# checkers/participation_check.py and checkers/pairtest_check.py both
+# sweep (CH-A2's exhaustive-equality decision rule requires both to run
+# over exactly this same declared grid, independently implemented).
+#
+# Twelve candidate properties, one row each. Value counts are small by
+# design -- this is the finite model the brief's checkers must be able to
+# enumerate EXHAUSTIVELY, not a sample -- but every value is chosen to be
+# discriminating (see rationale) rather than padding. The realized grid
+# size after reachability filtering is a number derive.py/the checkers
+# generate and report, never typed here.
+
+properties:
+  action:
+    actor_role:
+      domain: [agent-replenish, agent-w2-replenish, agent-delegate, agent-unauthorized]
+      rationale: >-
+        All four declared roles (loss-model.yaml); both fully-authorized
+        per-workflow labels included so the derivation is checked not to
+        treat them differently by name alone.
+    resource_class:
+      domain: [consumables, durable-goods, capital-equipment]
+      rationale: All three declared resource classes.
+    order_value:
+      domain: [600.0, 1200.0, 2500.0]
+      rationale: >-
+        Below both entitlement ceilings (600); between agent-delegate's
+        800 and the full 2000 ceiling (1200); above both (2500) --
+        discriminates order_value_beyond_entitlement across every role's
+        own ceiling.
+    day:
+      domain: [50, 140, 300]
+      rationale: >-
+        50 and 300 fall outside agent-delegate's declared [100, 180]
+        window but inside every unrestricted role's [0, 999]; 140 falls
+        inside both -- discriminates procurement_outside_temporal_window
+        without needing a day per role.
+    workflow:
+      domain: [W1, W2]
+      rationale: >-
+        Included as a known-negative control: no loss predicate reads
+        workflow directly, so the derivation is expected to place it in
+        the coverage list (Definition 3) -- a check on the procedure's
+        own correctness, not just its positive findings.
+
+  context:
+    role_entitlement_ceiling:
+      domain: [0.0, 800.0, 2000.0]
+      rationale: The three declared ceiling values.
+    role_window:
+      domain: [[0, 999], [100, 180], null]
+      rationale: >-
+        The three declared windows (null encodes agent-unauthorized's
+        empty/never window).
+    role_allowed_classes:
+      domain: [[consumables, durable-goods], [consumables], []]
+      rationale: The three declared allowed-class sets.
+
+  evidence:
+    grant_id:
+      domain: [null, "g-fresh", "g-consumed"]
+      rationale: >-
+        No grant presented; a grant not in any reachable
+        consumed_grant_ids value; a grant that IS in the
+        consumed_grant_ids domain's nonempty value -- the minimal set
+        that can discriminate replayed_consumed_grant.
+
+  control_state:
+    consumed_grant_ids:
+      domain: [[], ["g-consumed"]]
+      rationale: Empty ledger; ledger containing exactly "g-consumed".
+    budget_remaining:
+      domain: [0.0, 1000.0, 5000.0]
+      rationale: >-
+        Fully depleted (0); partial (1000, below the 1200/2500
+        order_value points, above 600); ample (5000, above all three).
+    frozen:
+      domain: [false, true]
+      rationale: Direct boolean; no further discrimination needed.
+
+reachability:
+  # Definition 1 (participation.py) restricts pairwise comparisons to
+  # RACHABLE tuples only -- not every combination of the domains above.
+  # Two filters apply, composed:
+  policy_consistency: >-
+    A tuple is rank-0 reachable only if context.role_entitlement_ceiling,
+    context.role_window, and context.role_allowed_classes are exactly
+    loss-model.yaml's declared_parameters lookup for action.actor_role
+    (e.g. actor_role=agent-delegate forces role_entitlement_ceiling=800.0,
+    role_window=[100,180], role_allowed_classes=[consumables] together --
+    a tuple pairing agent-delegate with role_entitlement_ceiling=2000.0
+    is not rank-0 reachable).
+  post_remediation: >-
+    A tuple is remediation-reachable if it differs from a rank-0
+    reachable tuple ONLY in action.order_value, and that order_value
+    change is producible by one of the imported baseline's two
+    remediation operators (composition.py, sarc-suite-one-pass): evidence
+    substitution can move order_value to ANY other value in the domain
+    (corrected evidence can be higher or lower than corrupted evidence --
+    see suite_sim.py's stale_master_data, which corrupts downward, versus
+    plausible_outlier, which corrupts upward); resource downroute
+    (W2 only) can move order_value only to a striclty LOWER value in the
+    domain's own ordering (600 < 1200 < 2500), never higher, since it
+    only ever scales a proposed quantity down. The executable-reachable
+    set (Definition 1) is the union of rank-0 and remediation-reachable
+    tuples -- this is what makes reachability depend on the
+    remediation-coupled setting rather than being a static action space.
