@@ -18,12 +18,30 @@
 # sweep (CH-A2's exhaustive-equality decision rule requires both to run
 # over exactly this same declared grid, independently implemented).
 #
-# Twelve candidate properties, one row each. Value counts are small by
-# design -- this is the finite model the brief's checkers must be able to
-# enumerate EXHAUSTIVELY, not a sample -- but every value is chosen to be
-# discriminating (see rationale) rather than padding. The realized grid
-# size after reachability filtering is a number derive.py/the checkers
-# generate and report, never typed here.
+# CORRECTION (ADR-002-participation-tuple-design.md), made before any
+# Phase 3 experiment or CH-A1-CH-A4 result existed: the original version
+# of this file (still visible at the prereg-p5-v1 tag, left as an honest
+# historical record rather than rewritten, per REPLICATIONS.md's own
+# no-silent-rewrite principle) declared a twelfth-row "context" group
+# (role_entitlement_ceiling, role_window, role_allowed_classes) as
+# separately observable candidate properties. Running derive.py during
+# Phase 2 development surfaced a real problem: because each was a pure,
+# deterministic function of actor_role, no reachable pair could ever vary
+# one while holding actor_role fixed, so all four (actor_role included)
+# were derived as non-participating -- correct under that tuple design,
+# but describing a gate that could not actually evaluate the entitlement
+# checks, since it would observe neither the role nor the resolved
+# threshold. Per-role policy is now background configuration the
+# predicates consult directly (domain.role_policy(), losses.py) rather
+# than a separate observable field -- see the ADR for the full account.
+# Nine candidate properties remain, one row each.
+#
+# Value counts are small by design -- this is the finite model the
+# brief's checkers must be able to enumerate EXHAUSTIVELY, not a sample
+# -- but every value is chosen to be discriminating (see rationale)
+# rather than padding. The realized grid size after reachability
+# filtering is a number derive.py/the checkers generate and report,
+# never typed here.
 
 properties:
   action:
@@ -58,19 +76,6 @@ properties:
         the coverage list (Definition 3) -- a check on the procedure's
         own correctness, not just its positive findings.
 
-  context:
-    role_entitlement_ceiling:
-      domain: [0.0, 800.0, 2000.0]
-      rationale: The three declared ceiling values.
-    role_window:
-      domain: [[0, 999], [100, 180], null]
-      rationale: >-
-        The three declared windows (null encodes agent-unauthorized's
-        empty/never window).
-    role_allowed_classes:
-      domain: [[consumables, durable-goods], [consumables], []]
-      rationale: The three declared allowed-class sets.
-
   evidence:
     grant_id:
       domain: [null, "g-fresh", "g-consumed"]
@@ -95,16 +100,7 @@ properties:
 
 reachability:
   # Definition 1 (participation.py) restricts pairwise comparisons to
-  # RACHABLE tuples only -- not every combination of the domains above.
-  # Two filters apply, composed:
-  policy_consistency: >-
-    A tuple is rank-0 reachable only if context.role_entitlement_ceiling,
-    context.role_window, and context.role_allowed_classes are exactly
-    loss-model.yaml's declared_parameters lookup for action.actor_role
-    (e.g. actor_role=agent-delegate forces role_entitlement_ceiling=800.0,
-    role_window=[100,180], role_allowed_classes=[consumables] together --
-    a tuple pairing agent-delegate with role_entitlement_ceiling=2000.0
-    is not rank-0 reachable).
+  # REACHABLE tuples only -- not every combination of the domains above.
   post_remediation: >-
     A tuple is remediation-reachable if it differs from a rank-0
     reachable tuple ONLY in action.order_value, and that order_value
@@ -114,9 +110,11 @@ reachability:
     (corrected evidence can be higher or lower than corrupted evidence --
     see suite_sim.py's stale_master_data, which corrupts downward, versus
     plausible_outlier, which corrupts upward); resource downroute
-    (W2 only) can move order_value only to a striclty LOWER value in the
+    (W2 only) can move order_value only to a strictly LOWER value in the
     domain's own ordering (600 < 1200 < 2500), never higher, since it
     only ever scales a proposed quantity down. The executable-reachable
-    set (Definition 1) is the union of rank-0 and remediation-reachable
-    tuples -- this is what makes reachability depend on the
-    remediation-coupled setting rather than being a static action space.
+    set (Definition 1) is the union of rank-0 (every combination of the
+    domains above -- no cross-field filter needed now that policy is not
+    a separate field) and remediation-reachable tuples -- this is what
+    makes reachability depend on the remediation-coupled setting rather
+    than being a static action space.
