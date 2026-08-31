@@ -1,0 +1,12 @@
+{
+  "baseline_missed": 388,
+  "derived_missed": 0,
+  "n_decisions": 1470,
+  "replay_admissions_grant_binding_off": 73,
+  "replay_admissions_grant_binding_on": 0,
+  "replay_probe_count": 73,
+  "seed": 778087005,
+  "spurious_escalations_overinclusive": 770,
+  "true_violations": 700,
+  "workflow": "W2"
+}

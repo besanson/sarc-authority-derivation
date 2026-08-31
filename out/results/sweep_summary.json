@@ -1,0 +1,121 @@
+{
+  "ch_a1_baseline_missed": {
+    "ci95_high": 1817.1161924440055,
+    "ci95_low": 1214.2838075559946,
+    "mean": 1515.7,
+    "n": 60
+  },
+  "ch_a1_derived_zero_every_cell": true,
+  "ch_a1_true_violations": {
+    "ci95_high": 3357.50266203508,
+    "ci95_low": 2243.664004631587,
+    "mean": 2800.5833333333335,
+    "n": 60
+  },
+  "ch_a3_escalation_overhead": {
+    "ci95_high": 346.47525205576244,
+    "ci95_low": 231.1580812775709,
+    "mean": 288.81666666666666,
+    "n": 60
+  },
+  "ch_a3_off_admissions": {
+    "ci95_high": 346.47525205576244,
+    "ci95_low": 231.1580812775709,
+    "mean": 288.81666666666666,
+    "n": 60
+  },
+  "ch_a3_off_nonzero_at_least_one_cell": true,
+  "ch_a3_on_zero_every_cell": true,
+  "ch_a3_replay_probe_count": {
+    "ci95_high": 346.47525205576244,
+    "ci95_low": 231.1580812775709,
+    "mean": 288.81666666666666,
+    "n": 60
+  },
+  "ch_a4_robustness": {
+    "all_robust": true,
+    "ch_a1_robust": true,
+    "ch_a3_robust": true
+  },
+  "n_cells": 60,
+  "per_workflow": {
+    "W1": {
+      "ch_a1_baseline_missed": {
+        "ci95_high": 2656.6613833607207,
+        "ci95_low": 2638.4719499726125,
+        "mean": 2647.5666666666666,
+        "n": 30
+      },
+      "ch_a1_derived_zero_every_seed": true,
+      "ch_a3_off_nonzero_at_least_one_seed": true,
+      "ch_a3_on_zero_every_seed": true,
+      "n_seeds": 30,
+      "spurious_escalations_overinclusive": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n": 30
+      }
+    },
+    "W2": {
+      "ch_a1_baseline_missed": {
+        "ci95_high": 387.196253036419,
+        "ci95_low": 380.4704136302476,
+        "mean": 383.8333333333333,
+        "n": 30
+      },
+      "ch_a1_derived_zero_every_seed": true,
+      "ch_a3_off_nonzero_at_least_one_seed": true,
+      "ch_a3_on_zero_every_seed": true,
+      "n_seeds": 30,
+      "spurious_escalations_overinclusive": {
+        "ci95_high": 765.8130310359974,
+        "ci95_low": 755.7869689640025,
+        "mean": 760.8,
+        "n": 30
+      }
+    }
+  },
+  "seeds": [
+    26313,
+    990168646,
+    1751999641,
+    1943666721,
+    1163928797,
+    1818785127,
+    1146288088,
+    1245208653,
+    909865711,
+    307071397,
+    1394807488,
+    1961110120,
+    1495033390,
+    1818313340,
+    2040033577,
+    1657195301,
+    876379550,
+    1486713621,
+    1597659626,
+    778087005,
+    460520189,
+    1162169338,
+    84716818,
+    558574779,
+    1740630570,
+    48582056,
+    38855009,
+    1246227770,
+    1179730076,
+    1028331701
+  ],
+  "spurious_escalations_overinclusive": {
+    "ci95_high": 481.7181535192616,
+    "ci95_low": 279.08184648073836,
+    "mean": 380.4,
+    "n": 60
+  },
+  "workflows": [
+    "W1",
+    "W2"
+  ]
+}

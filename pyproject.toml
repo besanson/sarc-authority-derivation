@@ -33,7 +33,10 @@ markers = [
 source_paths = ["participation.py", "derive.py"]
 only_mutate = ["participation.py", "derive.py"]
 also_copy = [
+    "domain.py",
+    "losses.py",
     "grant.py",
+    "schemas_check.py",
     "prereg/",
     "schemas/",
 ]
