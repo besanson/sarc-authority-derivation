@@ -2,6 +2,27 @@
   "_schema_note": "Phase R gate (task spec, ported from sarc-suite-one-pass's V4 gate): a citation may enter the paper only after it is verified by fetching its source page and recording url, title, first_author, year into this file. arxiv_id/doi are the machine-checkable tokens a future citation_check.py matches against paper text; verified_via records how/when the fetch was done (WebSearch snippets that quote the source's own indexed text, and/or a direct WebFetch of the source page, both dated). entry_type is one of article/inproceedings/incollection/misc; misc is used for arXiv preprints (no formal venue yet), technical reports/handbooks, and standards/webpages where no DOI-backed venue exists.",
   "citations": [
     {
+      "id": "sarc-suite-one-pass-paper4",
+      "arxiv_id": "2608.18360",
+      "url": "https://arxiv.org/abs/2608.18360",
+      "title": "One Gate Is Not Enough: Composing Stateful Pre-Action Controls for Agentic AI",
+      "entry_type": "misc",
+      "authors": ["Gaston Besanson"],
+      "first_author": "Gaston Besanson",
+      "year": 2026,
+      "verified_via": "WebFetch of https://arxiv.org/abs/2608.18360, 2026-08-31 (title/author/date confirmed); independently cross-confirmed by direct reading of the pinned sarc-suite-one-pass sibling at commit 782261e -- its own README.md, RESEARCH-GUIDE.md, and paper-tex/parity-report.json all carry the identical title -- this is paper 4 of the SARC series, the imported baseline this paper builds on and cites throughout."
+    },
+    {
+      "id": "moona-intelligence-replication",
+      "url": "https://moona.ozlunara.com/intelligence/sarc-suite-remediate-regate-authority-coverage-boundary",
+      "title": "SARC Shows Why Remediated Agent Actions Need to Be Re-Evaluated",
+      "entry_type": "misc",
+      "authors": ["Moona Intelligence"],
+      "first_author": "Moona Intelligence",
+      "year": 2026,
+      "verified_via": "WebFetch of https://moona.ozlunara.com/intelligence/sarc-suite-remediate-regate-authority-coverage-boundary, 2026-08-31, four separate targeted fetches, cross-checking specific quotes for exact wording (one earlier candidate quote about registering 'sku, agent_id, day, or a grant identifier as predicates' could NOT be re-found on a third targeted search and is treated as unverified/likely reconstructed by the fetch tool's summarizer -- NOT used anywhere in this paper). Two quotes used in the paper were each independently reproduced, word-for-word, across two separate fetch calls with different prompts: the 'I want to be plain about the framing here...' sentence, and finding A7's 'authorization identifier, an approval identifier, a nonce, or any consume on use mechanism' sentence. The report's own '215 passing tests' (207 original + 8 new) is independently consistent with the already-committed REPLICATIONS.md's '207 tests' / 'eight additional adversarial authority tests', corroborating this is the correct, genuine report rather than a fabricated page. Publication date (28 August 2026) and the mirror URL (published under the organisation's then-name, Belay Intelligence) per REPLICATIONS.md, already committed in the pinned sarc-suite-one-pass sibling and not independently re-verified here."
+    },
+    {
       "id": "stpa-handbook",
       "url": "http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf",
       "title": "STPA Handbook",
