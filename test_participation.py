@@ -97,3 +97,47 @@ def test_compute_p_star_empty_reachable_set_is_all_coverage(monkeypatch):
     assert p_star == []
     assert coverage == ["x", "y"]
     assert witnesses == {}
+
+
+def test_find_witness_does_not_stop_at_an_earlier_singleton_group(monkeypatch):
+    """A fingerprint group of size 1 (no possible pair) must be skipped,
+    not treated as a signal to stop searching entirely -- regression
+    test for a continue-vs-break distinction: with a singleton group
+    ordered before the real witness-bearing group, a `break` in place of
+    `continue` would incorrectly return None."""
+    import participation as p
+    monkeypatch.setattr(p, "m_verdict", toy_m_verdict)
+    reachable = [
+        Toy(x=1, y=100, z="unique"),  # singleton fingerprint group when testing "x"
+        Toy(x=3, y=1, z="a"),
+        Toy(x=8, y=1, z="a"),
+    ]
+    witness = find_witness("x", reachable, toy_registry())
+    assert witness is not None
+    assert witness["verdict_a"] != witness["verdict_a_prime"]
+
+
+def test_serialize_frozenset_field_becomes_a_sorted_list():
+    from domain import StateTuple
+    from participation import _serialize
+
+    t = StateTuple(
+        actor_role="agent-replenish", resource_class="consumables", order_value=1.0,
+        day=1, workflow="W1", grant_id=None,
+        consumed_grant_ids=frozenset({"g2", "g1", "g3"}), budget_remaining=1.0, frozen=False,
+    )
+    d = _serialize(t)
+    assert d["consumed_grant_ids"] == ["g1", "g2", "g3"]
+    assert isinstance(d["consumed_grant_ids"], list)
+
+
+def test_serialize_empty_frozenset_becomes_empty_list():
+    from domain import StateTuple
+    from participation import _serialize
+
+    t = StateTuple(
+        actor_role="agent-replenish", resource_class="consumables", order_value=1.0,
+        day=1, workflow="W1", grant_id=None,
+        consumed_grant_ids=frozenset(), budget_remaining=1.0, frozen=False,
+    )
+    assert _serialize(t)["consumed_grant_ids"] == []

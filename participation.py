@@ -85,8 +85,13 @@ def find_witness(
                 a, a_prime = verdicts[0][0], t
                 fired_a = {lid: pred(a) for lid, pred in registry.items() if pred(a)}
                 fired_a_prime = {lid: pred(a_prime) for lid, pred in registry.items() if pred(a_prime)}
+                # differing_losses is provably nonempty here: v != base_verdict
+                # means bool(fired_a) != bool(fired_a_prime), which is only
+                # possible if the two sets are unequal, which is exactly what
+                # a nonempty symmetric difference means -- no fallback needed
+                # for the case where it's empty, because that case cannot occur.
                 differing_losses = sorted(set(fired_a) ^ set(fired_a_prime))
-                loss_id = differing_losses[0] if differing_losses else "unknown"
+                loss_id = differing_losses[0]
                 return {
                     "loss_id": loss_id,
                     "tuple_a": _serialize(a),
@@ -98,12 +103,14 @@ def find_witness(
 
 
 def _serialize(t: StateTuple) -> Dict[str, Any]:
+    """No candidate property in the current domain design is tuple-typed
+    (ADR-002-participation-tuple-design.md removed the last one,
+    role_window); frozenset is the only collection-typed field
+    (consumed_grant_ids) left to normalize for JSON."""
     d = asdict(t)
     for k, v in d.items():
         if isinstance(v, frozenset):
             d[k] = sorted(v)
-        elif isinstance(v, tuple):
-            d[k] = list(v)
     return d
 
 

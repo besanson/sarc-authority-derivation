@@ -15,8 +15,9 @@
 from __future__ import annotations
 
 import json
+import subprocess
 
-from derive import derive
+from derive import _head_sha, derive, main
 from domain import CANDIDATE_PROPERTIES
 from schemas_check import validate_against_schema
 
@@ -57,3 +58,38 @@ def test_derive_grid_size_matches_reported_count():
 def test_derive_output_matches_schema():
     result = derive()
     validate_against_schema(result, "schemas/derivation_output.schema.json")
+
+
+def test_head_sha_matches_real_git_rev_parse():
+    expected = subprocess.run(
+        ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
+    ).stdout.strip()
+    assert _head_sha() == expected
+    assert len(_head_sha()) == 40
+    assert all(c in "0123456789abcdef" for c in _head_sha())
+
+
+def test_main_writes_the_output_file(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    # main() writes relative to cwd (out/checkers/derivation_output.json)
+    # and reads relative to cwd too, so the prereg/schemas this repo's own
+    # loss-model.yaml/pair-test-grid.yaml live under must be reachable --
+    # symlink the real repo root's prereg/ into the temp cwd rather than
+    # duplicating fixture data.
+    import os
+    from pathlib import Path
+
+    real_root = Path(__file__).resolve().parent
+    os.symlink(real_root / "prereg", tmp_path / "prereg")
+
+    main()
+
+    output_path = tmp_path / "out" / "checkers" / "derivation_output.json"
+    assert output_path.exists()
+    written = json.loads(output_path.read_text())
+    assert written["participating_properties"] == derive()["participating_properties"]
+
+    captured = capsys.readouterr()
+    assert "P*" in captured.out
+    assert "coverage list" in captured.out
+    assert "reachable tuples enumerated" in captured.out
