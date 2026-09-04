@@ -172,6 +172,17 @@ claim:
 below: our own formalized pair-test checker inherits exactly this
 scope limit, stated as a registered blind spot, not smoothed over.
 
+The report's own closing synthesis states the general principle this
+paper's derivation exists to act on, not just observe:
+
+> "a re-evaluation mechanism is only as complete as the policy it
+> re-evaluates, and a policy's completeness is a property of what it
+> was configured to read, not of the architecture that calls it"
+
+(Moona Intelligence, 2026). Definitions 1-3 below are one way to make
+that property -- what a policy is configured to read -- itself derived
+rather than declared, for one stated loss model.
+
 ## 5. Definitions
 
 **Definition 1 (participation).** Property p is authority-bearing for
@@ -190,7 +201,11 @@ the imported baseline's two remediation operators can produce (evidence
 substitution: any other order-value point in the declared domain,
 either direction; resource downroute, W2 only: strictly lower only),
 and `domain.executable_reachable_tuples()` is the union of rank-0 and
-remediation-reachable tuples.
+remediation-reachable tuples. This finite-model characterization is a
+declared abstraction of the imported baseline's two remediation
+operators, used only by the exhaustive checkers (Section 7); Section 8's
+empirics call the real operators themselves, through the pinned
+`sarc-suite-one-pass` sibling, not this abstraction.
 
 ## 6. The derivation procedure and the grant mechanism
 

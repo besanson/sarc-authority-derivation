@@ -13,7 +13,7 @@
   "coverage_list": [
     "workflow"
   ],
-  "generated_at_head_sha": "0f3174e624dd9f166b2b7761f7b8b555b068facb",
+  "generated_at_head_sha": "ea95206565647d481507de0d0daeaf7601a80ca0",
   "grid_sha256": "f69534cf70d166d97a9fb6cb1388f44138c3bb3de705e2efad6dd6cb43cee77b",
   "grid_size_reachable": 7776,
   "loss_model_sha256": "0c2cfef0c7a5084259e0d551561ddcf32505ab2c7b82f6dacb7d25a96f07fadf",
