@@ -18,7 +18,8 @@ test:
 
 # Phase 2 / V2 gate: exhaustive checkers over the enumerated finite model.
 formal: derive
-	@echo "V2 gate: exhaustive checkers (participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
+	@echo "V2 gate: exhaustive checkers (reachability measurement, participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
+	python3 -m checkers.reachability_check
 	python3 -m checkers.participation_check
 	python3 -m checkers.pairtest_check
 	python3 -m checkers.grant_check

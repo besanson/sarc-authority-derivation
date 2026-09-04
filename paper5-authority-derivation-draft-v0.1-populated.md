@@ -5,8 +5,16 @@ series, built on the pinned `sarc-suite-one-pass` artifact (arXiv
 [2608.18360](https://arxiv.org/abs/2608.18360), commit `782261e`) as a
 read-only imported baseline (`ADR-001-foundation.md`).
 
-**Status**: draft v0.1. Not submission-ready, not independently reviewed.
-See the human checklist at the end of this document.
+**Status**: draft v0.1.2. Not submission-ready, not independently reviewed.
+See the human checklist at the end of this document. v0.1.2 corrects a
+finding from round-0 adjudicator review: v0.1's fence and abstract
+claimed remediation changes this artifact's formal reachable set; it
+does not (Section 5, Section 9). The claim is narrowed here to what is
+actually true and checked; a redesigned formal model in which
+remediation is not reachability-redundant is scoped as v0.2
+(`prereg/v2-reachability-redesign.md`), gated behind its own prereg tag
+before any new experiment code, per this project's own registration
+discipline.
 
 ## Abstract
 
@@ -20,8 +28,7 @@ executable-reachable actions differing only in p produce different
 M-verdicts -- and a derivation procedure that computes the minimal
 sound property set P\* and an honestly emitted coverage list of
 excluded properties, in the remediation-coupled setting `sarc-suite-one-
-pass` establishes, where a control's own remediation changes which
-actions are reachable at all. We machine-check P\*'s soundness and
+pass` establishes. We machine-check P\*'s soundness and
 minimality exhaustively over the declared finite model, independently
 recover it via a formalized pair-testing method (credited to an
 independent replication of the imported baseline), and add a consumable
@@ -60,9 +67,16 @@ paper contributes a formal participation criterion over the
 executable-reachable action set, a machine-checkable derivation from a
 declared loss model to the minimal property set a pre-action authority
 gate must observe, with the excluded residue emitted as a derived
-coverage list, in a setting where remediation changes the reachable set.
+coverage list, in the remediation-coupled setting sarc-suite-one-pass
+establishes.
 
-(Verbatim from `NOVELTY.md`, Phase R. See Section 3 for the full
+(Verbatim from `NOVELTY.md` as corrected in v0.1.2; the original
+Phase R wording and the correction's full account are in `NOVELTY.md`'s
+Amendment section and this paper's Section 5 and Section 9 -- the
+original clause claimed remediation changes this artifact's own formal
+reachable set, which round-0 review found false; the corrected fence
+above claims only what Section 5 shows is actually instantiated. See
+Section 3 for the full
 per-cluster novelty comparison this fence summarizes, and
 `verified-citations.json` for every source's fetch-verification record.)
 
@@ -77,8 +91,11 @@ substitution, resource downroute) whose composition paper 4 already
 establishes is sound under `remediate_regate` (`composition.py`,
 Theorem 1 there). This paper adds no new remediation logic; it asks a
 different question of the same remediation-coupled setting: which
-properties must the authority gate observe, given what remediation can
-change about the reachable action set?
+properties must the authority gate observe to detect a declared loss
+model, given the executable-reachable action set that setting produces?
+(Section 5 states precisely how this artifact's own formal reachable
+set does and does not depend on remediation -- narrower than the
+question as originally posed, and stated exactly, not assumed.)
 
 We declare six losses (`prereg/loss-model.yaml`, tagged `prereg-p5-v1`)
 as machine-evaluable hazard predicates over an (action, context,
@@ -207,6 +224,30 @@ operators, used only by the exhaustive checkers (Section 7); Section 8's
 empirics call the real operators themselves, through the pinned
 `sarc-suite-one-pass` sibling, not this abstraction.
 
+**Reachability-robustness (Proposition 0, corrected from v0.1; see
+`NOVELTY.md`'s Amendment and `appendix-a-proofs.md`).** In this
+artifact's own formal model, remediation-reachability is redundant:
+`domain.rank0_reachable_tuples()` is the unconstrained full product of
+all nine candidate properties' declared domains (7,776 tuples), which
+already contains every tuple `remediation_reachable_tuples()` can
+produce by swapping `order_value` alone, so `executable_reachable_
+tuples()` (the union of the two) equals rank-0 exactly -- measured, not
+asserted: `len(remediation_reachable_tuples(rank0, domains['order_
+value']))` is 0. Concretely: P\*, the coverage list, and every witness
+below are identical whether or not remediation-reachable tuples are
+included, because there are none beyond rank-0. This is narrower than
+v0.1's fence claimed (Section 1.1's correction): this formal model does
+not instantiate a case where remediation changes what Definition 1
+finds authority-bearing, though the *setting* remains genuinely
+remediation-coupled at the empirical layer (Section 8, where two
+different order_values -- pre- and post-remediation -- really are
+computed per decision and the executed one is what every policy is
+evaluated against). Whether a formal model *can* be built in which
+remediation is not reachability-redundant, and whether P\* would then
+differ, is exactly the question v0.2 (`prereg/v2-reachability-redesign.md`,
+once committed) is designed to answer -- registered as a real, two-sided
+question, not assumed to come out either way.
+
 ## 6. The derivation procedure and the grant mechanism
 
 `derive.py` wires the declared loss model (`losses.load_loss_registry`)
@@ -225,6 +266,37 @@ The result, `out/checkers/derivation_output.json`
 Every participating property carries a recorded witness pair, checked
 independently (not re-asserted) by `checkers/participation_check.py`
 (Proposition 1, `appendix-a-proofs.md`).
+
+**The syntactic-footprint bound (round-0 review, finding F1).** P\* is
+always a subset of the syntactic footprint of the loss predicates --
+the fields they read at all, listed exhaustively by inspecting
+`losses.py`'s six predicate bodies: eight of the nine `StateTuple`
+fields (every candidate except `workflow`, which no predicate reads),
+plus the three `role_entitlement_ceiling`/`role_window`/`role_allowed_
+classes` policy-table lookups the three role-dependent predicates
+consult -- eleven syntactic reads in total. A field never read by any
+predicate can never flip a verdict, so it is trivially excluded before
+Definition 1 does any semantic work at all; `workflow`'s exclusion is
+exactly this trivial case, confirmed, not just plausible, by direct
+inspection of the source above. For *this* declared loss model, P\*
+(eight properties) equals the syntactic footprint restricted to
+`StateTuple` fields (also eight) exactly -- Definition 1 found no field
+that is read but never actually determines a verdict once reachability
+is accounted for, so semantic minimization did no further pruning
+beyond the syntactic one in this instance. This is the honest shape of
+the result: the derivation is a certified semantic minimization of the
+syntactic footprint under reachability, not a discovery of unread
+properties -- unread properties are excluded by inspection, not by
+Definition 1's machinery -- and this declared loss model's own
+one-property pruning ratio (`workflow` alone) is a fact about *this*
+loss model's design, not a limitation of the method. `prereg/loss-
+model.yaml`'s six losses were written broadly enough to exercise all
+eight `StateTuple` fields directly; a loss model with a field read by
+some predicate but never actually reachable-distinguishing would be
+needed to see semantic minimization prune something syntactic
+inspection alone would have kept -- exactly the kind of enrichment v0.2
+(Section 5's Proposition 0 note) can also register alongside the
+reachability redesign.
 
 **Grant binding.** Directly motivated by finding A7 above,
 `grant.GrantLedger` binds one consumable execution-grant id to the
@@ -323,6 +395,35 @@ formal-track, evaluated once, not per seed. **CH-A4: SUPPORTED**.
 
 ## 9. Threats to validity (written against this paper's own results)
 
+- **v0.1's fence overclaimed relative to its own model, and a round-0
+  review caught it (finding F0), not this paper's own drafting pass.**
+  "Remediation changes the reachable set" was asserted in v0.1's fence
+  and abstract without being instantiated: this artifact's own rank-0
+  reachable set is already the unconstrained full product over every
+  candidate property's declared domain, so it already contains
+  everything remediation-reachability could add, and the two coincide
+  exactly (7,776 tuples either way, measured directly). v0.1.2 corrects
+  the claim (Section 5's Proposition 0) rather than leaving it standing
+  with a footnote; this item exists so a reader of v0.1 specifically,
+  or of a summary that quoted the original fence, is not misled by a
+  claim this paper no longer makes. A follow-up formal model in which
+  remediation genuinely is reachability-relevant is scoped, not yet
+  built (v0.2, see `prereg/v2-reachability-redesign.md` once committed).
+- **P\* equals the syntactic footprint exactly for this loss model, and
+  a reader could reasonably call that a tautology if the paper did not
+  say so itself (finding F1).** Every property in P\* is a property some
+  predicate reads in source; Definition 1's exhaustive check confirmed
+  each one also flips a verdict on some reachable pair, but for *this*
+  declared model it did not additionally prune anything syntactic
+  inspection would have missed. The derivation is real machinery doing
+  real, independently-checked work (Propositions 1-2), but its
+  demonstrated value in this instance is confirming a footprint a human
+  could have read off `losses.py` directly, not finding something
+  hidden from syntactic inspection. A loss model engineered so some
+  predicate reads a field that reachability nonetheless makes
+  non-participating would be needed to show the semantic step earning
+  its keep beyond the syntactic one; this artifact's six losses do not
+  happen to contain such a field.
 - **CH-A1's derived-zero result is circular by construction, and we say
   so rather than let it read as a surprise finding.** The ground truth
   and the derived policy's admission rule share one registry

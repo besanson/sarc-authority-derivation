@@ -1,0 +1,7 @@
+{
+  "executable_reachable_size": 7776,
+  "internally_consistent": true,
+  "rank0_size": 7776,
+  "remediation_is_reachability_redundant": true,
+  "remediation_reachable_new_tuples": 0
+}

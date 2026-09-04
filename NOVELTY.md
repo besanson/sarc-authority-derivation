@@ -93,7 +93,39 @@ paper contributes a formal participation criterion over the
 executable-reachable action set, a machine-checkable derivation from a
 declared loss model to the minimal property set a pre-action authority
 gate must observe, with the excluded residue emitted as a derived
-coverage list, in a setting where remediation changes the reachable set.
+coverage list, in the remediation-coupled setting sarc-suite-one-pass
+establishes.
+
+## Amendment (v0.1.2, round-0 adjudicator review, finding F0)
+
+The fence above originally ended "...in a setting where remediation
+changes the reachable set," per the task brief's own verbatim-start
+text. Verification during round-0 review found this specific clause
+false of this artifact's own formal model as built:
+`domain.rank0_reachable_tuples()` is the unconstrained full product of
+all nine candidate properties' declared domains (7,776 tuples), which
+already contains every (other-eight-fields, any-order-value)
+combination `remediation_reachable_tuples()` could ever produce by
+swapping order_value alone -- so `executable_reachable_tuples()` (the
+union of the two) equals rank-0 exactly; remediation adds zero new
+tuples (verified directly:
+`len(remediation_reachable_tuples(rank0, domains['order_value']))` is
+0, not a sample). The setting genuinely is remediation-coupled --
+Phase 3's real simulation computes two different order_values (pre-
+and post-remediation) per decision and every policy is evaluated on the
+executed, post-remediation value -- but that fact lives in the
+empirical layer (Section 8 of the paper), not in this artifact's own
+formal reachable-set construction, as built. The fence above is
+corrected to claim only what is instantiated by Definition 1's actual
+finite model. A redesigned formal model in which remediation is not
+reachability-redundant -- so the fence's original claim can actually be
+tested rather than merely asserted -- is scoped as v0.2
+(`prereg/v2-reachability-redesign.md`), gated behind its own prereg tag
+before any new experiment code, exactly as this project's own
+registration discipline requires. This paragraph is the honest record
+the task brief's own rigor standard asks for: printed, not smoothed
+over, and not retroactively hidden by rewriting the fence's history --
+see the original wording preserved at the `prereg-p5-v1` tag.
 
 ## Kill-criteria check (task brief R3)
 

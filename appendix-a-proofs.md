@@ -20,6 +20,50 @@ P\* = {p in candidate_properties : p is authority-bearing for M}.
 **Definition 3 (the derived coverage list).**
 coverage_list = candidate_properties − P\*.
 
+## Proposition 0 (remediation-reachability is redundant in this formal model)
+
+`domain.executable_reachable_tuples()` (rank-0 union remediation-
+reachable) equals `domain.rank0_reachable_tuples()` alone: remediation
+adds zero tuples beyond what rank-0 (the unconstrained full product of
+the nine candidate properties' declared domains) already contains.
+Consequently P\*, the coverage list, and every recorded witness are
+identical whether or not remediation-reachable tuples are included in
+the swept domain.
+
+This corrects v0.1's fence and abstract (round-0 adjudicator review,
+finding F0; `NOVELTY.md`'s Amendment), which claimed "remediation
+changes the reachable set" without this having been checked against the
+model as built. `rank0_reachable_tuples()` iterates the full Cartesian
+product of all nine domains with no cross-field filter (ADR-002 removed
+the one filter that existed, per-role policy consistency, when policy
+stopped being a separate field); `remediation_reachable_tuples()` only
+ever varies `order_value` within its own three-point declared domain --
+every (other-eight-fields, any-order-value) combination it could
+produce is therefore already present in rank-0 by construction, for any
+choice of declared order_value domain, not merely the current one. This
+is a structural fact about how the two functions compose, not a
+coincidence of the specific 7,776-tuple grid.
+
+PROOF-STATUS: machine-checked (`checkers/reachability_check.py`), over
+the full 7,776-tuple rank-0 domain. `remediation_reachable_new_tuples: 0`
+in `out/checkers/reachability_check.json`; `internally_consistent: true`
+confirms the union equals rank-0 plus whatever remediation actually
+added (zero), not merely equals rank-0 by omission.
+
+**What this does not show.** Section 8's empirical layer is unaffected
+by this proposition: `experiments.py` computes two distinct order_values
+per real decision (pre- and post-remediation, from `read_cost` and
+`true_cost`) and evaluates every policy against the executed
+(post-remediation) value, exactly as the imported baseline's own
+`composition.py` does. Proposition 0 is a fact about this artifact's
+*formal, finite-model abstraction* of that setting, not about whether
+remediation matters empirically -- it does, and CH-A1/CH-A3's numbers
+already depend on it. Whether a *different* finite-model abstraction
+could make remediation reachability-relevant, and whether P\* would then
+differ, is registered as an open, two-sided question for v0.2
+(`prereg/v2-reachability-redesign.md`, once committed), not assumed to
+resolve either way.
+
 ## Proposition 1 (P\* is sound and minimal)
 
 A gate that observes exactly P\* can always compute M's true verdict on
