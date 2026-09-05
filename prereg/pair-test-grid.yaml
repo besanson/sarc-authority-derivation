@@ -118,3 +118,57 @@ reachability:
     a separate field) and remediation-reachable tuples -- this is what
     makes reachability depend on the remediation-coupled setting rather
     than being a static action space.
+
+# v2 registration (prereg/v2-reachability-redesign.md, tag prereg-p5-v2).
+# Machine-readable declaration only -- no v2 code reads this section yet;
+# domain.py's CANDIDATE_PROPERTIES, property_domains(), and the checkers
+# are all unchanged and continue to read only the v1 "properties" and
+# "reachability" keys above. This "v2" key is a sibling those functions
+# never look at, so v1's release-check, formal double-run, and test suite
+# are unaffected by its presence -- verified directly (make release-check)
+# after this section was added, not assumed.
+v2:
+  properties:
+    action:
+      min_order_quantity:
+        domain: [500.0, 900.0, 2000.0]
+        rationale: >-
+          A declared per-decision supplier minimum order quantity,
+          checked against order_value's existing three-point domain
+          (600.0, 1200.0, 2500.0) before this file was written:
+          500.0 excludes nothing from rank-0 (a safety-valve value with
+          no below-threshold case, included for variety); 900.0
+          excludes order_value=600.0 from rank-0 (downroute-only
+          reachable); 2000.0 excludes order_value in {600.0, 1200.0}
+          from rank-0 (both downroute-only reachable). Every value
+          therefore has at least one rank-0-valid order_value pairing,
+          and two of the three produce genuine downroute-only
+          reachable combinations.
+
+  reachability:
+    rank0_constraint_v2: >-
+      Declared assumption, v2 only: order_value >= min_order_quantity
+      always holds at rank-0 -- a well-formed, demand-driven initial
+      proposal never falls below the supplier's own declared minimum.
+      A tuple with order_value < min_order_quantity is therefore NOT
+      rank-0 reachable under v2; it is reachable only per
+      downroute_only_reachable below.
+    downroute_only_reachable: >-
+      Grounded directly in composition._maybe_downroute
+      (sarc-suite-one-pass, pinned, read before this section was
+      written): feasible_qty = max(0, min(proposed_qty, max_qty_by_cost,
+      max_qty_by_carbon)) -- a pure budget-fitting calculation with no
+      minimum-order-quantity term anywhere in it, W2 only, strictly
+      decreasing when it fires. Characterized here as: from any rank-0
+      tuple with workflow == "W2" (rank0_constraint_v2 guarantees
+      order_value >= min_order_quantity for every such tuple), the
+      tuple with order_value moved to any strictly lower point in its
+      declared domain is downroute-only reachable -- including points
+      that now violate order_value >= min_order_quantity, since the
+      real mechanism this characterizes has no min_order_quantity term
+      to respect that boundary. Unlike v1's evidence-substitution
+      characterization, this image is NOT a subset of rank-0 (v2's own
+      rank0_constraint_v2 declares the below-threshold combinations
+      unreachable at rank-0 by construction), so Proposition 0-general's
+      Corollary 1 (prereg/v2-reachability-redesign.md) does not apply to
+      it the way it provably does to evidence substitution.

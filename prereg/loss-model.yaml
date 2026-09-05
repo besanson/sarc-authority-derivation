@@ -131,3 +131,31 @@ losses:
       concept at the authority gate at all -- every decision is judged
       independently of any earlier one.
     declared_parameters: {}
+
+# v2 registration (prereg/v2-reachability-redesign.md, tag prereg-p5-v2).
+# Machine-readable declaration only -- a sibling key to "losses" above,
+# not appended to that list, so losses.load_loss_registry()'s existing
+# declared-vs-registered cross-check (which reads only loss_model["losses"])
+# is unaffected by this key's presence, verified directly (make
+# release-check) after this section was added, not assumed. No predicate
+# implementation exists yet; load_loss_registry() would reject this id
+# today (no registered implementation) if it were moved into "losses"
+# before that implementation is written, exactly as intended.
+v2_losses:
+  - id: downrouted_quantity_below_supplier_minimum
+    class: hard
+    predicate: downrouted_quantity_below_supplier_minimum
+    description: >-
+      Fires when order_value < min_order_quantity. Motivated directly by
+      composition._maybe_downroute (sarc-suite-one-pass, pinned): its
+      budget-fitting calculation (feasible_qty = max(0, min(proposed_qty,
+      max_qty_by_cost, max_qty_by_carbon))) has no minimum-order-quantity
+      term anywhere, so a downrouted quantity can fall below a real
+      supplier's declared minimum with nothing in the imported baseline's
+      own remediation logic to prevent it. Simplification flagged
+      explicitly (prereg/v2-reachability-redesign.md): order_value
+      stands in for the downroute-scaled quantity itself, consistent
+      with how downroute is already characterized for order_value in
+      v1's own pair-test-grid.yaml reachability section, rather than
+      introducing a separate quantity axis for this one loss alone.
+    declared_parameters: {}

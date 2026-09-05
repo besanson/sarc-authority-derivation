@@ -13,10 +13,10 @@
   "coverage_list": [
     "workflow"
   ],
-  "generated_at_head_sha": "bf7b9ff368f80b158bf44326e80d4d905679b9b9",
-  "grid_sha256": "f69534cf70d166d97a9fb6cb1388f44138c3bb3de705e2efad6dd6cb43cee77b",
+  "generated_at_head_sha": "ac23ef15de6916739e21035be9a713e028bf89b1",
+  "grid_sha256": "3054bd6ae408eb370b44a0326a07db10730c08cdbe1a74e0a50c6b0c8fb02bd9",
   "grid_size_reachable": 7776,
-  "loss_model_sha256": "0c2cfef0c7a5084259e0d551561ddcf32505ab2c7b82f6dacb7d25a96f07fadf",
+  "loss_model_sha256": "d97d13495117dc7d2bff0924cd57ad262bb2ddc1699b0ea49fa544275e6a2af3",
   "participating_properties": [
     "actor_role",
     "budget_remaining",
