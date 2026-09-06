@@ -1,20 +1,30 @@
 # Deriving Authority: A Machine-Checkable Derivation from a Declared Loss Model to the Minimal Property Set a Pre-Action Authority Gate Must Observe
 
+Gaston Besanson[^1]
+
+[^1]: Universidad Torcuato Di Tella
+
 Companion artifact: `sarc-authority-derivation`. Paper 5 of the SARC
 series, built on the pinned `sarc-suite-one-pass` artifact (arXiv
 [2608.18360](https://arxiv.org/abs/2608.18360), commit `782261e`) as a
 read-only imported baseline (`ADR-001-foundation.md`).
 
-**Status**: draft v0.1.2. Not submission-ready, not independently reviewed.
-See the human checklist at the end of this document. v0.1.2 corrects a
-finding from round-0 adjudicator review: v0.1's fence and abstract
+**Status**: draft v0.2. Not submission-ready, not independently reviewed.
+See the human checklist at the end of this document. v0.1.2 corrected a
+finding from an author-side, AI-assisted adjudication pass, not
+independent review: v0.1's fence and abstract
 claimed remediation changes this artifact's formal reachable set; it
-does not (Section 5, Section 9). The claim is narrowed here to what is
-actually true and checked; a redesigned formal model in which
-remediation is not reachability-redundant is scoped as v0.2
-(`prereg/v2-reachability-redesign.md`), gated behind its own prereg tag
-before any new experiment code, per this project's own registration
-discipline.
+did not, in v0.1's own model (Section 5, Section 9). That correction
+registered a redesigned formal model, gated behind its own prereg tag
+(`prereg-p5-v2`) before any new experiment code, in which remediation
+might not be reachability-redundant. v0.2 executes that redesign and
+reports the result: under the redesigned model, remediation genuinely
+is reachability-relevant for the one property (`min_order_quantity`)
+the redesign's downroute mechanism was built to make participate,
+machine-checked (CH-A5-CH-A7, Section 5). v0.1's own model and its own
+measured redundancy (Proposition 0) stay frozen and cited as the first
+iteration, per this project's own registration discipline -- nothing
+about them is retroactively edited to match v0.2's outcome.
 
 ## Abstract
 
@@ -34,7 +44,7 @@ recover it via a formalized pair-testing method (credited to an
 independent replication of the imported baseline), and add a consumable
 per-execution grant mechanism that binds one authorization to exactly
 one sealed execution. Against the real imported simulation, 30 seeds,
-both workflows: [GENERATED: abstract_results_sentence]
+both workflows: CH-A1 (SUPPORTED), CH-A2 (SUPPORTED), CH-A3 (SUPPORTED), and CH-A4 (SUPPORTED).
 
 ## 1. Introduction
 
@@ -248,6 +258,60 @@ differ, is exactly the question v0.2 (`prereg/v2-reachability-redesign.md`,
 once committed) is designed to answer -- registered as a real, two-sided
 question, not assumed to come out either way.
 
+**v0.2 update: the redesign executed (CH-A5-CH-A7, tag `prereg-p5-v2`).**
+The question above is answered. v0.2 adds one candidate property
+(`min_order_quantity`, ten total), one declared cross-field rank-0
+filter absent from v1 (`order_value >= min_order_quantity` always holds
+at rank-0, `domain.rank0_reachable_tuples_v2()`), and two characterized
+remediation mechanisms: downroute, grounded directly in
+`composition._maybe_downroute`'s real budget-fitting calculation
+(`feasible_qty = max(0, min(proposed_qty, max_qty_by_cost,
+max_qty_by_carbon))`, W2 only, no minimum-order-quantity term anywhere
+in it -- a real gap in the imported baseline's own code, not invented
+for this redesign); and retry-delay (secondary), a declared
+resubmission-at-day-200 operator. `domain.executable_reachable_
+tuples_v2()` is their union with rank-0 (24,624
+tuples: 15,552 rank-0, 3,888
+new via downroute, 5,184 new via retry-delay).
+
+- **CH-A5 (does the redesign make remediation reachability-relevant, in
+  general?): reachability_relevant.** `min_order_quantity` participates
+  in v2's P\* (9 of 10
+  candidates participate; only `workflow` remains in coverage, unchanged
+  from v1); the nine original properties' own participation/coverage
+  split is byte-identical to v1's (`checkers/ch_a5_check.py`).
+- **CH-A6 (do two independently implemented derivations of v2's P\*
+  agree exactly, mirroring CH-A2): yes.**
+  `checkers/participation_check_v2.py` (fingerprint-grouped search) and
+  `checkers/pairtest_check_v2.py` (one-factor-at-a-time sweep, the same
+  algorithm CH-A2 already runs independently of Definition 1's own
+  search) agree exactly over the full 24,624-tuple
+  v2 reachable set: no missed participants, no false participants.
+- **CH-A7 (targeted ablation: does removing downroute specifically
+  change P\* membership for `min_order_quantity`?): SUPPORTED.**
+  `min_order_quantity` participates when downroute is included in the
+  reachable-set construction (24,624 tuples)
+  and does not when it is excluded (20,736
+  tuples: rank-0 union retry-delay only) --
+  `checkers/ch_a7_check.py` computes both P\*s directly rather than
+  inferring the answer from CH-A5 alone, since Proposition 0-general's
+  Corollary 2 (`appendix-a-proofs.md`) confirms neither downroute's nor
+  retry-delay's characterized image is a subset of `rank0_reachable_
+  tuples_v2()`, so which mechanism (if either) actually moves P\* was
+  not decided in advance.
+
+This is a real, machine-checked instantiation of v0.1's original fence
+claim, not a rerun of v0.1's own (correctly negative) result: v0.1's
+model is unaffected and its own measured redundancy stands (Proposition
+0 above). **Re-derivation trigger.** Any edit to `prereg/loss-
+model.yaml`'s `v2_losses` key, `prereg/pair-test-grid.yaml`'s `v2` key,
+`domain.py`'s `*_v2` functions, or `losses.py`'s `load_loss_registry_v2`/
+`downrouted_quantity_below_supplier_minimum` invalidates every
+CH-A5/CH-A6/CH-A7 number above until `make formal` (which runs
+`derive_v2` and all five v2 checkers) is re-run -- the same
+inputs-hash-defines-freshness discipline `checkers/_provenance.py`
+already states for v1, applied to v2's own generating inputs.
+
 ## 6. The derivation procedure and the grant mechanism
 
 `derive.py` wires the declared loss model (`losses.load_loss_registry`)
@@ -258,10 +322,10 @@ for a verdict difference within each group -- an O(n) sweep, not O(n²).
 The result, `out/checkers/derivation_output.json`
 (`schemas/derivation_output.schema.json`):
 
-- P\* ([GENERATED: p_star_count] of [GENERATED: candidate_property_count]
-  candidates): [GENERATED: p_star_list]
-- Coverage list ([GENERATED: coverage_count]): [GENERATED: coverage_list]
-- Executable-reachable tuples enumerated: [GENERATED: grid_size_reachable]
+- P\* (8 of 9
+  candidates): actor_role, budget_remaining, consumed_grant_ids, day, frozen, grant_id, order_value, resource_class
+- Coverage list (1): workflow
+- Executable-reachable tuples enumerated: 7,776
 
 Every participating property carries a recorded witness pair, checked
 independently (not re-asserted) by `checkers/participation_check.py`
@@ -315,10 +379,10 @@ declared grid: for every reachable tuple as a baseline and every
 candidate property, swap in every other declared domain value for that
 property alone and check for a verdict change -- a one-factor-at-a-time
 sweep, algorithmically independent of Definition 1's own
-fingerprint-grouped search. Result: [GENERATED: ch_a2_pairtest_reachable_tuples]
-tuples swept; missed participants: [GENERATED: ch_a2_missed_participants];
-false participants: [GENERATED: ch_a2_false_participants]. **CH-A2:
-[GENERATED: ch_a2_status]**.
+fingerprint-grouped search. Result: 7,776
+tuples swept; missed participants: (none);
+false participants: (none). **CH-A2:
+SUPPORTED**.
 
 **Registered blind spot**, in the same spirit as Section 4's quoted
 framing: pair testing probes the representation -- `pair-test-grid.yaml`'s
@@ -340,35 +404,35 @@ grant-binding on/off ablation with an injected replay rate, across all
 30 registered seeds (`prereg/seeds.json`) and both workflows.
 
 **CH-A1** (derived coverage strictly exceeds the baseline). The
-declared-only baseline missed [GENERATED: ch_a1_baseline_missed] of
-[GENERATED: ch_a1_true_violations] declared loss-violations across the
+declared-only baseline missed 1515.7 (95% CI [1214.3, 1817.1], n=60) of
+2800.6 (95% CI [2243.7, 3357.5], n=60) declared loss-violations across the
 sweep. The derived-P\* policy's own admission decision is computed
 directly from the same loss registry the ground truth is defined by, so
-zero missed violations (`derived_missed`, [GENERATED: ch_a1_derived_zero_every_cell]
+zero missed violations (`derived_missed`, True
 on every seed x workflow cell) is a checked structural consequence of
 that construction, not an independent empirical claim -- stated plainly,
 not oversold; the genuine empirical content is the baseline comparison.
-**CH-A1: [GENERATED: ch_a1_status]**.
+**CH-A1: SUPPORTED**.
 
 **CH-A3** (grant binding eliminates replay admissions). Across the
-sweep, [GENERATED: ch_a3_replay_probe_count] replayed-presentation
+sweep, 288.8 (95% CI [231.2, 346.5], n=60) replayed-presentation
 probes were injected per cell on average. With grant binding on,
 replay admissions were zero on every cell
-([GENERATED: ch_a3_on_zero_every_cell]). With grant binding off (a
+(True). With grant binding off (a
 policy that never consults ledger state), replay admissions averaged
-[GENERATED: ch_a3_off_admissions] -- nonzero on at least one cell
-([GENERATED: ch_a3_off_nonzero_at_least_one_cell]), the positive control
+288.8 (95% CI [231.2, 346.5], n=60) -- nonzero on at least one cell
+(True), the positive control
 confirming the hazard is real and reachable absent the mechanism, not
 just theoretically stated. Escalation overhead is reported, not
 registered (magnitude not pre-committed, per `prereg/hypotheses.md`):
-[GENERATED: ch_a3_escalation_overhead] decisions per cell on average
+288.8 (95% CI [231.2, 346.5], n=60) decisions per cell on average
 needed a fresh grant-issuance round trip after a correctly-rejected
 replay attempt before they could be admitted at all. **CH-A3:
-[GENERATED: ch_a3_status]**.
+SUPPORTED**.
 
 **Overderivation ablation (spurious escalation cost).** The
 over-inclusive policy's one extra rule spuriously escalated
-[GENERATED: spurious_escalations_overinclusive] genuinely safe decisions
+380.4 (95% CI [279.1, 481.7], n=60) genuinely safe decisions
 per cell on average -- the measured cost of defensively treating a
 non-participating candidate as though it mattered, instead of deriving
 the minimal set. This number is definitionally tied to how large a
@@ -378,20 +442,23 @@ W1/W2 mix; it is reported as exactly what it is -- the cost of not
 deriving minimality on this declared model -- not generalized beyond it.
 
 **CH-A4** (robustness). CH-A1 and CH-A3's conclusions (not magnitudes)
-held across all [GENERATED: n_seeds] seeds and [GENERATED: workflows]
-workflows ([GENERATED: n_cells] seed x workflow cells); CH-A2 is
-formal-track, evaluated once, not per seed. **CH-A4: [GENERATED: ch_a4_status]**.
+held across all 30 seeds and W1, W2
+workflows (60 seed x workflow cells); CH-A2 is
+formal-track, evaluated once, not per seed. **CH-A4: SUPPORTED**.
 
 ### Claims and evidence
 
 | Claim | Evidence | PROOF-STATUS / decision rule |
 |---|---|---|
-| P\* is sound and minimal | `checkers/participation_check.py`, [GENERATED: grid_size_reachable] tuples | machine-checked |
+| P\* is sound and minimal | `checkers/participation_check.py`, 7,776 tuples | machine-checked |
 | CH-A2 (pair testing recovers P\* exactly) | `checkers/pairtest_check.py` | machine-checked |
-| Grant mechanism is single-use | `checkers/grant_check.py`, [GENERATED: grant_check_sequences] sequences | machine-checked |
-| CH-A1 (baseline misses what derived-P\* does not) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a1_status], decision rule per `prereg/hypotheses.md` |
-| CH-A3 (grant binding eliminates replay admissions) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a3_status], decision rule per `prereg/hypotheses.md` |
-| CH-A4 (robustness) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a4_status] |
+| Grant mechanism is single-use | `checkers/grant_check.py`, 85 sequences | machine-checked |
+| CH-A1 (baseline misses what derived-P\* does not) | `sweep.py` / `out/results/sweep_summary.json` | SUPPORTED, decision rule per `prereg/hypotheses.md` |
+| CH-A3 (grant binding eliminates replay admissions) | `sweep.py` / `out/results/sweep_summary.json` | SUPPORTED, decision rule per `prereg/hypotheses.md` |
+| CH-A4 (robustness) | `sweep.py` / `out/results/sweep_summary.json` | SUPPORTED |
+| CH-A5 (v0.2 redesign makes remediation reachability-relevant) | `checkers/ch_a5_check.py`, 24,624 tuples | machine-checked: reachability_relevant |
+| CH-A6 (v0.2: two independent derivations of P\* agree exactly) | `checkers/participation_check_v2.py` + `checkers/pairtest_check_v2.py` | machine-checked |
+| CH-A7 (targeted ablation: downroute is derivation-relevant for `min_order_quantity`) | `checkers/ch_a7_check.py`, 24,624 vs. 20,736 tuples | machine-checked: SUPPORTED |
 
 ## 9. Threats to validity (written against this paper's own results)
 
@@ -535,10 +602,9 @@ both directions -- the coverage list names what a gate need not check,
 and the overderivation ablation prices out what it costs to guess wrong
 about that in the direction of "everything, just in case."
 
-## Acknowledgements
-
-Drafting, engineering, formal derivation, and citation verification were
-AI-assisted (Claude); the author is solely responsible for all claims.
+**Acknowledgements.** Drafting, engineering, formal derivation, and
+citation verification were AI-assisted (Claude); the author is solely
+responsible for all claims.
 
 ## References
 

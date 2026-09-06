@@ -165,8 +165,8 @@ produces 5,184 tuples outside it (`downroute_image_subset_of_rank0_v2:
 false`, `retry_delay_image_subset_of_rank0_v2: false`) -- confirming,
 not merely asserting, that neither is automatically covered by
 Corollary 1. Whether either actually changes P\* is exactly what CH-A5
-and CH-A7 decide (`paper5-authority-derivation-draft-v0.1.md`'s v0.2
-update; raw output `out/checkers/ch_a5_check.json` and
+and CH-A7 decide (`paper5-authority-derivation-draft-v0.2.md`, the live
+draft; raw output `out/checkers/ch_a5_check.json` and
 `out/checkers/ch_a7_check.json`), not this proposition, which only
 establishes that the question is open rather than pre-decided.
 

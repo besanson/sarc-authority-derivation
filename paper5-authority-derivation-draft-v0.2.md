@@ -1,20 +1,30 @@
 # Deriving Authority: A Machine-Checkable Derivation from a Declared Loss Model to the Minimal Property Set a Pre-Action Authority Gate Must Observe
 
+Gaston Besanson[^1]
+
+[^1]: Universidad Torcuato Di Tella
+
 Companion artifact: `sarc-authority-derivation`. Paper 5 of the SARC
 series, built on the pinned `sarc-suite-one-pass` artifact (arXiv
 [2608.18360](https://arxiv.org/abs/2608.18360), commit `782261e`) as a
 read-only imported baseline (`ADR-001-foundation.md`).
 
-**Status**: draft v0.1.2. Not submission-ready, not independently reviewed.
-See the human checklist at the end of this document. v0.1.2 corrects a
-finding from round-0 adjudicator review: v0.1's fence and abstract
+**Status**: draft v0.2. Not submission-ready, not independently reviewed.
+See the human checklist at the end of this document. v0.1.2 corrected a
+finding from an author-side, AI-assisted adjudication pass, not
+independent review: v0.1's fence and abstract
 claimed remediation changes this artifact's formal reachable set; it
-does not (Section 5, Section 9). The claim is narrowed here to what is
-actually true and checked; a redesigned formal model in which
-remediation is not reachability-redundant is scoped as v0.2
-(`prereg/v2-reachability-redesign.md`), gated behind its own prereg tag
-before any new experiment code, per this project's own registration
-discipline.
+did not, in v0.1's own model (Section 5, Section 9). That correction
+registered a redesigned formal model, gated behind its own prereg tag
+(`prereg-p5-v2`) before any new experiment code, in which remediation
+might not be reachability-redundant. v0.2 executes that redesign and
+reports the result: under the redesigned model, remediation genuinely
+is reachability-relevant for the one property (`min_order_quantity`)
+the redesign's downroute mechanism was built to make participate,
+machine-checked (CH-A5-CH-A7, Section 5). v0.1's own model and its own
+measured redundancy (Proposition 0) stay frozen and cited as the first
+iteration, per this project's own registration discipline -- nothing
+about them is retroactively edited to match v0.2's outcome.
 
 ## Abstract
 
@@ -33,7 +43,7 @@ minimality exhaustively over the declared finite model, independently
 recover it via a formalized pair-testing method (credited to an
 independent replication of the imported baseline), and add a consumable
 per-execution grant mechanism that binds one authorization to exactly
-one sealed execution. Against the real imported simulation, 30 seeds,
+one sealed execution. Against the real imported simulation, [GENERATED: n_seeds] seeds,
 both workflows: [GENERATED: abstract_results_sentence]
 
 ## 1. Introduction
@@ -228,12 +238,12 @@ empirics call the real operators themselves, through the pinned
 `NOVELTY.md`'s Amendment and `appendix-a-proofs.md`).** In this
 artifact's own formal model, remediation-reachability is redundant:
 `domain.rank0_reachable_tuples()` is the unconstrained full product of
-all nine candidate properties' declared domains (7,776 tuples), which
+all nine candidate properties' declared domains ([GENERATED: grid_size_reachable] tuples), which
 already contains every tuple `remediation_reachable_tuples()` can
 produce by swapping `order_value` alone, so `executable_reachable_
 tuples()` (the union of the two) equals rank-0 exactly -- measured, not
 asserted: `len(remediation_reachable_tuples(rank0, domains['order_
-value']))` is 0. Concretely: P\*, the coverage list, and every witness
+value']))` is [GENERATED: remediation_reachable_new_tuples]. Concretely: P\*, the coverage list, and every witness
 below are identical whether or not remediation-reachable tuples are
 included, because there are none beyond rank-0. This is narrower than
 v0.1's fence claimed (Section 1.1's correction): this formal model does
@@ -247,6 +257,60 @@ remediation is not reachability-redundant, and whether P\* would then
 differ, is exactly the question v0.2 (`prereg/v2-reachability-redesign.md`,
 once committed) is designed to answer -- registered as a real, two-sided
 question, not assumed to come out either way.
+
+**v0.2 update: the redesign executed (CH-A5-CH-A7, tag `prereg-p5-v2`).**
+The question above is answered. v0.2 adds one candidate property
+(`min_order_quantity`, ten total), one declared cross-field rank-0
+filter absent from v1 (`order_value >= min_order_quantity` always holds
+at rank-0, `domain.rank0_reachable_tuples_v2()`), and two characterized
+remediation mechanisms: downroute, grounded directly in
+`composition._maybe_downroute`'s real budget-fitting calculation
+(`feasible_qty = max(0, min(proposed_qty, max_qty_by_cost,
+max_qty_by_carbon))`, W2 only, no minimum-order-quantity term anywhere
+in it -- a real gap in the imported baseline's own code, not invented
+for this redesign); and retry-delay (secondary), a declared
+resubmission-at-day-200 operator. `domain.executable_reachable_
+tuples_v2()` is their union with rank-0 ([GENERATED: v2_grid_size_reachable]
+tuples: [GENERATED: v2_rank0_size] rank-0, [GENERATED: v2_downroute_new_tuples]
+new via downroute, [GENERATED: v2_retry_delay_new_tuples] new via retry-delay).
+
+- **CH-A5 (does the redesign make remediation reachability-relevant, in
+  general?): reachability_relevant.** `min_order_quantity` participates
+  in v2's P\* ([GENERATED: v2_p_star_count] of [GENERATED: v2_candidate_property_count]
+  candidates participate; only `workflow` remains in coverage, unchanged
+  from v1); the nine original properties' own participation/coverage
+  split is byte-identical to v1's (`checkers/ch_a5_check.py`).
+- **CH-A6 (do two independently implemented derivations of v2's P\*
+  agree exactly, mirroring CH-A2): yes.**
+  `checkers/participation_check_v2.py` (fingerprint-grouped search) and
+  `checkers/pairtest_check_v2.py` (one-factor-at-a-time sweep, the same
+  algorithm CH-A2 already runs independently of Definition 1's own
+  search) agree exactly over the full [GENERATED: ch_a5_reachable_size]-tuple
+  v2 reachable set: no missed participants, no false participants.
+- **CH-A7 (targeted ablation: does removing downroute specifically
+  change P\* membership for `min_order_quantity`?): SUPPORTED.**
+  `min_order_quantity` participates when downroute is included in the
+  reachable-set construction ([GENERATED: ch_a7_reachable_size_a] tuples)
+  and does not when it is excluded ([GENERATED: ch_a7_reachable_size_b]
+  tuples: rank-0 union retry-delay only) --
+  `checkers/ch_a7_check.py` computes both P\*s directly rather than
+  inferring the answer from CH-A5 alone, since Proposition 0-general's
+  Corollary 2 (`appendix-a-proofs.md`) confirms neither downroute's nor
+  retry-delay's characterized image is a subset of `rank0_reachable_
+  tuples_v2()`, so which mechanism (if either) actually moves P\* was
+  not decided in advance.
+
+This is a real, machine-checked instantiation of v0.1's original fence
+claim, not a rerun of v0.1's own (correctly negative) result: v0.1's
+model is unaffected and its own measured redundancy stands (Proposition
+0 above). **Re-derivation trigger.** Any edit to `prereg/loss-
+model.yaml`'s `v2_losses` key, `prereg/pair-test-grid.yaml`'s `v2` key,
+`domain.py`'s `*_v2` functions, or `losses.py`'s `load_loss_registry_v2`/
+`downrouted_quantity_below_supplier_minimum` invalidates every
+CH-A5/CH-A6/CH-A7 number above until `make formal` (which runs
+`derive_v2` and all five v2 checkers) is re-run -- the same
+inputs-hash-defines-freshness discipline `checkers/_provenance.py`
+already states for v1, applied to v2's own generating inputs.
 
 ## 6. The derivation procedure and the grant mechanism
 
@@ -304,7 +368,7 @@ content hash (sha256, canonical JSON) of one sealed post-remediation
 action. Issuance and every consumption attempt -- admitted or rejected
 -- append a new entry; nothing is mutated in place, mirroring the
 imported baseline's own governed-buffer write-history design. The
-single-use invariant is machine-checked exhaustively over 85 sequences
+single-use invariant is machine-checked exhaustively over [GENERATED: grant_check_sequences] sequences
 (`checkers/grant_check.py`, Proposition 3).
 
 ## 7. Pair testing, formalized (CH-A2)
@@ -337,7 +401,7 @@ policies per decision -- baseline declared-only, derived-P\*, and an
 over-inclusive ablation that adds one spurious rule (escalate whenever
 `workflow == W2`, the one derived-non-participating candidate) -- plus a
 grant-binding on/off ablation with an injected replay rate, across all
-30 registered seeds (`prereg/seeds.json`) and both workflows.
+[GENERATED: n_seeds] registered seeds (`prereg/seeds.json`) and both workflows.
 
 **CH-A1** (derived coverage strictly exceeds the baseline). The
 declared-only baseline missed [GENERATED: ch_a1_baseline_missed] of
@@ -392,6 +456,9 @@ formal-track, evaluated once, not per seed. **CH-A4: [GENERATED: ch_a4_status]**
 | CH-A1 (baseline misses what derived-P\* does not) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a1_status], decision rule per `prereg/hypotheses.md` |
 | CH-A3 (grant binding eliminates replay admissions) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a3_status], decision rule per `prereg/hypotheses.md` |
 | CH-A4 (robustness) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a4_status] |
+| CH-A5 (v0.2 redesign makes remediation reachability-relevant) | `checkers/ch_a5_check.py`, [GENERATED: ch_a5_reachable_size] tuples | machine-checked: reachability_relevant |
+| CH-A6 (v0.2: two independent derivations of P\* agree exactly) | `checkers/participation_check_v2.py` + `checkers/pairtest_check_v2.py` | machine-checked |
+| CH-A7 (targeted ablation: downroute is derivation-relevant for `min_order_quantity`) | `checkers/ch_a7_check.py`, [GENERATED: ch_a7_reachable_size_a] vs. [GENERATED: ch_a7_reachable_size_b] tuples | machine-checked: SUPPORTED |
 
 ## 9. Threats to validity (written against this paper's own results)
 
@@ -402,7 +469,7 @@ formal-track, evaluated once, not per seed. **CH-A4: [GENERATED: ch_a4_status]**
   reachable set is already the unconstrained full product over every
   candidate property's declared domain, so it already contains
   everything remediation-reachability could add, and the two coincide
-  exactly (7,776 tuples either way, measured directly). v0.1.2 corrects
+  exactly ([GENERATED: grid_size_reachable] tuples either way, measured directly). v0.1.2 corrects
   the claim (Section 5's Proposition 0) rather than leaving it standing
   with a footnote; this item exists so a reader of v0.1 specifically,
   or of a summary that quoted the original fence, is not misled by a
@@ -535,10 +602,9 @@ both directions -- the coverage list names what a gate need not check,
 and the overderivation ablation prices out what it costs to guess wrong
 about that in the direction of "everything, just in case."
 
-## Acknowledgements
-
-Drafting, engineering, formal derivation, and citation verification were
-AI-assisted (Claude); the author is solely responsible for all claims.
+**Acknowledgements.** Drafting, engineering, formal derivation, and
+citation verification were AI-assisted (Claude); the author is solely
+responsible for all claims.
 
 ## References
 
@@ -556,7 +622,7 @@ paper edits none of that artifact.
 - [ ] Novelty fence reviewed by the author against `NOVELTY.md`'s
       sources.
 - [ ] `pending-human-review` tags counted and individually assessed:
-      1 (`appendix-a-proofs.md`'s coupling-generalization remark).
+      [GENERATED: pending_human_review_tag_count] (`appendix-a-proofs.md`'s coupling-generalization remark).
 - [ ] Push and any review chain are the author's decision, not
       automated by this pipeline.
 

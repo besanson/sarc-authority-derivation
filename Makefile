@@ -55,9 +55,13 @@ sweep:
 	python3 sweep.py
 
 # Phase 5: populate the paper draft from committed machine output only.
+# v0.2 is the live draft (paper5-authority-derivation-draft-v0.1.md/
+# -populated.md are frozen historical files as of commit 37a2e7f -- see
+# README.md's version-split note -- and are no longer touched by this
+# pipeline).
 paper: experiments sweep formal
-	@echo "Populating paper draft from out/metrics.json + out/results/sweep_summary.json + out/checkers/*.json..."
-	python3 paper_tables.py
+	@echo "Populating paper draft from out/results/sweep_summary.json + out/checkers/*.json..."
+	python3 populate_paper.py
 
 release-check:
 	@echo "=== release-check: full test suite ==="
@@ -72,8 +76,16 @@ release-check:
 	diff -rq /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	@rm -rf /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	@echo "formal double-run byte-identical: OK"
+	@echo "=== release-check: populated-draft freshness ==="
+	cp paper5-authority-derivation-draft-v0.2-populated.md /tmp/sarc-p5-populated-committed.md
+	python3 populate_paper.py
+	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.2-populated.md
+	@rm -f /tmp/sarc-p5-populated-committed.md
+	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== release-check: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.1.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.2.md
+	@echo "=== release-check: typed-numerals lint ==="
+	python3 -m checkers.typed_numerals_lint
 	@echo "=== release-check: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
 	@echo ""
@@ -88,7 +100,7 @@ mutate:
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
-	rm -f paper5-authority-derivation-draft-v0.1-populated.md
+	rm -f paper5-authority-derivation-draft-v0.2-populated.md
 	rm -rf .pytest_cache .hypothesis
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete

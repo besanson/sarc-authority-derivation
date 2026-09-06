@@ -11,12 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Phase 5 driver: populate_draft.py + paper_tables.py, wired together."""
+"""Phase 5 driver: populate_draft.py + paper_tables.py, wired together.
+
+v0.2 is the live draft (README.md's version-split note): v0.1's own
+source/populated pair is frozen at commit 37a2e7f and is neither read
+nor written by this module."""
 from paper_tables import build_slots
 from populate_draft import populate_draft
 
-DRAFT_PATH = "paper5-authority-derivation-draft-v0.1.md"
-OUTPUT_PATH = "paper5-authority-derivation-draft-v0.1-populated.md"
+DRAFT_PATH = "paper5-authority-derivation-draft-v0.2.md"
+OUTPUT_PATH = "paper5-authority-derivation-draft-v0.2-populated.md"
 
 if __name__ == "__main__":
     slots = build_slots()
