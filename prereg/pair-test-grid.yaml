@@ -172,3 +172,43 @@ v2:
       unreachable at rank-0 by construction), so Proposition 0-general's
       Corollary 1 (prereg/v2-reachability-redesign.md) does not apply to
       it the way it provably does to evidence substitution.
+
+# v3 registration (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3).
+# Machine-readable declaration only -- no v3 code reads this section yet;
+# domain.py's v1/v2 functions and property_domains()/property_domains_v2()
+# are all unchanged and continue to read only the "properties"/
+# "reachability" and "v2" keys above. This "v3" key is a sibling those
+# functions never look at, so v1's and v2's release-check, formal
+# double-run, and test suite are unaffected by its presence -- to be
+# verified directly (make formal / pytest) after this section was added,
+# not assumed, before this commit closes Phase A.
+v3:
+  reachability:
+    constrained_reachability_ch_a9: >-
+      CH-A9's registered constrained-reachability variant
+      (prereg/v3-core-reduct-correction.md), designed to test whether a
+      real (declared) co-variation between two candidate properties
+      breaks core sufficiency, mirroring Negative Proposition N's
+      abstract counterexample inside this artifact's own vocabulary.
+      Reachability is restricted to workflow == "W2" tuples only (NOT
+      unioned with W1, unlike v2's own executable_reachable_tuples_v2()
+      -- a smaller, self-contained variant model, not an extension of
+      the v2 reachable set). Every v2 candidate property other than
+      actor_role and resource_class keeps its full v2 domain,
+      unconstrained.
+  co_variation:
+    actor_role_resource_class_ch_a9:
+      description: >-
+        A declared staffing/specialization table: each role is
+        provisioned to handle exactly one resource class, analogous in
+        kind to loss-model.yaml's own per-role entitlement/window/
+        allowed-class tables (a declared modeling choice stated as such,
+        not a measurement) -- under this constrained variant, actor_role
+        and resource_class never vary independently of each other, the
+        same "forced to co-vary" shape the abstract two-state
+        counterexample uses with candidate properties x and y.
+      pairing:
+        agent-replenish: consumables
+        agent-w2-replenish: capital-equipment
+        agent-delegate: durable-goods
+        agent-unauthorized: consumables

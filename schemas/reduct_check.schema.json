@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/besanson/sarc-authority-derivation/schemas/reduct_check.schema.json",
+  "title": "CH-A10: exact reduct enumeration output",
+  "description": "Phase B (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3): checkers/reduct_check.py's output. Exhaustive enumeration of every reduct (Definition 5) over the candidate power set, with subset pruning; not a two-sided hypothesis -- the reported numbers are the result. core_attributes/redundant_attributes use v3's renamed vocabulary (prereg/v3-core-reduct-correction.md's Renaming plan), not v1/v2's participating_properties/coverage_list, which stay byte-frozen under their own names.",
+  "type": "object",
+  "required": [
+    "schema_version", "model", "candidate_properties", "reachable_tuples_swept",
+    "subsets_considered", "reducts", "minimum_reducts", "minimum_reduct_cardinality",
+    "core_attributes", "core_is_unique_reduct", "redundant_attributes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "model": {
+      "type": "string",
+      "description": "Which reachable-set construction this enumeration ran against, e.g. 'v2' or a fixture name."
+    },
+    "candidate_properties": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The full candidate set -- the power set enumerated has 2^len(candidate_properties) members before pruning."
+    },
+    "reachable_tuples_swept": { "type": "integer", "minimum": 0 },
+    "subsets_considered": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Subsets actually tested for sufficiency/minimality after pruning (a sufficient set's supersets are never re-tested for minimality; an insufficient set's subsets are never tested for sufficiency) -- always <= 2^len(candidate_properties), reported so exhaustiveness-with-pruning is distinguishable from a sample."
+    },
+    "reducts": {
+      "type": "array",
+      "items": { "type": "array", "items": { "type": "string" } },
+      "description": "Every reduct found (Definition 5): sufficient and minimal. Each entry sorted, deduplicated."
+    },
+    "minimum_reducts": {
+      "type": "array",
+      "items": { "type": "array", "items": { "type": "string" } },
+      "description": "The subset of reducts whose cardinality equals minimum_reduct_cardinality."
+    },
+    "minimum_reduct_cardinality": { "type": "integer", "minimum": 0 },
+    "core_attributes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Definition 6: the intersection of every entry in reducts. Must equal sufficiency_check.schema.json's core_attributes tested_set when both run on the same model (cross-checked, not assumed equal)."
+    },
+    "core_is_unique_reduct": {
+      "type": "boolean",
+      "description": "True iff reducts has exactly one member and it equals core_attributes -- Proposition 1' claim 3's antecedent, decided here per instance."
+    },
+    "redundant_attributes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "candidate_properties minus core_attributes -- dispensable from at least one reduct, the v3-renamed analogue of v1/v2's coverage_list."
+    }
+  }
+}

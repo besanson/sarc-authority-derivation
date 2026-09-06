@@ -1,0 +1,25 @@
+{
+  "description": "Negative Proposition N's registered counterexample (prereg/v3-core-reduct-correction.md), re-derived from first principles, not copied from the external review's own prose. Reachable set {(x=0,y=0),(x=1,y=1)}; the only two members differ in BOTH x and y simultaneously, so no reachable pair differs in exactly one property and the core (Definition 1's own participation criterion) is empty, even though M's verdict genuinely depends on the tuple: the empty set cannot distinguish (0,0) from (1,1). {x} and {y} are each independently sufficient and minimal -- reducts of cardinality 1 -- so the core (0) is strictly smaller than the minimum reduct (1) and is not itself a reduct.",
+  "candidate_properties": ["x", "y"],
+  "reachable_tuples": [
+    { "x": 0, "y": 0 },
+    { "x": 1, "y": 1 }
+  ],
+  "verdict_field": "x",
+  "verdict_field_note": "M(x,y) is computed as bool(tuple[verdict_field]) -- a generic, formula-free way to encode 'M(x,y)=x' (equivalently '=y', since x and y are always equal on this reachable set) so checkers/core_insufficiency_counterexample.py evaluates it mechanically rather than re-deriving the formula from prose.",
+  "expected": {
+    "core_attributes": [],
+    "is_core_sufficient": false,
+    "counterexample": {
+      "tuple_a": { "x": 0, "y": 0 },
+      "tuple_a_prime": { "x": 1, "y": 1 },
+      "verdict_a": false,
+      "verdict_a_prime": true
+    },
+    "reducts": [["x"], ["y"]],
+    "minimum_reducts": [["x"], ["y"]],
+    "minimum_reduct_cardinality": 1,
+    "core_is_unique_reduct": false,
+    "redundant_attributes": ["x", "y"]
+  }
+}

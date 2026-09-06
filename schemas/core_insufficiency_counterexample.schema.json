@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/besanson/sarc-authority-derivation/schemas/core_insufficiency_counterexample.schema.json",
+  "title": "Negative Proposition N / CH-A9: core-insufficiency case outputs",
+  "description": "Phase B (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3): checkers/core_insufficiency_counterexample.py's output. Runs the same generic core/reduct machinery (reduct.py) reduct_check.py uses against two registered cases -- Negative Proposition N's abstract fixture (prereg/fixtures/negative-proposition-n-counterexample.json) and CH-A9's constrained procurement-model variant (pair-test-grid.yaml's v3 section) -- so a negative finding is exactly as replayable and independently checked as CH-A8/CH-A10's positive ones.",
+  "type": "object",
+  "required": ["schema_version", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name", "candidate_properties", "reachable_tuples_swept",
+          "core_attributes", "is_core_sufficient", "minimum_reduct_cardinality", "supported"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": ["negative_proposition_n", "ch_a9_constrained_procurement_variant"]
+          },
+          "candidate_properties": { "type": "array", "items": { "type": "string" } },
+          "reachable_tuples_swept": { "type": "integer", "minimum": 0 },
+          "core_attributes": { "type": "array", "items": { "type": "string" } },
+          "is_core_sufficient": { "type": "boolean" },
+          "counterexample": {
+            "type": "object",
+            "description": "Present iff is_core_sufficient is false.",
+            "required": ["tuple_a", "tuple_a_prime", "verdict_a", "verdict_a_prime"],
+            "additionalProperties": false,
+            "properties": {
+              "tuple_a": { "type": "object" },
+              "tuple_a_prime": { "type": "object" },
+              "verdict_a": { "type": "boolean" },
+              "verdict_a_prime": { "type": "boolean" }
+            }
+          },
+          "minimum_reduct_cardinality": { "type": "integer", "minimum": 0 },
+          "supported": {
+            "type": "boolean",
+            "description": "negative_proposition_n: always expected true (registered, machine-checked instance). ch_a9_constrained_procurement_variant: two-sided -- true iff core is insufficient AND minimum_reduct_cardinality > len(core_attributes), false (NOT SUPPORTED, printed as such) otherwise."
+          }
+        }
+      }
+    }
+  }
+}

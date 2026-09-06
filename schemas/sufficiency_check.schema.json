@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/besanson/sarc-authority-derivation/schemas/sufficiency_check.schema.json",
+  "title": "CH-A8: core sufficiency check output",
+  "description": "Phase B (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3): checkers/sufficiency_check.py's output. Decides Definition 4 (sufficiency) for one candidate property set S -- normally the core (Definition 6) core_attributes already reports -- on one reachable set, by a certificate, never assumed. Exactly one of sufficiency_certificate/counterexample is present, matching is_sufficient.",
+  "type": "object",
+  "required": ["schema_version", "model", "candidate_properties", "tested_set", "is_sufficient", "reachable_tuples_swept"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "model": {
+      "type": "string",
+      "description": "Which reachable-set construction this check ran against, e.g. 'v2' (domain.executable_reachable_tuples_v2()) or a fixture name."
+    },
+    "candidate_properties": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Every property considered -- the universe tested_set is a subset of."
+    },
+    "tested_set": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The property set S whose sufficiency (Definition 4) this run decided -- normally core_attributes."
+    },
+    "is_sufficient": { "type": "boolean" },
+    "sufficiency_certificate": {
+      "type": "object",
+      "description": "Present iff is_sufficient is true: the partition of the reachable set by projection onto tested_set, confirmed to carry a uniform verdict within every partition cell.",
+      "required": ["partition_cell_count", "uniform_verdict_within_every_cell"],
+      "additionalProperties": false,
+      "properties": {
+        "partition_cell_count": { "type": "integer", "minimum": 1 },
+        "uniform_verdict_within_every_cell": { "const": true }
+      }
+    },
+    "counterexample": {
+      "type": "object",
+      "description": "Present iff is_sufficient is false: one concrete pair of reachable tuples agreeing on every property in tested_set with different M-verdicts.",
+      "required": ["tuple_a", "tuple_a_prime", "verdict_a", "verdict_a_prime"],
+      "additionalProperties": false,
+      "properties": {
+        "tuple_a": { "type": "object" },
+        "tuple_a_prime": { "type": "object" },
+        "verdict_a": { "type": "boolean" },
+        "verdict_a_prime": { "type": "boolean" }
+      }
+    },
+    "reachable_tuples_swept": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Count of reachable tuples the sufficiency check actually enumerated -- exhaustive, not sampled."
+    }
+  }
+}
