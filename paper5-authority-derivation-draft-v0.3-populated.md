@@ -182,10 +182,12 @@ below).
 This paper closes that gap for one declared loss model. We do not derive
 the loss model itself -- that stays a human, out-of-scope act of
 judgment (Section 8) -- but given one, we derive, deterministically and
-machine-checkably, the minimal property set an authority gate must
-observe to correctly detect every loss the model declares, and we
-honestly emit the properties it does not need, rather than silently
-dropping them.
+machine-checkably, the **core** property set (Definition 6) an authority
+gate must observe to correctly detect every loss the model declares --
+certified, per instance and never assumed, to also be sufficient and the
+unique reduct (Definitions 4-5) for this artifact's own registered v2
+model (CH-A8, CH-A10; Corrections above) -- and we honestly emit the
+properties it does not need, rather than silently dropping them.
 
 ### 1.1 Novelty fence
 
@@ -207,7 +209,13 @@ reachable set, which round-0 review found false; the corrected fence
 above claims only what Section 5 shows is actually instantiated. See
 Section 3 for the full
 per-cluster novelty comparison this fence summarizes, and
-`verified-citations.json` for every source's fetch-verification record.)
+`verified-citations.json` for every source's fetch-verification record.
+The fence's own "minimal property set" phrase predates the v0.3
+core-vs-reduct correction (Corrections above): in general this artifact
+derives the **core** (Definition 6); sufficiency-and-minimality
+(Definition 5's reduct) is certified only per instance (CH-A8, CH-A10),
+never assumed for an arbitrary declared loss model (Negative
+Proposition N).)
 
 ## 2. Setting
 
@@ -253,7 +261,7 @@ carries the same process into security; Rismani, Dobbe, and Moon's PHASE
 (2024) and Mylius (2025) into AI governance and frontier-AI hazard
 analysis; Qi et al.'s DeepSTPA (2023) into the ML development lifecycle.
 In every case the output is human-authored, expert-reviewed constraints,
-not a machine-checked minimal property set, and none formalize
+not a machine-checked **core** (Definition 6), and none formalize
 soundness or minimality as machine-checkable claims over an enumerated
 model.
 
@@ -262,8 +270,9 @@ problem of reconstructing which attributes already participate in an
 *existing* deployed policy from grants and attribute data; Nobi et al.'s
 2022 survey catalogues the ML extensions of that same reconstruction
 problem. This paper derives forward, from a declared loss model to a
-*new* gate's minimal property set, with a machine-checked soundness and
-minimality guarantee mining has no ground truth to check itself against.
+*new* gate's **core** property set (Definition 6), with a machine-checked
+soundness-and-minimality guarantee (Definition 1's own witness search)
+mining has no ground truth to check itself against.
 
 **Policy-language completeness.** Crampton and Morisset's PTaCL (POST
 2012) and Crampton and Williams's canonical-completeness result (SACMAT
@@ -277,14 +286,29 @@ as a semantic *check* of whether a dependence exists between two fixed
 parties in a given system. This paper's Definition 1 borrows the
 underlying comparison -- does changing X change the verdict? -- but
 turns it into a derivation swept over every candidate property against
-every loss predicate, with soundness and minimality verified
-exhaustively, not a single dependence check.
+every loss predicate, with the **core** (Definition 6) soundness and
+minimality verified exhaustively, not a single dependence check.
 
 **Counterfactual fairness.** Kusner et al. (NeurIPS 2017) evaluate one
 pre-chosen sensitive attribute's counterfactual invariance, once. This
 paper generalizes the same comparison to every candidate property
-against a declared loss model, with an exhaustive minimality result the
+against a declared loss model, with an exhaustive **core**-minimality
+result (Definition 6) the
 fairness literature neither claims nor checks.
+
+**A scope note on "sound" and "minimal" in this section (v0.3
+Corrections above).** Every comparison above was written before
+Definitions 4-6 existed and describes this artifact's Definition 1
+witness search: sound in the sense that every recorded witness is
+independently re-verified reachable and verdict-differing, minimal in
+the sense that no property survives in P\* without its own witness --
+both properties of the **core** computation itself (Definition 6), true
+by the witness search's own construction (`checkers/participation_
+check.py`/`_v2.py`), not a claim that the core suffices to determine
+every verdict jointly. Sufficiency and reduct-minimality in Definitions
+4-5's sense are certified only per instance -- CH-A8 and CH-A10 for this
+artifact's own registered v2 model -- never assumed for an arbitrary
+declared loss model (Negative Proposition N).
 
 ## 4. The Moona Intelligence replication and its method's origin
 
@@ -785,12 +809,15 @@ formal-track, evaluated once, not per seed. **CH-A4: SUPPORTED**.
 ## 10. Limitations
 
 - **Deriving the loss model itself is out of scope.** This paper starts
-  from `prereg/loss-model.yaml` as given and derives the minimal
-  observation set a gate needs to check it; it does not derive, verify,
-  or validate that these six losses are the right or complete set of
-  things an organization should declare. A declared loss model with a
-  missing loss produces a P\* that is minimal and sound *for the
-  declared model*, silently uninformative about the missing one.
+  from `prereg/loss-model.yaml` as given and derives the **core**
+  observation set (Definition 6) a gate needs to check it; it does not
+  derive, verify, or validate that these losses are the right or
+  complete set of things an organization should declare. A declared loss
+  model with a missing loss still produces a P\* that is the core *for
+  the declared model* (Definition 1's witness search is sound and
+  minimal by construction), silently uninformative about the missing
+  one -- and sufficiency is never assumed for it either (Definition 4;
+  Negative Proposition N).
 - **Multi-agent settings, the evidence-integrity layer, and any
   runtime LLM involvement are out of scope** (task brief). The grant
   mechanism assumes a single sealing/execution path per decision, not
@@ -810,12 +837,18 @@ formal-track, evaluated once, not per seed. **CH-A4: SUPPORTED**.
 
 ## Coverage-honesty banner
 
-**Six declared losses, nine candidate properties, one derived coverage
-list. `workflow` is derived non-participating for this declared loss
-model and is reported as such, not omitted. The overderivation
-ablation's spurious-escalation count is specific to this simulation's
-own workflow mix and declared parameter values, not a general estimate.
-CH-A1's zero-miss result for the derived policy is a checked structural
+**6 declared losses, 9
+candidate properties, one derived coverage list at v1 (`prereg-p5-v1`);
+7 declared losses, 10
+candidate properties at v2 (`prereg-p5-v2`), core cardinality
+9 and certified the unique reduct for
+that registered model (CH-A8, CH-A10; Definitions 4-6) -- neither count
+generalizes to an arbitrary declared loss model. `workflow` is derived
+non-participating (v1) / redundant (v2) for these declared loss models
+and is reported as such, not omitted. The overderivation ablation's
+spurious-escalation count is specific to this simulation's own workflow
+mix and declared parameter values, not a general estimate. CH-A1's
+zero-miss result for the derived policy is a checked structural
 consequence of sharing one registry with the ground truth, disclosed as
 such in Section 9, not an independent empirical claim.**
 

@@ -17,6 +17,17 @@
 # (sarc-suite-one-pass + three engines), verify the imported baseline, then
 # run this repo's own full release-check end to end (v0.3, B4: CI must run
 # make release-check, not a partial test+formal subset of it).
+#
+# Hermetic CI (Milestone A2, review-secondary/improvement-plan-9.5-
+# 2026-09-06.pdf's reimplemented findings): pandoc and poppler-utils
+# (pdftotext/pdfinfo) are installed explicitly below, before bootstrap,
+# rather than relied on implicitly from the runner image -- the imported
+# baseline's own paper-tex/gates/run_gates.py (exercised by bootstrap.sh's
+# "verify imported baseline" step, sarc-suite-one-pass's own
+# release-check) invokes both directly via subprocess. No other
+# executable the pinned upstream bootstrap invokes needs an apt package:
+# its LaTeX toolchain (tectonic) is vendored as a pinned binary download
+# by that repo's own bootstrap.sh, not installed via apt.
 
 name: ci
 
@@ -38,6 +49,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Install hermetic CI dependencies (pandoc, poppler-utils)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends pandoc poppler-utils
 
       - name: Bootstrap (pinned siblings + toolchain + imported baseline)
         working-directory: sarc-authority-derivation

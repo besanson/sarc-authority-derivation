@@ -31,6 +31,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from checkers.proof_status_lint import lint as _lint_proof_status
+from domain import load_loss_model
 
 
 def _fmt_ci(ci: Dict[str, float], decimals: int = 1) -> str:
@@ -73,6 +74,9 @@ def build_slots(
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
     )
+    loss_model = load_loss_model()
+    v1_loss_count = len(loss_model["losses"])
+    v2_loss_count = v1_loss_count + len(loss_model["v2_losses"])
 
     p_star = sorted(derivation["participating_properties"])
     coverage = sorted(derivation["coverage_list"])
@@ -90,6 +94,8 @@ def build_slots(
         "coverage_count": str(len(coverage)),
         "candidate_property_count": str(len(derivation["candidate_properties"])),
         "grid_size_reachable": f"{derivation['grid_size_reachable']:,}",
+        "v1_loss_count": str(v1_loss_count),
+        "v2_loss_count": str(v2_loss_count),
 
         "ch_a1_baseline_missed": _fmt_ci(sweep["ch_a1_baseline_missed"]),
         "ch_a1_true_violations": _fmt_ci(sweep["ch_a1_true_violations"]),

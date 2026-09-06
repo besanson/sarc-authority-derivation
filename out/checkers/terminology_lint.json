@@ -1,0 +1,34 @@
+{
+  "all_clean": true,
+  "files": [
+    {
+      "classification_counts": {
+        "core": 8,
+        "general-theorem": 21,
+        "historical": 57,
+        "instance-certified": 20,
+        "reduct": 0,
+        "unclassified": 0
+      },
+      "clean": true,
+      "occurrence_count": 106,
+      "path": "paper5-authority-derivation-draft-v0.3.md",
+      "violations": []
+    },
+    {
+      "classification_counts": {
+        "core": 1,
+        "general-theorem": 0,
+        "historical": 0,
+        "instance-certified": 1,
+        "reduct": 0,
+        "unclassified": 0
+      },
+      "clean": true,
+      "occurrence_count": 2,
+      "path": "README.md",
+      "violations": []
+    }
+  ],
+  "total_occurrences": 108
+}

@@ -69,7 +69,8 @@ paper: experiments sweep formal
 
 release-check:
 	@echo "=== release-check: full test suite ==="
-	python3 -m pytest -v
+	mkdir -p out
+	python3 -m pytest -v --junit-xml=out/pytest-junit.xml
 	@echo "=== release-check: formal double-run byte identity ==="
 	rm -rf /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	mkdir -p /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
@@ -80,6 +81,8 @@ release-check:
 	diff -rq /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	@rm -rf /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	@echo "formal double-run byte-identical: OK"
+	@echo "=== release-check: mutation testing (hard gate, >=0.85; see ADR-003-mutation-testing.md) ==="
+	$(MAKE) mutate
 	@echo "=== release-check: populated-draft freshness ==="
 	cp paper5-authority-derivation-draft-v0.3-populated.md /tmp/sarc-p5-populated-committed.md
 	python3 populate_paper.py
@@ -90,8 +93,12 @@ release-check:
 	python3 citation_check.py paper5-authority-derivation-draft-v0.3.md
 	@echo "=== release-check: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
+	@echo "=== release-check: terminology lint ==="
+	python3 -m checkers.terminology_lint
 	@echo "=== release-check: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
+	@echo "=== release-check: reproducibility report (out/reproducibility-report.json) ==="
+	python3 reproducibility_report.py
 	@echo ""
 	@echo "release-check: ALL CHECKS PASS"
 
@@ -122,7 +129,7 @@ help:
 	@echo "  make experiments    Run the Phase 3 experiment scenarios"
 	@echo "  make sweep          30-seed statistical sweep, CH-A1-CH-A4 means + 95% CIs"
 	@echo "  make paper          Populate the paper draft from committed machine output"
-	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + citation gate + lint"
+	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
