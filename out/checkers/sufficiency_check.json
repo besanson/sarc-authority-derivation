@@ -1,0 +1,33 @@
+{
+  "candidate_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class",
+    "workflow"
+  ],
+  "is_sufficient": true,
+  "model": "v2",
+  "reachable_tuples_swept": 24624,
+  "schema_version": 1,
+  "sufficiency_certificate": {
+    "partition_cell_count": 14256,
+    "uniform_verdict_within_every_cell": true
+  },
+  "tested_set": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ]
+}

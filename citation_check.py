@@ -15,9 +15,9 @@
 """
 Ported with attribution from sarc-suite-one-pass's citation_check.py
 (commit 782261e) -- see ADR-001. Unchanged except this docstring and the
-default CLI target (paper5-authority-derivation-draft-v0.2.md, the live
-draft -- v0.1's own source is frozen at commit 37a2e7f, README.md's
-version-split note).
+default CLI target (paper5-authority-derivation-draft-v0.3.md, the live
+draft -- v0.1's own source is frozen at commit 37a2e7f, v0.2's at commit
+7112031, README.md's version-split note).
 
 Citation verification gate.
 
@@ -116,7 +116,7 @@ def check(paper_path: str, whitelist_path: str = CITATIONS_PATH) -> Dict[str, An
 if __name__ == "__main__":
     import sys
 
-    target = sys.argv[1] if len(sys.argv) > 1 else "paper5-authority-derivation-draft-v0.2.md"
+    target = sys.argv[1] if len(sys.argv) > 1 else "paper5-authority-derivation-draft-v0.3.md"
     result = check(target)
     print(json.dumps(result, indent=2))
     if not result["clean"]:

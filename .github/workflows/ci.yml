@@ -15,7 +15,8 @@
 # Ported with attribution from sarc-suite-one-pass's .github/workflows/ci.yml
 # (commit 782261e) -- see ADR-001. CI: bootstrap the pinned siblings
 # (sarc-suite-one-pass + three engines), verify the imported baseline, then
-# run this repo's own test suite.
+# run this repo's own full release-check end to end (v0.3, B4: CI must run
+# make release-check, not a partial test+formal subset of it).
 
 name: ci
 
@@ -42,10 +43,6 @@ jobs:
         working-directory: sarc-authority-derivation
         run: bash bootstrap.sh
 
-      - name: make test
+      - name: make release-check
         working-directory: sarc-authority-derivation
-        run: make test
-
-      - name: make formal
-        working-directory: sarc-authority-derivation
-        run: make formal
+        run: make release-check

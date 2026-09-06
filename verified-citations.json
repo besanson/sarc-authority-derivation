@@ -146,6 +146,60 @@
       "year": 2017,
       "venue": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
       "verified_via": "WebFetch of https://proceedings.neurips.cc/paper_files/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html, 2026-08-31: confirmed exact title, full author order, and year directly from the NeurIPS proceedings page."
+    },
+    {
+      "id": "pawlak-rough-sets-1982",
+      "doi": "10.1007/BF01001956",
+      "url": "https://doi.org/10.1007/BF01001956",
+      "title": "Rough Sets",
+      "entry_type": "article",
+      "authors": ["Zdzisław Pawlak"],
+      "first_author": "Zdzisław Pawlak",
+      "year": 1982,
+      "venue": "International Journal of Computer and Information Sciences 11(5), pp. 341-356",
+      "verified_via": "Direct Read of the paper's own PDF first page (fetched via a WebSearch-located mirror, sci2s.ugr.es/keel/dataset/includes/catImbFiles/1982 - Pawlak.pdf, 2026-09-06): title 'Rough Sets', author 'Zdzisław Pawlak', header line 'International Journal of Computer and Information Sciences, Vol. 11, No. 5, 1982', and page number 341 all visible directly on the rendered title page, not merely an indexed snippet. DOI cross-confirmed via WebSearch (scirp.org's reference listing; Springer's own article page at link.springer.com/article/10.1007/BF01001956). Cited (prereg/v3-core-reduct-correction.md; paper5 draft v0.3) as the foundational source for the core/reduct distinction Proposition 1' corrects to."
+    },
+    {
+      "id": "skowron-rauszer-discernibility-1992",
+      "url": "https://link.springer.com/chapter/10.1007/978-94-015-7975-9_21",
+      "title": "The Discernibility Matrices and Functions in Information Systems",
+      "entry_type": "incollection",
+      "authors": ["Andrzej Skowron", "Cecylia Rauszer"],
+      "first_author": "Andrzej Skowron",
+      "year": 1992,
+      "venue": "in R. Słowiński (ed.), Intelligent Decision Support: Handbook of Applications and Advances of the Rough Sets Theory, Theory and Decision Library, Springer/Kluwer, Dordrecht, pp. 331-362",
+      "verified_via": "WebSearch, 2026-09-06, two independently-worded queries both corroborating the exact title, both authors, venue (Intelligent Decision Support, ed. Słowiński, Springer/Kluwer Dordrecht), year 1992, and page range 331-362, across Springer's own chapter listing and Semantic Scholar's indexed record. Cited (prereg/v3-core-reduct-correction.md) as the discernibility-matrix source reduct.py's exact reduct enumeration is positioned against."
+    },
+    {
+      "id": "macaroons-ndss-2014",
+      "url": "https://www.ndss-symposium.org/ndss2014/ndss-2014-programme/macaroons-cookies-contextual-caveats-decentralized-authorization-cloud/",
+      "title": "Macaroons: Cookies with Contextual Caveats for Decentralized Authorization in the Cloud",
+      "entry_type": "inproceedings",
+      "authors": ["Arnar Birgisson", "Joe Gibbs Politz", "Úlfar Erlingsson", "Ankur Taly", "Michael Vrable", "Mark Lentczner"],
+      "first_author": "Arnar Birgisson",
+      "year": 2014,
+      "venue": "NDSS Symposium 2014, San Diego, CA",
+      "verified_via": "WebSearch AND a direct WebFetch of the NDSS Symposium's own official programme page (ndss-symposium.org), 2026-09-06: both independently confirm the exact title, the full six-author order, and the NDSS 2014 venue. Cited (paper5 draft v0.3, Section 6) as capability-system prior art for the execution grant, repositioning grant binding as engineering informed by established patterns rather than a novelty claim, per the external research review's own comparison (review-secondary/external-research-review-2026-09-06.pdf, question 26)."
+    },
+    {
+      "id": "ucan-specification",
+      "url": "https://ucan.xyz/specification/",
+      "title": "User Controlled Authorization Network (UCAN) Specification",
+      "entry_type": "misc",
+      "authors": ["UCAN Working Group"],
+      "first_author": "UCAN Working Group",
+      "year": 2026,
+      "verified_via": "WebSearch AND a direct WebFetch of https://ucan.xyz/specification/, 2026-09-06: both confirm the exact title and that this is a community-maintained living specification (source at github.com/ucan-wg/spec), not a dated academic paper -- no single fixed publication year is stated in the document itself; the year field records this citation's verification/access date, not a claimed publication date. Cited (paper5 draft v0.3, Section 6) as capability-system prior art for the execution grant, per the external research review's own comparison (review-secondary/external-research-review-2026-09-06.pdf, question 26)."
+    },
+    {
+      "id": "biscuit-specification",
+      "url": "https://github.com/eclipse-biscuit/biscuit/blob/main/SPECIFICATIONS.md",
+      "title": "Biscuit, a bearer token with offline attenuation and decentralized verification",
+      "entry_type": "misc",
+      "authors": ["Eclipse Biscuit"],
+      "first_author": "Eclipse Biscuit",
+      "year": 2026,
+      "verified_via": "WebSearch AND direct WebFetch of both the raw SPECIFICATIONS.md document (raw.githubusercontent.com/eclipse-biscuit/biscuit/main/SPECIFICATIONS.md) and the project's GitHub repository, 2026-09-06: both confirm the exact document title and that the project originated at Clever Cloud and is now maintained under the Eclipse Foundation (eclipse-biscuit) -- a living specification with no single fixed publication year; the year field records this citation's verification/access date. Cited (paper5 draft v0.3, Section 6) as capability-system prior art for the execution grant, per the external research review's own comparison (review-secondary/external-research-review-2026-09-06.pdf, question 26)."
     }
   ]
 }

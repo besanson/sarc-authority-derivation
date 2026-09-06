@@ -186,6 +186,65 @@ Corollary 2 itself). v0.1's results (Proposition 0, the original
 nothing about v0.1's own model or its own measured redundancy is
 retroactively edited to match v2's outcome.
 
+## Third amendment (v0.3, tag `prereg-p5-v3`, core-versus-reduct correction)
+
+The fence and Definition 1 above describe a *participation* criterion --
+the amendments so far corrected what it found *reachable*, not what the
+criterion itself *computes*. A commissioned external, AI-assisted
+research review (`review-secondary/external-research-review-2026-09-06.pdf`,
+sha256 `b205faf65fe84d773260d1ed514b20f5b04e420380d3136c23bff1cde4506b0b`)
+identified that v0.1/v0.2's Proposition 1 mischaracterized Definition
+1's output: P\* is the **core** (in decision-reduct / rough-set
+terminology, Pawlak 1982; Skowron and Rauszer 1992 -- individually
+indispensable properties, each with its own singleton-perturbation
+witness), not in general a **reduct** (a minimal set that is *jointly
+sufficient* to determine every verdict). Core is always a subset of
+every reduct, but need not itself be sufficient. Per this project's own
+discipline, the review's finding was not applied directly: it was
+adjudicated against this artifact's own definitions, and the
+counterexample demonstrating the failure was re-derived from first
+principles, not copied from the review's prose
+(`prereg/v3-core-reduct-correction.md` records the adjudication).
+
+The registered outcome, machine-checked, not assumed:
+
+- **Negative Proposition N** (the core need not be sufficient, in
+  general): **SUPPORTED** -- the registered two-state counterexample
+  (`prereg/fixtures/negative-proposition-n-counterexample.json`: reachable
+  set `{(x=0,y=0),(x=1,y=1)}`, verdict `M(x,y)=x`) has an empty, trivially
+  insufficient core, with `{x}` and `{y}` each an independent singleton
+  reduct -- matching the fixture's own pre-committed expectation exactly
+  (`checkers/core_insufficiency_counterexample.py`).
+- **CH-A8** (is the v2 core sufficient on the v2 executable-reachable
+  set?): **SUPPORTED** (`checkers/sufficiency_check.py`) -- a real
+  sufficiency certificate, not an assumption, over the full 24,624-tuple
+  v2 reachable set.
+- **CH-A10** (exact reduct enumeration on the v2 model, all 1,024
+  candidate subsets, 1,023 actually tested after subset pruning): the
+  nine-property core is the **unique reduct**, of **minimum cardinality
+  nine** (`checkers/reduct_check.py`) -- confirmed by direct enumeration,
+  not inferred from CH-A8 alone.
+- **CH-A9** (does a real, declared co-variation between `actor_role` and
+  `resource_class` break core sufficiency in a constrained variant of
+  this artifact's own procurement model?): **NOT SUPPORTED** -- the
+  declared pairing maps four roles onto three resource classes
+  (pigeonhole), so two roles share a resource class, leaving a residual
+  case two other losses can still witness `actor_role` through directly.
+  A real, explainable negative finding
+  (`checkers/core_insufficiency_counterexample.py`), not evidence
+  against Negative Proposition N's general (abstract, total) claim, and
+  not smoothed over or re-tuned to chase a different outcome.
+
+Registered two-sided throughout (Proposition 1' claim 3's antecedent --
+core sufficiency -- and CH-A9's outcome were both open questions at
+registration time, decided by the checkers, not assumed). v0.1's and
+v0.2's own committed results stay frozen and cited as prior iterations;
+nothing about them is retroactively edited to match v0.3's correction.
+Proposition 1 itself is not deleted from `appendix-a-proofs.md`: its
+original wording is preserved as an honest record, with its PROOF-STATUS
+narrowed to `checked-scope-only` and a correction attached directly to
+it, the same principle this amendment itself follows.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

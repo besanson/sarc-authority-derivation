@@ -1,0 +1,62 @@
+{
+  "candidate_properties": [
+    "actor_role",
+    "resource_class",
+    "order_value",
+    "day",
+    "workflow",
+    "grant_id",
+    "consumed_grant_ids",
+    "budget_remaining",
+    "frozen",
+    "min_order_quantity"
+  ],
+  "core_attributes": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "core_is_unique_reduct": true,
+  "minimum_reduct_cardinality": 9,
+  "minimum_reducts": [
+    [
+      "actor_role",
+      "budget_remaining",
+      "consumed_grant_ids",
+      "day",
+      "frozen",
+      "grant_id",
+      "min_order_quantity",
+      "order_value",
+      "resource_class"
+    ]
+  ],
+  "model": "v2",
+  "proposition_1_prime_claim_1_identity_holds": true,
+  "proposition_1_prime_claim_2_core_subset_of_every_reduct": true,
+  "reachable_tuples_swept": 24624,
+  "reducts": [
+    [
+      "actor_role",
+      "budget_remaining",
+      "consumed_grant_ids",
+      "day",
+      "frozen",
+      "grant_id",
+      "min_order_quantity",
+      "order_value",
+      "resource_class"
+    ]
+  ],
+  "redundant_attributes": [
+    "workflow"
+  ],
+  "schema_version": 1,
+  "subsets_considered": 1023
+}

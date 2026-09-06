@@ -7,7 +7,8 @@
   "required": [
     "schema_version", "model", "candidate_properties", "reachable_tuples_swept",
     "subsets_considered", "reducts", "minimum_reducts", "minimum_reduct_cardinality",
-    "core_attributes", "core_is_unique_reduct", "redundant_attributes"
+    "core_attributes", "core_is_unique_reduct", "redundant_attributes",
+    "proposition_1_prime_claim_1_identity_holds", "proposition_1_prime_claim_2_core_subset_of_every_reduct"
   ],
   "additionalProperties": false,
   "properties": {
@@ -51,6 +52,14 @@
       "type": "array",
       "items": { "type": "string" },
       "description": "candidate_properties minus core_attributes -- dispensable from at least one reduct, the v3-renamed analogue of v1/v2's coverage_list."
+    },
+    "proposition_1_prime_claim_1_identity_holds": {
+      "type": "boolean",
+      "description": "Machine-check of Proposition 1' claim 1 ('Definition 1 computes the core'): the core recomputed via participation.compute_p_star (Definition 1's witness search) equals the core recomputed independently via the intersection of every reduct this enumeration found (Definition 6's literal definition, against Definition 4 directly) -- two different code paths, confirmed to agree, not assumed to."
+    },
+    "proposition_1_prime_claim_2_core_subset_of_every_reduct": {
+      "type": "boolean",
+      "description": "Machine-check of Proposition 1' claim 2: the core (however computed) is a subset of every individual reduct found, checked directly against each one, not only inferred from the intersection arithmetic that produced it."
     }
   }
 }

@@ -51,6 +51,9 @@ def build_slots(
     ch_a5_check_path: str = "out/checkers/ch_a5_check.json",
     ch_a7_check_path: str = "out/checkers/ch_a7_check.json",
     reachability_check_path: str = "out/checkers/reachability_check.json",
+    sufficiency_check_path: str = "out/checkers/sufficiency_check.json",
+    reduct_check_path: str = "out/checkers/reduct_check.json",
+    core_insufficiency_counterexample_path: str = "out/checkers/core_insufficiency_counterexample.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -61,6 +64,11 @@ def build_slots(
     ch_a5 = json.loads(Path(ch_a5_check_path).read_text())
     ch_a7 = json.loads(Path(ch_a7_check_path).read_text())
     rcheck = json.loads(Path(reachability_check_path).read_text())
+    ch_a8 = json.loads(Path(sufficiency_check_path).read_text())
+    ch_a10 = json.loads(Path(reduct_check_path).read_text())
+    neg_n_and_ch_a9 = json.loads(Path(core_insufficiency_counterexample_path).read_text())
+    neg_prop_n_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "negative_proposition_n")
+    ch_a9_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "ch_a9_constrained_procurement_variant")
     proof_status = _lint_proof_status()
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
@@ -138,6 +146,30 @@ def build_slots(
         # since a proper slot source was directly available.
         "remediation_reachable_new_tuples": str(rcheck["remediation_reachable_new_tuples"]),
         "pending_human_review_tag_count": str(pending_human_review_tag_count),
+
+        # v3 (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3): every
+        # Proposition 1'/Negative Proposition N/CH-A8-CH-A10 count, sourced
+        # solely from sufficiency_check.json, reduct_check.json, and
+        # core_insufficiency_counterexample.json.
+        "v3_identity_holds": str(ch_a10["proposition_1_prime_claim_1_identity_holds"]),
+        "v3_core_subset_holds": str(ch_a10["proposition_1_prime_claim_2_core_subset_of_every_reduct"]),
+
+        "ch_a8_status": _supported(ch_a8["is_sufficient"]),
+        "ch_a8_partition_cells": f"{ch_a8['sufficiency_certificate']['partition_cell_count']:,}",
+        "ch_a8_reachable_swept": f"{ch_a8['reachable_tuples_swept']:,}",
+
+        "ch_a10_num_reducts": str(len(ch_a10["reducts"])),
+        "ch_a10_min_cardinality": str(ch_a10["minimum_reduct_cardinality"]),
+        "ch_a10_core_is_unique_reduct": str(ch_a10["core_is_unique_reduct"]),
+        "ch_a10_subsets_considered": f"{ch_a10['subsets_considered']:,}",
+        "ch_a10_power_set_size": f"{2 ** len(ch_a10['candidate_properties']):,}",
+        "ch_a10_candidate_property_count": str(len(ch_a10["candidate_properties"])),
+
+        "neg_prop_n_status": _supported(neg_prop_n_case["supported"]),
+        "neg_prop_n_matches_fixture": str(neg_prop_n_case["matches_registered_fixture_expectation"]),
+
+        "ch_a9_status": _supported(ch_a9_case["supported"]),
+        "ch_a9_core_cardinality": str(len(ch_a9_case["core_attributes"])),
     }
     return slots
 

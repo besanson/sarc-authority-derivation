@@ -13,14 +13,14 @@
 # limitations under the License.
 """Phase 5 driver: populate_draft.py + paper_tables.py, wired together.
 
-v0.2 is the live draft (README.md's version-split note): v0.1's own
-source/populated pair is frozen at commit 37a2e7f and is neither read
-nor written by this module."""
+v0.3 is the live draft (README.md's version-split note): v0.1's own
+source/populated pair is frozen at commit 37a2e7f, and v0.2's at commit
+7112031; neither is read or written by this module."""
 from paper_tables import build_slots
 from populate_draft import populate_draft
 
-DRAFT_PATH = "paper5-authority-derivation-draft-v0.2.md"
-OUTPUT_PATH = "paper5-authority-derivation-draft-v0.2-populated.md"
+DRAFT_PATH = "paper5-authority-derivation-draft-v0.3.md"
+OUTPUT_PATH = "paper5-authority-derivation-draft-v0.3-populated.md"
 
 if __name__ == "__main__":
     slots = build_slots()

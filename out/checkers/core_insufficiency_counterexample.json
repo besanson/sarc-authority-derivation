@@ -1,0 +1,57 @@
+{
+  "cases": [
+    {
+      "candidate_properties": [
+        "x",
+        "y"
+      ],
+      "core_attributes": [],
+      "counterexample": {
+        "tuple_a": {
+          "x": 0,
+          "y": 0
+        },
+        "tuple_a_prime": {
+          "x": 1,
+          "y": 1
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      },
+      "is_core_sufficient": false,
+      "matches_registered_fixture_expectation": true,
+      "minimum_reduct_cardinality": 1,
+      "name": "negative_proposition_n",
+      "reachable_tuples_swept": 2,
+      "supported": true
+    },
+    {
+      "candidate_properties": [
+        "actor_role",
+        "resource_class",
+        "order_value",
+        "min_order_quantity",
+        "day",
+        "workflow",
+        "grant_id",
+        "consumed_grant_ids",
+        "budget_remaining",
+        "frozen"
+      ],
+      "core_attributes": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "frozen",
+        "grant_id",
+        "order_value"
+      ],
+      "is_core_sufficient": true,
+      "minimum_reduct_cardinality": 6,
+      "name": "ch_a9_constrained_procurement_variant",
+      "reachable_tuples_swept": 2592,
+      "supported": false
+    }
+  ],
+  "schema_version": 1
+}

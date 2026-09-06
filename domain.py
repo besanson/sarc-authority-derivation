@@ -416,3 +416,61 @@ def executable_reachable_tuples_v2(domains: Dict[str, List[Any]]) -> List[StateT
     retry_new = retry_delay_reachable_tuples_v2(rank0)
     combined = list(dict.fromkeys(rank0 + downroute_new + retry_new))
     return combined
+
+
+# -- v3 (prereg/v3-core-reduct-correction.md, tag prereg-p5-v3) -------------
+#
+# Additive only: every v1/v2 name above is unedited. CH-A9's constrained
+# variant is a SEPARATE, self-contained reachable-set construction (not an
+# extension of executable_reachable_tuples_v2()) -- registered in
+# pair-test-grid.yaml's `v3` section, read here, never hardcoded twice.
+
+def ch_a9_role_resource_class_pairing(grid: Dict[str, Any]) -> Dict[str, str]:
+    """Reads pair-test-grid.yaml's v3.co_variation.actor_role_resource_
+    class_ch_a9.pairing -- the declared staffing/specialization table, not
+    hand-typed a second time in code."""
+    return dict(grid["v3"]["co_variation"]["actor_role_resource_class_ch_a9"]["pairing"])
+
+
+def rank0_reachable_tuples_v3_constrained_ch_a9(
+    domains: Dict[str, List[Any]], pairing: Dict[str, str]
+) -> List[StateTupleV2]:
+    """CH-A9 (prereg/v3-core-reduct-correction.md): a registered
+    constrained-reachability variant designed to test whether a real,
+    declared co-variation between two candidate properties breaks core
+    sufficiency (Definition 4), mirroring Negative Proposition N's
+    abstract counterexample inside this artifact's own vocabulary
+    instead of a synthetic toy. Reachability is restricted to
+    workflow == "W2" tuples only -- NOT unioned with W1, unlike
+    executable_reachable_tuples_v2() -- and actor_role/resource_class
+    are forced to co-vary by `pairing` (ch_a9_role_resource_class_
+    pairing()'s declared table): every reachable tuple's resource_class
+    is determined entirely by its own actor_role, so the two properties
+    never vary independently of each other within this reachable set.
+    Every other v2 candidate property keeps its full v2 domain
+    (order_value/min_order_quantity still filtered by
+    rank0_constraint_v2), unconstrained."""
+    out: List[StateTupleV2] = []
+    for role, resource_class in pairing.items():
+        for order_value in domains["order_value"]:
+            for min_oq in domains["min_order_quantity"]:
+                if order_value < min_oq:
+                    continue
+                for day in domains["day"]:
+                    for grant_id in domains["grant_id"]:
+                        for consumed in domains["consumed_grant_ids"]:
+                            for budget in domains["budget_remaining"]:
+                                for frz in domains["frozen"]:
+                                    out.append(StateTupleV2(
+                                        actor_role=role,
+                                        resource_class=resource_class,
+                                        order_value=order_value,
+                                        min_order_quantity=min_oq,
+                                        day=day,
+                                        workflow="W2",
+                                        grant_id=grant_id,
+                                        consumed_grant_ids=consumed,
+                                        budget_remaining=budget,
+                                        frozen=frz,
+                                    ))
+    return out

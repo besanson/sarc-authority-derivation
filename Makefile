@@ -18,6 +18,7 @@ test:
 
 # Phase 2 / V2 gate: exhaustive checkers over the enumerated finite model.
 # v2 additions (tag prereg-p5-v2: Proposition 0-general + CH-A5/CH-A6/CH-A7)
+# and v3 additions (tag prereg-p5-v3: Proposition 1'/N + CH-A8/CH-A9/CH-A10)
 # run alongside v1's own gate below, never in place of it.
 formal: derive derive_v2
 	@echo "V2 gate: exhaustive checkers (reachability measurement, participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
@@ -30,6 +31,9 @@ formal: derive derive_v2
 	python3 -m checkers.participation_check_v2
 	python3 -m checkers.pairtest_check_v2
 	python3 -m checkers.ch_a7_check
+	python3 -m checkers.sufficiency_check
+	python3 -m checkers.reduct_check
+	python3 -m checkers.core_insufficiency_counterexample
 	python3 -m checkers.proof_status_lint
 	@echo "See appendix-a-proofs.md for the proofs these checkers verify."
 
@@ -55,10 +59,10 @@ sweep:
 	python3 sweep.py
 
 # Phase 5: populate the paper draft from committed machine output only.
-# v0.2 is the live draft (paper5-authority-derivation-draft-v0.1.md/
-# -populated.md are frozen historical files as of commit 37a2e7f -- see
-# README.md's version-split note -- and are no longer touched by this
-# pipeline).
+# v0.3 is the live draft (paper5-authority-derivation-draft-v0.1.md/
+# -populated.md are frozen at commit 37a2e7f, and v0.2's at commit
+# 7112031 -- see README.md's version-split note -- neither touched by
+# this pipeline).
 paper: experiments sweep formal
 	@echo "Populating paper draft from out/results/sweep_summary.json + out/checkers/*.json..."
 	python3 populate_paper.py
@@ -77,13 +81,13 @@ release-check:
 	@rm -rf /tmp/sarc-p5-release-check-formal-1 /tmp/sarc-p5-release-check-formal-2
 	@echo "formal double-run byte-identical: OK"
 	@echo "=== release-check: populated-draft freshness ==="
-	cp paper5-authority-derivation-draft-v0.2-populated.md /tmp/sarc-p5-populated-committed.md
+	cp paper5-authority-derivation-draft-v0.3-populated.md /tmp/sarc-p5-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.2-populated.md
+	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.3-populated.md
 	@rm -f /tmp/sarc-p5-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== release-check: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.2.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.3.md
 	@echo "=== release-check: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== release-check: PROOF-STATUS lint ==="
@@ -92,15 +96,17 @@ release-check:
 	@echo "release-check: ALL CHECKS PASS"
 
 mutate:
-	@echo "Mutation testing participation.py + derive.py (target >=0.85; see ADR-002-mutation-testing.md)..."
+	@echo "Mutation testing participation.py + derive.py + reduct.py (hard gate, >=0.85; see ADR-003-mutation-testing.md)..."
 	rm -rf mutants .mutmut-cache
-	mutmut run || true
+	mutmut run
 	mutmut results
+	mutmut export-cicd-stats
+	python3 mutation_check.py
 
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
-	rm -f paper5-authority-derivation-draft-v0.2-populated.md
+	rm -f paper5-authority-derivation-draft-v0.3-populated.md
 	rm -rf .pytest_cache .hypothesis
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete

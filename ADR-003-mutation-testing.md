@@ -162,3 +162,76 @@ mutmut export-cicd-stats && cat mutants/mutmut-cicd-stats.json
 mutmut results      # lists non-killed mutants
 mutmut show <id>     # view a specific mutant's diff
 ```
+
+## v0.3 update: `reduct.py` added, hard gate (B4, `prereg/v3-core-reduct-correction.md`)
+
+`pyproject.toml`'s `[tool.mutmut]` target set extends to
+`participation.py`, `derive.py`, `reduct.py` (Definitions 4-6,
+Proposition 1'/Negative Proposition N's shared machinery); `test_reduct.py`
+adds 7 fast, synthetic-model unit tests (no dependency on the real v2
+model, mirroring `test_participation.py`'s own domain-agnostic style, so
+mutation testing stays fast). `make mutate` is now a hard gate:
+`mutmut run` (no `|| true` -- this mutmut version's own exit code does
+not key off survivor count, so nothing was silently swallowed once the
+literal `|| true` token was removed) is followed by `mutmut export-cicd-stats`
+and `mutation_check.py`, which parses `mutants/mutmut-cicd-stats.json`
+programmatically and fails (`SystemExit(1)`) if the kill score is below
+0.85 or if any mutant recorded `no_tests` (a real coverage gap, not an
+acceptable survivor class -- this repeats the first pass's own "34
+no-tests mutants is a bug, not a score component" finding above as a
+standing rule, not just a one-time fix).
+
+```
+Total mutants: 291
+Killed:        265
+Survived:        26
+No tests:         0
+Kill score = 265 / (265 + 26) = 0.9107 (91.1%)
+```
+
+Above threshold; `mutation_check.py` (invoked by `make mutate`) exits 0.
+The 23 pre-existing `participation.py`/`derive.py` survivors are
+unchanged in kind from the original pass above (classes 1-5, `also_copy`
+and `pytest_add_cli_args_test_selection` untouched for those two files).
+`reduct.py` contributes 3 new survivors, all genuine equivalent mutants,
+verified by direct reasoning about `exact_reducts()`'s own loop
+structure, not accepted on the score alone:
+
+### 6. `range(0, n + 1)` reformatted / off-by-one at the upper bound (2 survivors, `exact_reducts`)
+
+`range(0, n + 1)` -> `range(n + 1)` (Python's own default start is 0 --
+byte-different, semantically identical) and `range(0, n + 1)` ->
+`range(0, n + 2)` (tries `size = n + 1`, one more than the candidate
+count; `itertools.combinations(candidates, n + 1)` returns no
+combinations at all when the requested size exceeds the population,
+per Python's own documented behavior, so the extra loop iteration
+produces zero subsets and changes nothing observable). Both equivalent
+under every input this suite -- or any input -- can construct.
+
+### 7. `r <= s` narrowed to `r < s` in the pruning check (1 survivor, `exact_reducts`)
+
+`any(r <= s for r in reducts)` -> `any(r < s for r in reducts)`. `<=`
+and `<` differ only when some already-found reduct `r` equals the
+candidate `s` being tested. `itertools.combinations` never yields two
+equal sets at any single call, and `reducts` (at the moment `s` of a
+given size is tested) only ever contains reducts found at *smaller*
+sizes than `s` plus other reducts already tested at the *same* size in
+the same inner loop -- both cases are necessarily different sets from
+`s` (distinct combinations of the same or smaller size can never be set-
+equal to `s`). `r == s` is therefore unreachable at this call site by
+construction, making `<=` and `<` behaviorally identical here -- not
+tested around, because there is no behavior to differ, the same
+standard this ADR already applied to class 2 above. (The *analogous*
+comparison in `verify_core_identity`'s own core-subset-of-every-reduct
+check, `core_via_intersection <= r`, is a live boundary -- the core can
+legitimately equal a reduct when there is exactly one, e.g. this
+artifact's own v2 model -- and IS covered, by
+`test_verify_core_identity_holds_when_core_is_the_unique_reduct`.)
+
+## Decision (v0.3 update)
+
+Accept the 0.9107 kill score with `reduct.py` included. Its 3 survivors
+are equivalent mutants under class 1/2/4's own established reasoning,
+verified directly rather than assumed; the boundary case that class 7
+could have missed (core equal to a unique reduct) was caught during this
+review and closed with a real test, not left as an unexplained gap.

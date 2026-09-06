@@ -43,6 +43,10 @@
           "supported": {
             "type": "boolean",
             "description": "negative_proposition_n: always expected true (registered, machine-checked instance). ch_a9_constrained_procurement_variant: two-sided -- true iff core is insufficient AND minimum_reduct_cardinality > len(core_attributes), false (NOT SUPPORTED, printed as such) otherwise."
+          },
+          "matches_registered_fixture_expectation": {
+            "type": "boolean",
+            "description": "negative_proposition_n only: confirms this run's live computation matches the fixture's own `expected` block, registered before this checker existed. Not applicable to ch_a9_constrained_procurement_variant, which has no pre-registered expected outcome (CH-A9 is two-sided)."
           }
         }
       }

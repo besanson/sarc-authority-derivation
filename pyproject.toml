@@ -16,7 +16,8 @@
 # (commit 782261e) -- see ADR-001. This repo has no packaging config of
 # its own (it is run in place, not installed) -- this file exists solely
 # to hold [tool.mutmut]'s configuration (Phase 2 / release-check mutation
-# gate, target participation.py + derive.py, >=0.85) and
+# gate, target participation.py + derive.py + reduct.py, >=0.85, a hard
+# gate as of v0.3 -- see `make mutate`/`mutation_check.py`) and
 # [tool.pytest.ini_options]'s marker registration.
 
 [tool.pytest.ini_options]
@@ -29,9 +30,11 @@ markers = [
 # the mutation-testing target files (mutmut's file walk does not respect
 # .gitignore, so source_paths = ["."] would blindly copy .git/, out/, and
 # the pinned sibling clones). also_copy lists the additional files
-# participation.py/derive.py's imports need at test time.
-source_paths = ["participation.py", "derive.py"]
-only_mutate = ["participation.py", "derive.py"]
+# participation.py/derive.py/reduct.py's imports need at test time.
+# reduct.py added v0.3 (prereg/v3-core-reduct-correction.md) -- ADR-003
+# is being extended, not superseded, by this addition.
+source_paths = ["participation.py", "derive.py", "reduct.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -43,4 +46,5 @@ also_copy = [
 pytest_add_cli_args_test_selection = [
     "test_participation.py",
     "test_derive.py",
+    "test_reduct.py",
 ]
