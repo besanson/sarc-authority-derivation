@@ -5,16 +5,21 @@ series, built on the pinned `sarc-suite-one-pass` artifact (arXiv
 [2608.18360](https://arxiv.org/abs/2608.18360), commit `782261e`) as a
 read-only imported baseline (`ADR-001-foundation.md`).
 
-**Status**: draft v0.1.2. Not submission-ready, not independently reviewed.
-See the human checklist at the end of this document. v0.1.2 corrects a
+**Status**: draft v0.2. Not submission-ready, not independently reviewed.
+See the human checklist at the end of this document. v0.1.2 corrected a
 finding from round-0 adjudicator review: v0.1's fence and abstract
 claimed remediation changes this artifact's formal reachable set; it
-does not (Section 5, Section 9). The claim is narrowed here to what is
-actually true and checked; a redesigned formal model in which
-remediation is not reachability-redundant is scoped as v0.2
-(`prereg/v2-reachability-redesign.md`), gated behind its own prereg tag
-before any new experiment code, per this project's own registration
-discipline.
+did not, in v0.1's own model (Section 5, Section 9). That correction
+registered a redesigned formal model, gated behind its own prereg tag
+(`prereg-p5-v2`) before any new experiment code, in which remediation
+might not be reachability-redundant. v0.2 executes that redesign and
+reports the result: under the redesigned model, remediation genuinely
+is reachability-relevant for the one property (`min_order_quantity`)
+the redesign's downroute mechanism was built to make participate,
+machine-checked (CH-A5-CH-A7, Section 5). v0.1's own model and its own
+measured redundancy (Proposition 0) stay frozen and cited as the first
+iteration, per this project's own registration discipline -- nothing
+about them is retroactively edited to match v0.2's outcome.
 
 ## Abstract
 
@@ -248,6 +253,58 @@ differ, is exactly the question v0.2 (`prereg/v2-reachability-redesign.md`,
 once committed) is designed to answer -- registered as a real, two-sided
 question, not assumed to come out either way.
 
+**v0.2 update: the redesign executed (CH-A5-CH-A7, tag `prereg-p5-v2`).**
+The question above is answered. v0.2 adds one candidate property
+(`min_order_quantity`, ten total), one declared cross-field rank-0
+filter absent from v1 (`order_value >= min_order_quantity` always holds
+at rank-0, `domain.rank0_reachable_tuples_v2()`), and two characterized
+remediation mechanisms: downroute, grounded directly in
+`composition._maybe_downroute`'s real budget-fitting calculation
+(`feasible_qty = max(0, min(proposed_qty, max_qty_by_cost,
+max_qty_by_carbon))`, W2 only, no minimum-order-quantity term anywhere
+in it -- a real gap in the imported baseline's own code, not invented
+for this redesign); and retry-delay (secondary), a declared
+resubmission-at-day-200 operator. `domain.executable_reachable_
+tuples_v2()` is their union with rank-0 (24,624 tuples: 15,552 rank-0,
+3,888 new via downroute, 5,184 new via retry-delay).
+
+- **CH-A5 (does the redesign make remediation reachability-relevant, in
+  general?): reachability_relevant.** `min_order_quantity` participates
+  in v2's P\* (nine of ten candidates participate; only `workflow`
+  remains in coverage, unchanged from v1); the nine original
+  properties' own participation/coverage split is byte-identical to
+  v1's (`checkers/ch_a5_check.py`).
+- **CH-A6 (do two independently implemented derivations of v2's P\*
+  agree exactly, mirroring CH-A2): yes.**
+  `checkers/participation_check_v2.py` (fingerprint-grouped search) and
+  `checkers/pairtest_check_v2.py` (one-factor-at-a-time sweep, the same
+  algorithm CH-A2 already runs independently of Definition 1's own
+  search) agree exactly over the full 24,624-tuple v2 reachable set: no
+  missed participants, no false participants.
+- **CH-A7 (targeted ablation: does removing downroute specifically
+  change P\* membership for `min_order_quantity`?): SUPPORTED.**
+  `min_order_quantity` participates when downroute is included in the
+  reachable-set construction (24,624 tuples) and does not when it is
+  excluded (20,736 tuples: rank-0 union retry-delay only) --
+  `checkers/ch_a7_check.py` computes both P\*s directly rather than
+  inferring the answer from CH-A5 alone, since Proposition 0-general's
+  Corollary 2 (`appendix-a-proofs.md`) confirms neither downroute's nor
+  retry-delay's characterized image is a subset of `rank0_reachable_
+  tuples_v2()`, so which mechanism (if either) actually moves P\* was
+  not decided in advance.
+
+This is a real, machine-checked instantiation of v0.1's original fence
+claim, not a rerun of v0.1's own (correctly negative) result: v0.1's
+model is unaffected and its own measured redundancy stands (Proposition
+0 above). **Re-derivation trigger.** Any edit to `prereg/loss-
+model.yaml`'s `v2_losses` key, `prereg/pair-test-grid.yaml`'s `v2` key,
+`domain.py`'s `*_v2` functions, or `losses.py`'s `load_loss_registry_v2`/
+`downrouted_quantity_below_supplier_minimum` invalidates every
+CH-A5/CH-A6/CH-A7 number above until `make formal` (which runs
+`derive_v2` and all five v2 checkers) is re-run -- the same
+inputs-hash-defines-freshness discipline `checkers/_provenance.py`
+already states for v1, applied to v2's own generating inputs.
+
 ## 6. The derivation procedure and the grant mechanism
 
 `derive.py` wires the declared loss model (`losses.load_loss_registry`)
@@ -392,6 +449,9 @@ formal-track, evaluated once, not per seed. **CH-A4: [GENERATED: ch_a4_status]**
 | CH-A1 (baseline misses what derived-P\* does not) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a1_status], decision rule per `prereg/hypotheses.md` |
 | CH-A3 (grant binding eliminates replay admissions) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a3_status], decision rule per `prereg/hypotheses.md` |
 | CH-A4 (robustness) | `sweep.py` / `out/results/sweep_summary.json` | [GENERATED: ch_a4_status] |
+| CH-A5 (v0.2 redesign makes remediation reachability-relevant) | `checkers/ch_a5_check.py`, 24,624 tuples | machine-checked: reachability_relevant |
+| CH-A6 (v0.2: two independent derivations of P\* agree exactly) | `checkers/participation_check_v2.py` + `checkers/pairtest_check_v2.py` | machine-checked |
+| CH-A7 (targeted ablation: downroute is derivation-relevant for `min_order_quantity`) | `checkers/ch_a7_check.py`, 24,624 vs. 20,736 tuples | machine-checked: SUPPORTED |
 
 ## 9. Threats to validity (written against this paper's own results)
 

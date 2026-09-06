@@ -1,0 +1,32 @@
+{
+  "blind_spot_note": "Pair testing probes the representation, not the loss model (same registered blind spot as checkers/pairtest_check.py's v1 run, unchanged in kind by the v2 redesign): it can only detect participation that a witness pair constructible from pair-test-grid.yaml's declared v1+v2 domain values actually exhibits.",
+  "ch_a6_exact_recovery": true,
+  "derived_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "false_participants": [],
+  "missed_participants": [],
+  "pairtest_coverage_list": [
+    "workflow"
+  ],
+  "pairtest_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "reachable_tuples_swept": 24624
+}

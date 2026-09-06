@@ -1,0 +1,185 @@
+{
+  "corollary_1_across_domains": {
+    "all_redundant_regardless_of_domain": true,
+    "domains_checked": 4,
+    "results": [
+      {
+        "order_value_domain": [
+          1.0,
+          2.0,
+          3.0
+        ],
+        "rank0_size": 7776,
+        "redundant": true,
+        "remediation_reachable_new_tuples": 0
+      },
+      {
+        "order_value_domain": [
+          0.0,
+          50.0,
+          999999.0
+        ],
+        "rank0_size": 7776,
+        "redundant": true,
+        "remediation_reachable_new_tuples": 0
+      },
+      {
+        "order_value_domain": [
+          10.0,
+          20.0,
+          30.0,
+          40.0
+        ],
+        "rank0_size": 10368,
+        "redundant": true,
+        "remediation_reachable_new_tuples": 0
+      },
+      {
+        "order_value_domain": [
+          -5.0,
+          0.0,
+          5.0
+        ],
+        "rank0_size": 7776,
+        "redundant": true,
+        "remediation_reachable_new_tuples": 0
+      }
+    ]
+  },
+  "corollary_2_on_v2_mechanisms": {
+    "downroute_image_subset_of_rank0_v2": false,
+    "downroute_new_tuples": 3888,
+    "neither_mechanism_automatically_covered_by_corollary_1": true,
+    "rank0_v2_size": 15552,
+    "retry_delay_image_subset_of_rank0_v2": false,
+    "retry_delay_new_tuples": 5184
+  },
+  "proposition_0_general_machine_checked": true,
+  "structural_lemma": {
+    "all_cases_hold": true,
+    "cases": [
+      {
+        "image_case": 0,
+        "image_size": 16,
+        "lemma_holds": true,
+        "verdict": "a_threshold"
+      },
+      {
+        "image_case": 1,
+        "image_size": 5,
+        "lemma_holds": true,
+        "verdict": "a_threshold"
+      },
+      {
+        "image_case": 2,
+        "image_size": 1,
+        "lemma_holds": true,
+        "verdict": "a_threshold"
+      },
+      {
+        "image_case": 3,
+        "image_size": 0,
+        "lemma_holds": true,
+        "verdict": "a_threshold"
+      },
+      {
+        "image_case": 4,
+        "image_size": 32,
+        "lemma_holds": true,
+        "verdict": "a_threshold"
+      },
+      {
+        "image_case": 0,
+        "image_size": 16,
+        "lemma_holds": true,
+        "verdict": "b_threshold"
+      },
+      {
+        "image_case": 1,
+        "image_size": 5,
+        "lemma_holds": true,
+        "verdict": "b_threshold"
+      },
+      {
+        "image_case": 2,
+        "image_size": 1,
+        "lemma_holds": true,
+        "verdict": "b_threshold"
+      },
+      {
+        "image_case": 3,
+        "image_size": 0,
+        "lemma_holds": true,
+        "verdict": "b_threshold"
+      },
+      {
+        "image_case": 4,
+        "image_size": 32,
+        "lemma_holds": true,
+        "verdict": "b_threshold"
+      },
+      {
+        "image_case": 0,
+        "image_size": 16,
+        "lemma_holds": true,
+        "verdict": "c_is_q"
+      },
+      {
+        "image_case": 1,
+        "image_size": 5,
+        "lemma_holds": true,
+        "verdict": "c_is_q"
+      },
+      {
+        "image_case": 2,
+        "image_size": 1,
+        "lemma_holds": true,
+        "verdict": "c_is_q"
+      },
+      {
+        "image_case": 3,
+        "image_size": 0,
+        "lemma_holds": true,
+        "verdict": "c_is_q"
+      },
+      {
+        "image_case": 4,
+        "image_size": 32,
+        "lemma_holds": true,
+        "verdict": "c_is_q"
+      },
+      {
+        "image_case": 0,
+        "image_size": 16,
+        "lemma_holds": true,
+        "verdict": "a_plus_b_even"
+      },
+      {
+        "image_case": 1,
+        "image_size": 5,
+        "lemma_holds": true,
+        "verdict": "a_plus_b_even"
+      },
+      {
+        "image_case": 2,
+        "image_size": 1,
+        "lemma_holds": true,
+        "verdict": "a_plus_b_even"
+      },
+      {
+        "image_case": 3,
+        "image_size": 0,
+        "lemma_holds": true,
+        "verdict": "a_plus_b_even"
+      },
+      {
+        "image_case": 4,
+        "image_size": 32,
+        "lemma_holds": true,
+        "verdict": "a_plus_b_even"
+      }
+    ],
+    "cases_checked": 20,
+    "universe_size": 32
+  }
+}

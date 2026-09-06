@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive experiments sweep paper release-check mutate ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -17,12 +17,19 @@ test:
 	python3 -m pytest -v
 
 # Phase 2 / V2 gate: exhaustive checkers over the enumerated finite model.
-formal: derive
+# v2 additions (tag prereg-p5-v2: Proposition 0-general + CH-A5/CH-A6/CH-A7)
+# run alongside v1's own gate below, never in place of it.
+formal: derive derive_v2
 	@echo "V2 gate: exhaustive checkers (reachability measurement, participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
 	python3 -m checkers.reachability_check
 	python3 -m checkers.participation_check
 	python3 -m checkers.pairtest_check
 	python3 -m checkers.grant_check
+	python3 -m checkers.general_reachability_check
+	python3 -m checkers.ch_a5_check
+	python3 -m checkers.participation_check_v2
+	python3 -m checkers.pairtest_check_v2
+	python3 -m checkers.ch_a7_check
 	python3 -m checkers.proof_status_lint
 	@echo "See appendix-a-proofs.md for the proofs these checkers verify."
 
@@ -30,6 +37,11 @@ formal: derive
 derive:
 	@echo "Running derivation procedure (loss-model.yaml -> P*, coverage list)..."
 	python3 derive.py
+
+# v2 (prereg-p5-v2): the v2 derivation procedure (CH-A5/CH-A6's primary computation).
+derive_v2:
+	@echo "Running v2 derivation procedure (loss-model.yaml v2_losses + pair-test-grid.yaml v2 -> P* v2, coverage list v2)..."
+	python3 derive_v2.py
 
 # Phase 3: the experiment scenarios (baseline / derived-P* / over-inclusive, grant on/off, replay injection).
 experiments:

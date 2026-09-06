@@ -64,6 +64,112 @@ differ, is registered as an open, two-sided question for v0.2
 (`prereg/v2-reachability-redesign.md`, once committed), not assumed to
 resolve either way.
 
+## Proposition 0-general (equal reachable sets give equal P\*, independent of tuple design; prereg/v2-reachability-redesign.md, tag prereg-p5-v2)
+
+**Statement.** Let `Reach_0` be the rank-0 reachable set under a given
+declared construction, and let `R` be any remediation operator
+characterized as producing an image set `Reach_R` (every tuple `R` can
+produce from some rank-0 input). If `Reach_R subset-of Reach_0` -- every
+tuple `R` could produce is already independently rank-0 reachable --
+then `Reach_0 union Reach_R = Reach_0` exactly, so `P*(Reach_0 union
+Reach_R) = P*(Reach_0)` and `coverage_list(Reach_0 union Reach_R) =
+coverage_list(Reach_0)`: including `R` in the reachable-set construction
+cannot change P\*, the coverage list, or any witness, regardless of what
+`R`'s transformation actually computes internally.
+
+**Proof.** Definitions 2-3 are computed purely from the *set* Definition
+1's witness search sweeps (`participation.compute_p_star`) and the loss
+registry -- `find_witness` groups reachable tuples by fingerprint and
+compares M-verdicts within each group; it never inspects how a tuple
+entered the reachable set, only whether it is *in* it. If `Reach_R
+subset-of Reach_0`, then as sets `Reach_0 union Reach_R = Reach_0`, so
+the two runs sweep the identical set and must return identical output.
+This argument uses nothing about `StateTuple`'s specific fields or
+`losses.py`'s specific predicates -- it holds for any tuple type
+exposing `with_property()` and any loss registry, exactly the same
+domain-agnosticism `participation.py`'s own docstring claims and
+`test_participation.py` already exercises against a synthetic type.
+
+PROOF-STATUS: machine-checked (`checkers/general_reachability_check.py`),
+`structural_lemma`: 4 independent synthetic loss predicates, each tried
+against 5 differently-shaped remediator-image characterizations (empty,
+singleton, partial, alternating, and the full reachable set) over one
+32-tuple synthetic universe unrelated to `StateTuple`/`StateTupleV2` --
+20 enumerated cases total, every one confirming P\* and the coverage
+list are unchanged whenever the tried image is a subset of the universe
+(`all_cases_hold: true` in `out/checkers/general_reachability_check.json`).
+
+**Corollary 1 (evidence substitution is derivation-irrelevant under this
+framework, whenever rank-0 is the unconstrained product over all
+candidate domains).** Evidence substitution is characterized, unchanged
+from v1, as moving `order_value` to any other point in its own declared
+domain while holding the other candidate fields fixed. Whenever rank-0
+is the unconstrained product over every candidate domain with no
+cross-field filter (v1's construction, for any choice of declared
+`order_value` domain), rank-0 already contains every
+`(other-fields, any-order-value)` combination, so substitution's image
+is always a subset of rank-0 by Proposition 0-general above -- not
+because of the *specific* order_value points chosen (v0.1's were
+600/1200/2500; Proposition 0 measured this one instance), but because
+the argument depends only on rank-0's unconstrained-product *shape*.
+
+PROOF-STATUS: machine-checked (`checkers/general_reachability_check.py`),
+`corollary_1_across_domains`: v1's own `rank0_reachable_tuples()` and
+`remediation_reachable_tuples()`, called unmodified against 4 order_value
+domains other than the declared one (one a 4-point domain producing a
+10,368-tuple rank-0), every one producing exactly 0 new tuples beyond
+rank-0 (`all_redundant_regardless_of_domain: true`) -- confirming
+Proposition 0's zero-new-tuples result generalizes across domain
+choices, not only the specific 7,776-tuple grid Proposition 0 itself
+measured.
+
+**Scope note (v2's cross-field filter is a boundary this corollary's
+general wording does not spell out).** The "whenever rank-0 is the
+unconstrained product" premise above is exactly true of v1's
+construction. v2 additionally declares one cross-field rank-0 filter
+absent from v1 (`rank0_constraint_v2`, `prereg/pair-test-grid.yaml`'s
+`v2` section): `order_value >= min_order_quantity` always holds at
+rank-0. Evidence substitution, characterized as varying `order_value`
+alone while holding `min_order_quantity` fixed, would NOT have an image
+fully inside `rank0_reachable_tuples_v2()` for every
+`(min_order_quantity, target order_value)` pairing once that filter is
+in force -- e.g. moving `order_value` down to 600.0 while
+`min_order_quantity` stays fixed at 900.0 produces exactly the tuple
+`rank0_constraint_v2` excludes. This is not a defect in v2's design:
+`domain.executable_reachable_tuples_v2()` (CH-A5's decision rule,
+`prereg/v2-reachability-redesign.md`) does not include evidence
+substitution as a term at all -- only downroute and retry-delay -- so
+this boundary is never actually exercised by this artifact's v2
+construction. It is recorded here, rather than left for a reader to
+discover by trying it, because Corollary 1's premise is a general-
+sounding claim about "any declared order_value domain" that does not by
+itself spell out what changes once a *second* field enters a cross-field
+rank-0 relationship with `order_value` -- stating a certified scope
+exactly, per this project's own `checked-scope-only` discipline, rather
+than leaving a general claim standing uncontradicted by a case nobody
+checked.
+
+**Corollary 2 (mechanism-specific remediators are not automatically
+covered by Corollary 1).** A remediator whose characterized image is
+*not* a subset of rank-0 -- because rank-0 is declared to exclude the
+value range only that remediator can reach -- is not covered by
+Corollary 1, and whether it actually changes P\* is not decided by
+Proposition 0-general either way; it depends on whether some loss
+predicate discriminates the newly reachable tuples.
+
+PROOF-STATUS: machine-checked (`checkers/general_reachability_check.py`),
+`corollary_2_on_v2_mechanisms`: neither of v2's two characterized
+mechanisms has an image inside `rank0_reachable_tuples_v2()`'s
+15,552 tuples -- downroute produces 3,888 tuples outside it, retry-delay
+produces 5,184 tuples outside it (`downroute_image_subset_of_rank0_v2:
+false`, `retry_delay_image_subset_of_rank0_v2: false`) -- confirming,
+not merely asserting, that neither is automatically covered by
+Corollary 1. Whether either actually changes P\* is exactly what CH-A5
+and CH-A7 decide (`paper5-authority-derivation-draft-v0.1.md`'s v0.2
+update; raw output `out/checkers/ch_a5_check.json` and
+`out/checkers/ch_a7_check.json`), not this proposition, which only
+establishes that the question is open rather than pre-decided.
+
 ## Proposition 1 (P\* is sound and minimal)
 
 A gate that observes exactly P\* can always compute M's true verdict on

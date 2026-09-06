@@ -8,15 +8,17 @@
     "grant_id",
     "consumed_grant_ids",
     "budget_remaining",
-    "frozen"
+    "frozen",
+    "min_order_quantity"
   ],
   "coverage_list": [
     "workflow"
   ],
   "generated_at_head_sha": "37a2e7f5f7931256dd00a343b4514310e44a4d35",
   "grid_sha256": "3054bd6ae408eb370b44a0326a07db10730c08cdbe1a74e0a50c6b0c8fb02bd9",
-  "grid_size_reachable": 7776,
+  "grid_size_reachable": 24624,
   "loss_model_sha256": "d97d13495117dc7d2bff0924cd57ad262bb2ddc1699b0ea49fa544275e6a2af3",
+  "model_version": "v2",
   "participating_properties": [
     "actor_role",
     "budget_remaining",
@@ -24,6 +26,7 @@
     "day",
     "frozen",
     "grant_id",
+    "min_order_quantity",
     "order_value",
     "resource_class"
   ],
@@ -39,6 +42,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -50,6 +54,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -68,6 +73,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -79,6 +85,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -97,6 +104,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": "g-consumed",
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -110,6 +118,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": "g-consumed",
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -128,6 +137,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -139,6 +149,7 @@
           "day": 140,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -157,6 +168,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -168,6 +180,7 @@
           "day": 50,
           "frozen": true,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -188,6 +201,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -201,9 +215,41 @@
           "day": 50,
           "frozen": false,
           "grant_id": "g-consumed",
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
+        },
+        "verdict_a": false,
+        "verdict_a_prime": true
+      }
+    ],
+    "min_order_quantity": [
+      {
+        "loss_id": "downrouted_quantity_below_supplier_minimum",
+        "tuple_a": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "min_order_quantity": 500.0,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W2"
+        },
+        "tuple_a_prime": {
+          "actor_role": "agent-replenish",
+          "budget_remaining": 1000.0,
+          "consumed_grant_ids": [],
+          "day": 50,
+          "frozen": false,
+          "grant_id": null,
+          "min_order_quantity": 900.0,
+          "order_value": 600.0,
+          "resource_class": "consumables",
+          "workflow": "W2"
         },
         "verdict_a": false,
         "verdict_a_prime": true
@@ -219,6 +265,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -230,6 +277,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 1200.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -248,6 +296,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "consumables",
           "workflow": "W1"
@@ -259,6 +308,7 @@
           "day": 50,
           "frozen": false,
           "grant_id": null,
+          "min_order_quantity": 500.0,
           "order_value": 600.0,
           "resource_class": "capital-equipment",
           "workflow": "W1"

@@ -1,0 +1,37 @@
+{
+  "certificate_verification": {
+    "bad_certificates": [],
+    "total_witnesses_checked": 9
+  },
+  "committed_coverage_list": [
+    "workflow"
+  ],
+  "committed_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "fresh_coverage_list": [
+    "workflow"
+  ],
+  "fresh_participating_properties": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "fresh_recomputation_matches_committed": true,
+  "reachable_tuples_swept": 24624,
+  "sound_and_minimal": true
+}

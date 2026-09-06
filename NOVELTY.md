@@ -127,6 +127,65 @@ the task brief's own rigor standard asks for: printed, not smoothed
 over, and not retroactively hidden by rewriting the fence's history --
 see the original wording preserved at the `prereg-p5-v1` tag.
 
+## Second amendment (v0.2, tag `prereg-p5-v2`, CH-A5/CH-A6/CH-A7 outcomes)
+
+The amendment above registered a real, two-sided open question: whether
+a redesigned formal model could make remediation reachability-relevant,
+so the fence's original claim could actually be tested rather than
+merely asserted. `prereg/v2-reachability-redesign.md` registered the
+redesign -- a new candidate property (`min_order_quantity`), one
+declared cross-field rank-0 filter (`order_value >= min_order_quantity`
+at rank-0), and two characterized remediation mechanisms (downroute,
+grounded in `composition._maybe_downroute`'s real budget-fitting
+calculation; retry-delay, secondary) -- before any v2 code existed,
+per this project's own registration discipline. That question is now
+answered, machine-checked, not asserted:
+
+- **CH-A5 (does the redesign make remediation reachability-relevant, in
+  general?): reachability_relevant.** `min_order_quantity` participates
+  in v2's P\* (`checkers/ch_a5_check.py`,
+  `out/checkers/ch_a5_check.json`); the nine original properties'
+  participation/coverage split is unchanged from v1
+  (`nine_original_properties_unchanged_from_v1: true`). Unlike v0.1's
+  model (Proposition 0, redundant by construction), v2's redesigned
+  reachable set genuinely does contain tuples remediation reaches that
+  rank-0 alone would not -- the fence's original claim is now
+  instantiated, for this specific redesigned model and this specific
+  property, not merely asserted.
+- **CH-A6 (do two independently implemented derivations of v2's P\*
+  agree exactly?): yes.** `checkers/participation_check_v2.py`
+  (fingerprint-grouped search, `sound_and_minimal: true`) and
+  `checkers/pairtest_check_v2.py` (one-factor-at-a-time sweep,
+  `ch_a6_exact_recovery: true`) agree exactly over the same
+  24,624-tuple v2 executable-reachable set: no missed participants, no
+  false participants.
+- **CH-A7 (does removing downroute from the reachable-set construction
+  change P\* membership for `min_order_quantity`, specifically?):
+  SUPPORTED.** `checkers/ch_a7_check.py`
+  (`out/checkers/ch_a7_check.json`): `min_order_quantity` participates
+  when downroute is included (24,624-tuple reachable set) and does not
+  when downroute is excluded (20,736-tuple reachable set, rank-0 union
+  retry-delay only) -- downroute demonstrated derivation-relevant for
+  exactly the one property it was designed to make participate, not
+  merely designed to in prose.
+
+Registered two-sided, and the outcome that in fact obtained is the one
+that vindicates the redesign; recorded here either way, per this
+project's own discipline for a registered hypothesis, and not a
+foregone conclusion at registration time -- CH-A7's decision rule was
+satisfiable in either direction, and Proposition 0-general
+(`appendix-a-proofs.md`) separately confirms, rather than assumes, that
+neither of v2's two mechanisms was automatically guaranteed to matter
+merely by being included (Corollary 2: neither downroute's nor
+retry-delay's characterized image is a subset of `rank0_reachable_
+tuples_v2()`, so which one(s) actually move P\* was still an open,
+checkable question CH-A5/CH-A7 had to decide, not a restatement of
+Corollary 2 itself). v0.1's results (Proposition 0, the original
+7,776-tuple model) stay frozen and cited as the first iteration, per
+`prereg/v2-reachability-redesign.md`'s own registration discipline;
+nothing about v0.1's own model or its own measured redundancy is
+retroactively edited to match v2's outcome.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

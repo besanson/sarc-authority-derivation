@@ -1,0 +1,36 @@
+{
+  "ch_a7_supported": true,
+  "coverage_a_full_v2": [
+    "workflow"
+  ],
+  "coverage_b_downroute_excluded": [
+    "min_order_quantity",
+    "workflow"
+  ],
+  "p_star_a_full_v2": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "p_star_b_downroute_excluded": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "order_value",
+    "resource_class"
+  ],
+  "reachable_size_a_full_v2": 24624,
+  "reachable_size_b_downroute_excluded": 20736,
+  "target_in_p_star_a": true,
+  "target_in_p_star_b": false,
+  "target_property": "min_order_quantity"
+}
