@@ -19,10 +19,10 @@ hand-typed, except for a declared, narrow allowlist -- so a future
 hand-typed result number (the exact mistake repair 1 fixed for v2's
 CH-A5-CH-A7 counts) is caught automatically rather than relying on
 review to notice it. Scoped to the live draft
-(paper5-authority-derivation-draft-v0.3.md) only: v0.1's own source is
-frozen as of commit 37a2e7f and v0.2's at commit 7112031 (README.md's
-version-split note), neither re-gated by a check invented after either
-was written.
+(paper5-authority-derivation-draft-v0.4.md) only: v0.1's own source is
+frozen as of commit 37a2e7f, v0.2's at commit 7112031, and v0.3's at
+commit 382be13 (README.md's version-split note), none re-gated by a
+check invented after it was written.
 
 "Prose" excludes, stripped before any allowlist is applied: a
 `[GENERATED: ...]` slot itself; inline code spans and fenced code
@@ -68,7 +68,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Pattern
 
-DRAFT_PATH = "paper5-authority-derivation-draft-v0.3.md"
+DRAFT_PATH = "paper5-authority-derivation-draft-v0.4.md"
 OUTPUT_PATH = Path("out/checkers/typed_numerals_lint.json")
 
 _MONTHS = (

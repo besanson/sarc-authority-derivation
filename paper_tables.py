@@ -55,6 +55,7 @@ def build_slots(
     sufficiency_check_path: str = "out/checkers/sufficiency_check.json",
     reduct_check_path: str = "out/checkers/reduct_check.json",
     core_insufficiency_counterexample_path: str = "out/checkers/core_insufficiency_counterexample.json",
+    isolation_delta_check_path: str = "out/checkers/isolation_delta_check.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -70,6 +71,7 @@ def build_slots(
     neg_n_and_ch_a9 = json.loads(Path(core_insufficiency_counterexample_path).read_text())
     neg_prop_n_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "negative_proposition_n")
     ch_a9_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "ch_a9_constrained_procurement_variant")
+    isolation_delta = json.loads(Path(isolation_delta_check_path).read_text())
     proof_status = _lint_proof_status()
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
@@ -176,6 +178,17 @@ def build_slots(
 
         "ch_a9_status": _supported(ch_a9_case["supported"]),
         "ch_a9_core_cardinality": str(len(ch_a9_case["core_attributes"])),
+
+        # v3.1/v0.4 (prereg/v3.1-isolated-arms.md, tag prereg-p5-v3.1):
+        # the isolation hypothesis's own delta table and the budget-
+        # predicate-fire diagnostic that mechanistically explains it,
+        # sourced solely from isolation_delta_check.json.
+        "v4_isolation_status": _supported(isolation_delta["isolation_hypothesis_supported"]),
+        "v4_material_movement_field_count": str(len(isolation_delta["material_movement_fields"])),
+        "v4_budget_predicate_fires": f"{isolation_delta['budget_predicate_fire_diagnostic']['total_budget_predicate_fires']:,}",
+        "v4_budget_predicate_decisions_swept": f"{isolation_delta['budget_predicate_fire_diagnostic']['total_decisions_swept']:,}",
+        "v4_budget_predicate_cells_with_fire": str(isolation_delta["budget_predicate_fire_diagnostic"]["cells_with_at_least_one_fire"]),
+        "v4_budget_predicate_n_cells": str(isolation_delta["budget_predicate_fire_diagnostic"]["n_cells"]),
     }
     return slots
 

@@ -245,6 +245,42 @@ original wording is preserved as an honest record, with its PROOF-STATUS
 narrowed to `checked-scope-only` and a correction attached directly to
 it, the same principle this amendment itself follows.
 
+## Fourth amendment (v0.4, tag `prereg-p5-v3.1`, isolated per-arm experiment state)
+
+The three amendments above all concern the formal/derivation side
+(participation, reachability, core-vs-reduct). This one concerns Section
+8's experiment: direct inspection of `experiments.py` (v0.1 through v0.3,
+unchanged by any of those revisions) found that the baseline, derived,
+and over-inclusive policy arms were evaluated inside one decision loop
+against one shared `budget_remaining` float and one shared grant ledger
+-- a real threat to the experiment's internal validity, found by this
+paper's own code inspection, not an external review this time.
+Registered (`prereg/v3.1-isolated-arms.md`) before any fix was written,
+two-sided: isolating the three arms' state may or may not change any
+CH-A1/CH-A3/CH-A4 measured quantity.
+
+The registered outcome, machine-checked, not assumed:
+
+- **v0.4 isolation hypothesis**: **NOT SUPPORTED** -- all 30 registered
+  seeds x 2 workflows re-run under `experiments.py`'s new isolated
+  `ArmState` design produce CH-A1/CH-A3/CH-A4 means, 95% CIs, and
+  booleans byte-identical to v0.3's frozen (shared-state) result
+  (`checkers/isolation_delta_check.py`). Not left unexplained: a direct,
+  exhaustive diagnostic over the full 349,020-decision sweep confirms
+  `spend_against_depleted_delegated_budget` -- the one loss predicate
+  reading the one field the shared-state bug could have corrupted --
+  fires zero times in any of the 60 (seed, workflow) cells, so the bug,
+  while real, was never load-bearing for this declared parameter set.
+
+The isolation fix (`ArmState`, `process_decision`, and
+`test_experiments.py`'s new contamination regression test) is kept
+regardless of this null result: it is the structurally correct
+experimental design independent of today's numbers, and now guards
+against a future declared parameter set where budget genuinely binds
+tightly enough to matter. v0.1/v0.2/v0.3's own committed results stay
+frozen and cited as prior iterations; nothing about them is
+retroactively edited to match this correction.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

@@ -20,9 +20,56 @@ from pathlib import Path
 
 import pytest
 
-from experiments import calibrate_period_budget, enrich_plan, run_seed_workflow
+from domain import load_loss_model
+from losses import load_loss_registry
+
+from experiments import ArmState, _make_arm_states, calibrate_period_budget, enrich_plan, process_decision, run_seed_workflow
 
 pytestmark = pytest.mark.slow
+
+
+def test_contamination_regression_baseline_admit_derived_block_only_changes_baseline_budget():
+    """Registered in prereg/v3.1-isolated-arms.md: a decision where
+    baseline ADMITS (passed in directly, standing in for a real
+    sarc_governance ADMIT) and derived BLOCKS (order_value 3000 exceeds
+    agent-replenish's real declared entitlement ceiling of 2000,
+    prereg/loss-model.yaml -- a genuine registered violation, independent
+    of budget: period_budget is 10,000, well above 3000, so
+    spend_against_depleted_delegated_budget does not also fire) must
+    change only baseline's own ArmState.budget_remaining -- derived's and
+    over_inclusive's must stay exactly at their initialized value. This
+    is the direct, minimal, mechanical witness of the isolation
+    invariant, independent of and prior to the 30-seed re-measurement."""
+    registry = load_loss_registry(load_loss_model())
+    period_budget = 10_000.0
+    arms = _make_arm_states(period_budget)
+
+    outcome = process_decision(
+        arms,
+        actor_role="agent-replenish", resource_class="consumables", order_value=3_000.0,
+        day=1, workflow="W1", frozen=False, decision_id=1, sku="sku-1",
+        registry=registry, baseline_admits=True,
+    )
+
+    assert outcome["true_verdict"] is True
+    assert outcome["baseline_admits"] is True
+    assert outcome["derived_admits"] is False
+
+    assert arms["baseline"].budget_remaining == period_budget - 3_000.0
+    assert arms["derived"].budget_remaining == period_budget
+    assert arms["over_inclusive"].budget_remaining == period_budget
+    assert arms["baseline"].admission_history == [True]
+    assert arms["derived"].admission_history == [False]
+
+
+def test_arm_states_initialise_identically():
+    arms = _make_arm_states(500.0)
+    assert arms["baseline"].budget_remaining == arms["derived"].budget_remaining == arms["over_inclusive"].budget_remaining == 500.0
+    assert all(isinstance(a, ArmState) for a in arms.values())
+    assert all(a.admission_history == [] for a in arms.values())
+    # Independent instances, not the same object shared across arms.
+    assert arms["baseline"].ledger is not arms["derived"].ledger
+    assert arms["baseline"] is not arms["derived"] is not arms["over_inclusive"]
 
 
 def test_run_seed_workflow_is_deterministic():

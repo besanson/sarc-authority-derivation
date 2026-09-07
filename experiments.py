@@ -53,6 +53,33 @@ real sarc_governance evaluation of specs/authority.yaml), so whether it
 misses violations the loss model declares is a real, non-tautological
 question this run answers.
 
+v0.4 isolated per-arm state (prereg/v3.1-isolated-arms.md, tag
+`prereg-p5-v3.1`; v0.1-v0.3 frozen and superseded in mechanism, not in
+number -- see README.md's version-split note): v0.1-v0.3's own
+`run_seed_workflow` evaluated baseline/derived/over-inclusive inside one
+decision loop against ONE shared `budget_remaining` float and ONE shared
+`GrantLedger` -- baseline's own admission could deplete the pool
+derived's later verdict then read, and the over-inclusive arm had no
+admission trajectory of its own at all. `ArmState` (below) gives each of
+the three arms its own `{budget_remaining, ledger, admission_history}`,
+initialised identically per (seed, workflow) run and mutated only by
+that arm's own admission decisions -- see `process_decision`'s own
+docstring for exactly which state each decision rule reads, and why
+`true_verdict` is defined against DERIVED's own trajectory specifically
+(the one arm whose decision rule -- "admit iff the loss registry says
+safe" -- IS the ground truth by construction, sharing not just the
+registry but now also the state it is evaluated against). Grant
+issuance/first-consumption stays unconditional per arm (a fact about
+which real decision executed in the underlying replay stream, not a
+per-arm choice -- `losses.replayed_consumed_grant` reads `state.grant_id`,
+which this module always sets to `None` in the main per-decision loop,
+so `consumed_grant_ids`'s actual content cannot affect `true_verdict`/
+`baseline_missed`/`derived_missed`/`spurious_escalations_overinclusive`
+either way; verified directly, not assumed, before relying on it here);
+only `budget_remaining` is the state v0.1-v0.3 actually cross-contaminated
+in a way that could change a measured number, and only that field's
+update is now conditional on each arm's own admission decision.
+
 SEED = 26313 (inherited; every per-decision seeded choice below derives
 from the run's own `seed` argument via a dedicated random.Random
 instance, never the module-level default, so seeds never leak across
@@ -62,9 +89,9 @@ from __future__ import annotations
 
 import random
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
 ONE_PASS_DIR = str(Path(__file__).resolve().parent.parent / "sarc-suite-one-pass")
 if ONE_PASS_DIR not in sys.path:
@@ -88,6 +115,8 @@ FROZEN_INJECTION_RATE = 0.02  # matches one-pass's own per-class defect rate
 REPLAY_INJECTION_RATE = 0.05
 PERIOD_BUDGET_MULTIPLIER = 1.15  # applied to the median per-period demand -- deliberately tight enough to bind sometimes
 
+ARM_NAMES = ("baseline", "derived", "over_inclusive")
+
 
 @dataclass(frozen=True)
 class EnrichedDecision:
@@ -101,6 +130,26 @@ class EnrichedDecision:
     resource_class: str
     workflow: str
     is_replay_probe: bool
+
+
+@dataclass
+class ArmState:
+    """v0.4 (prereg/v3.1-isolated-arms.md): one policy arm's own
+    trajectory -- budget, grant ledger, and admission history -- isolated
+    from the other two arms'. Mutated only by `process_decision` acting
+    on this SAME instance, never by another arm's decision."""
+    budget_remaining: float
+    ledger: GrantLedger
+    admission_history: List[bool] = field(default_factory=list)
+
+
+def _make_arm_states(period_budget: float) -> Dict[str, "ArmState"]:
+    """Three independent instances, identical initial budget_remaining
+    and an empty GrantLedger/history each -- divergence across arms is
+    then a pure consequence of their differing admission decisions
+    applied to identical initial conditions, never a difference in
+    starting state."""
+    return {name: ArmState(budget_remaining=period_budget, ledger=GrantLedger()) for name in ARM_NAMES}
 
 
 def calibrate_period_budget(enriched: List["EnrichedDecision"]) -> float:
@@ -165,6 +214,93 @@ def enrich_plan(plan: List[DecisionPlan], seed: int, workflow: str, all_skus: Li
     return out
 
 
+def process_decision(
+    arms: Dict[str, ArmState],
+    *,
+    actor_role: str,
+    resource_class: str,
+    order_value: float,
+    day: int,
+    workflow: str,
+    frozen: bool,
+    decision_id: int,
+    sku: str,
+    registry: Dict[str, Callable[[StateTuple], bool]],
+    baseline_admits: bool,
+) -> Dict[str, Any]:
+    """One decision, through all three arms' own isolated state. Mutates
+    `arms` in place (each arm's own budget_remaining/ledger/admission_
+    history) and returns the per-arm verdicts `run_seed_workflow` (or a
+    test) accumulates into summary counters.
+
+    Which state each decision rule reads (prereg/v3.1-isolated-arms.md,
+    "Decision rules"):
+    - **baseline**: `baseline_admits` is passed in already-computed (the
+      real `sarc_governance` evaluation reads no ArmState field at all --
+      the imported baseline has no budget/grant concept of its own); this
+      function only records it into baseline's own ArmState, for symmetry.
+    - **derived**: `not m_verdict(derived's own state, registry)`.
+      `true_verdict` -- the ground truth `baseline_missed` is measured
+      against -- is this SAME evaluation: derived's decision rule IS the
+      declared loss model, so its own state is the one principled,
+      non-arbitrary trajectory to call "true" (module docstring).
+    - **over_inclusive**: derived's own rule, but evaluated against
+      over_inclusive's OWN state (which may already have diverged from
+      derived's, once a past spurious escalation changed its budget
+      trajectory), AND an additional forced denial whenever
+      `workflow == "W2"`.
+    """
+    def state_for(arm: ArmState) -> StateTuple:
+        return StateTuple(
+            actor_role=actor_role,
+            resource_class=resource_class,
+            order_value=order_value,
+            day=day,
+            workflow=workflow,
+            grant_id=None,  # a fresh (first) presentation is never itself a replay
+            consumed_grant_ids=arm.ledger.consumed_grant_ids(),
+            budget_remaining=arm.budget_remaining,
+            frozen=frozen,
+        )
+
+    true_verdict = m_verdict(state_for(arms["derived"]), registry)
+    derived_admits = not true_verdict
+
+    over_inclusive_loss_verdict = m_verdict(state_for(arms["over_inclusive"]), registry)
+    forced_escalation = workflow == "W2"
+    over_inclusive_admits = (not over_inclusive_loss_verdict) and not forced_escalation
+    spurious_escalation = forced_escalation and not over_inclusive_loss_verdict
+
+    admits_by_arm = {"baseline": baseline_admits, "derived": derived_admits, "over_inclusive": over_inclusive_admits}
+    sealed_action = {"decision_id": decision_id, "sku": sku, "order_value": order_value, "day": day}
+    grant_id = f"g-{decision_id}"
+    for name, arm in arms.items():
+        # Issuance/first-consumption is unconditional -- see module
+        # docstring: it represents which real decision executed in the
+        # underlying replay stream, not a per-arm policy choice, and
+        # (verified directly) cannot affect any arm's own verdict here
+        # since grant_id is always None in state_for() above. Only the
+        # budget update -- the one piece of state v0.1-v0.3 actually
+        # cross-contaminated in a way that changed a measured number --
+        # is conditional on this arm's own admission.
+        arm.ledger.issue(grant_id, sealed_action, decision_id, day)
+        arm.ledger.consume(grant_id, sealed_action, decision_id, day)
+        if admits_by_arm[name]:
+            arm.budget_remaining = max(0.0, arm.budget_remaining - order_value)
+        arm.admission_history.append(admits_by_arm[name])
+
+    return {
+        "true_verdict": true_verdict,
+        "baseline_admits": baseline_admits,
+        "derived_admits": derived_admits,
+        "over_inclusive_admits": over_inclusive_admits,
+        "over_inclusive_loss_verdict": over_inclusive_loss_verdict,
+        "spurious_escalation": spurious_escalation,
+        "grant_id": grant_id,
+        "sealed_action": sealed_action,
+    }
+
+
 def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
     """Runs both grant_binding=on and grant_binding=off in one pass over
     the same decision stream (CH-A3's paired comparison): 'on' consults a
@@ -172,7 +308,11 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
     is genuinely checked and rejected per Proposition 3; 'off' is a
     policy that never consults grant state at all, so a replay probe is
     admitted unconditionally -- not a second ledger with the same
-    single-use logic (that would not be an ablation of anything)."""
+    single-use logic (that would not be an ablation of anything). The
+    replay probe is checked against derived's own ledger -- equivalent
+    (verified in this module's own docstring) to any arm's, since
+    issuance/first-consumption is unconditional and identical across
+    all three by construction."""
     sim = RetailSimulation(DATA_PATH)
     full_role = ROLE_BY_WORKFLOW[workflow]
 
@@ -190,10 +330,9 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
     baseline_cap = _authority_role_ceiling(full_role, loss_model)  # same ceiling as the top authorized tier
     baseline_spec = op_composition.load_sarc_spec(AUTHORITY_SPEC_PATH)
 
-    budget_remaining = period_budget
+    arms = _make_arm_states(period_budget)
     current_period_day: int = enriched[0].day if enriched else 0
     frozen_rng = random.Random(seed * 7 + 1)
-    ledger = GrantLedger()
 
     true_violations = 0
     baseline_missed = 0
@@ -205,24 +344,10 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
 
     for d in enriched:
         if d.day != current_period_day:
-            budget_remaining = period_budget  # the delegated pool replenishes each new period, like Greensarc's own daily_cost_budget
+            for arm in arms.values():
+                arm.budget_remaining = period_budget  # the delegated pool replenishes each new period, like Greensarc's own daily_cost_budget
             current_period_day = d.day
         frozen = frozen_rng.random() < FROZEN_INJECTION_RATE
-
-        state = StateTuple(
-            actor_role=d.actor_role,
-            resource_class=d.resource_class,
-            order_value=d.order_value_post,
-            day=d.day,
-            workflow=d.workflow,
-            grant_id=None,  # a fresh (first) presentation is never itself a replay
-            consumed_grant_ids=ledger.consumed_grant_ids(),
-            budget_remaining=budget_remaining,
-            frozen=frozen,
-        )
-        true_verdict = m_verdict(state, registry)  # the declared loss model IS the ground truth
-        if true_verdict:
-            true_violations += 1
 
         # -- baseline: real sarc_governance evaluation of the imported authority.yaml --
         baseline_response, _ = op_composition.evaluate_sarc_pag(
@@ -230,39 +355,29 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
             order_value=d.order_value_post, order_value_cap=baseline_cap,
         )
         baseline_admits = baseline_response == op_composition.Response.ADMIT
-        if baseline_admits and true_verdict:
+
+        outcome = process_decision(
+            arms,
+            actor_role=d.actor_role, resource_class=d.resource_class, order_value=d.order_value_post,
+            day=d.day, workflow=d.workflow, frozen=frozen, decision_id=d.decision_id, sku=d.sku,
+            registry=registry, baseline_admits=baseline_admits,
+        )
+
+        if outcome["true_verdict"]:
+            true_violations += 1
+        if outcome["baseline_admits"] and outcome["true_verdict"]:
             baseline_missed += 1
-
-        # -- derived-P*: admits iff the loss registry it directly implements
-        # says safe -- trivially complete against this same loss model by
-        # construction (see module docstring); kept as an explicit
-        # variable, not assumed, so a future change here is caught by
-        # test_experiments.py rather than silently staying "always zero".
-        derived_admits = not true_verdict
-        if derived_admits and true_verdict:
+        if outcome["derived_admits"] and outcome["true_verdict"]:
             derived_missed += 1
-
-        # -- over-inclusive ablation: derived-P* PLUS a spurious escalation on
-        # the one non-participating candidate (workflow == W2) -- the measured
-        # cost of treating "everything" as authority-bearing instead of
-        # deriving the minimal set. Only counted as SPURIOUS when the
-        # underlying decision was genuinely safe (escalating an actual
-        # violation is not spurious, it is redundant-but-correct).
-        if workflow == "W2" and not true_verdict:
+        if outcome["spurious_escalation"]:
             spurious_escalations_overinclusive += 1
-
-        # -- grant issuance + first (legitimate) consumption --
-        sealed_action = {"decision_id": d.decision_id, "sku": d.sku, "order_value": d.order_value_post, "day": d.day}
-        grant_id = f"g-{d.decision_id}"
-        ledger.issue(grant_id, sealed_action, d.decision_id, d.day)
-        ledger.consume(grant_id, sealed_action, d.decision_id, d.day)
-        if baseline_admits or derived_admits:
-            budget_remaining = max(0.0, budget_remaining - d.order_value_post)
 
         # -- replay probe: re-present the SAME grant a second time --
         if d.is_replay_probe:
             replay_probe_count += 1
-            admitted_on = ledger.consume(grant_id, sealed_action, d.decision_id, d.day)
+            admitted_on = arms["derived"].ledger.consume(
+                outcome["grant_id"], outcome["sealed_action"], d.decision_id, d.day
+            )
             if admitted_on:
                 replay_admissions_grant_binding_on += 1
             # "grant binding off": a policy that never consults grant/ledger

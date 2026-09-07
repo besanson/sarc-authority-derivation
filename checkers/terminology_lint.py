@@ -62,7 +62,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.3.md", "README.md"]
+DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.4.md", "README.md"]
 OUTPUT_PATH = Path("out/checkers/terminology_lint.json")
 
 CLAIM_TERMS: Dict[str, re.Pattern] = {

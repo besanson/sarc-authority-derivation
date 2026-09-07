@@ -59,11 +59,13 @@ sweep:
 	python3 sweep.py
 
 # Phase 5: populate the paper draft from committed machine output only.
-# v0.3 is the live draft (paper5-authority-derivation-draft-v0.1.md/
-# -populated.md are frozen at commit 37a2e7f, and v0.2's at commit
-# 7112031 -- see README.md's version-split note -- neither touched by
-# this pipeline).
+# v0.4 is the live draft (paper5-authority-derivation-draft-v0.1.md/
+# -populated.md are frozen at commit 37a2e7f, v0.2's at commit 7112031,
+# and v0.3's at commit 382be13 -- see README.md's version-split note --
+# none touched by this pipeline).
 paper: experiments sweep formal
+	@echo "v0.4 isolation-hypothesis delta (prereg-p5-v3.1: isolated ArmState vs. v0.3's frozen shared-state result)..."
+	python3 -m checkers.isolation_delta_check
 	@echo "Populating paper draft from out/results/sweep_summary.json + out/checkers/*.json..."
 	python3 populate_paper.py
 
@@ -84,13 +86,18 @@ release-check:
 	@echo "=== release-check: mutation testing (hard gate, >=0.85; see ADR-003-mutation-testing.md) ==="
 	$(MAKE) mutate
 	@echo "=== release-check: populated-draft freshness ==="
-	cp paper5-authority-derivation-draft-v0.3-populated.md /tmp/sarc-p5-populated-committed.md
+	@echo "(isolation_delta_check.json is NOT recomputed here -- it re-sweeps all 60"
+	@echo " (seed, workflow) cells against the real imported simulation, minutes not"
+	@echo " seconds; committed as of the v0.4 commit, re-run explicitly via"
+	@echo " 'make paper' or 'python3 -m checkers.isolation_delta_check' after any"
+	@echo " change to experiments.py, prereg/seeds.json, or the declared loss model.)"
+	cp paper5-authority-derivation-draft-v0.4-populated.md /tmp/sarc-p5-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.3-populated.md
+	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.4-populated.md
 	@rm -f /tmp/sarc-p5-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== release-check: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.3.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.4.md
 	@echo "=== release-check: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== release-check: terminology lint ==="
@@ -113,7 +120,7 @@ mutate:
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
-	rm -f paper5-authority-derivation-draft-v0.3-populated.md
+	rm -f paper5-authority-derivation-draft-v0.4-populated.md
 	rm -rf .pytest_cache .hypothesis
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete

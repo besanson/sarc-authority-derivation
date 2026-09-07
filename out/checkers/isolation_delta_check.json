@@ -1,0 +1,119 @@
+{
+  "bool_field_deltas": {
+    "ch_a1_derived_zero_every_cell": {
+      "material": false,
+      "v03": true,
+      "v04": true
+    },
+    "ch_a3_off_nonzero_at_least_one_cell": {
+      "material": false,
+      "v03": true,
+      "v04": true
+    },
+    "ch_a3_on_zero_every_cell": {
+      "material": false,
+      "v03": true,
+      "v04": true
+    }
+  },
+  "budget_predicate_fire_diagnostic": {
+    "cells_with_at_least_one_fire": 0,
+    "n_cells": 60,
+    "total_budget_predicate_fires": 0,
+    "total_decisions_swept": 349020
+  },
+  "ch_a4_robustness_flip": false,
+  "ch_a4_robustness_v03": {
+    "all_robust": true,
+    "ch_a1_robust": true,
+    "ch_a3_robust": true
+  },
+  "ch_a4_robustness_v04": {
+    "all_robust": true,
+    "ch_a1_robust": true,
+    "ch_a3_robust": true
+  },
+  "ci_field_deltas": {
+    "ch_a1_baseline_missed": {
+      "material": false,
+      "v03_ci95": [
+        1214.2838075559946,
+        1817.1161924440055
+      ],
+      "v03_mean": 1515.7,
+      "v04_ci95": [
+        1214.2838075559946,
+        1817.1161924440055
+      ],
+      "v04_mean": 1515.7
+    },
+    "ch_a1_true_violations": {
+      "material": false,
+      "v03_ci95": [
+        2243.664004631587,
+        3357.50266203508
+      ],
+      "v03_mean": 2800.5833333333335,
+      "v04_ci95": [
+        2243.664004631587,
+        3357.50266203508
+      ],
+      "v04_mean": 2800.5833333333335
+    },
+    "ch_a3_escalation_overhead": {
+      "material": false,
+      "v03_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v03_mean": 288.81666666666666,
+      "v04_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v04_mean": 288.81666666666666
+    },
+    "ch_a3_off_admissions": {
+      "material": false,
+      "v03_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v03_mean": 288.81666666666666,
+      "v04_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v04_mean": 288.81666666666666
+    },
+    "ch_a3_replay_probe_count": {
+      "material": false,
+      "v03_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v03_mean": 288.81666666666666,
+      "v04_ci95": [
+        231.1580812775709,
+        346.47525205576244
+      ],
+      "v04_mean": 288.81666666666666
+    },
+    "spurious_escalations_overinclusive": {
+      "material": false,
+      "v03_ci95": [
+        279.08184648073836,
+        481.7181535192616
+      ],
+      "v03_mean": 380.4,
+      "v04_ci95": [
+        279.08184648073836,
+        481.7181535192616
+      ],
+      "v04_mean": 380.4
+    }
+  },
+  "frozen_v03_summary_commit": "7b57f08",
+  "isolation_hypothesis_supported": false,
+  "material_movement_fields": []
+}

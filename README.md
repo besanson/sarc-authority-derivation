@@ -2,9 +2,9 @@
 
 Author: Gaston Besanson. Drafting, engineering, formal derivation, and citation verification were AI-assisted (Claude); the author is solely responsible for all claims.
 
-Prereg tags `prereg-p5-v1` and `prereg-p5-v2` were created on 6 September 2026 via the GitHub web interface after their commits; commit order establishes precedence.
+Prereg tags `prereg-p5-v1`, `prereg-p5-v2`, `prereg-p5-v3`, and `prereg-p5-v3.1` were each created via the GitHub web interface after their commits; commit order establishes precedence.
 
-Paper draft, live: [`paper5-authority-derivation-draft-v0.3.md`](paper5-authority-derivation-draft-v0.3.md) ([populated](paper5-authority-derivation-draft-v0.3-populated.md)). Earlier versions are frozen and no longer regenerated or edited: v0.1 as of commit `37a2e7f` ([source](paper5-authority-derivation-draft-v0.1.md), [populated](paper5-authority-derivation-draft-v0.1-populated.md)), v0.2 as of commit `7112031` ([source](paper5-authority-derivation-draft-v0.2.md), [populated](paper5-authority-derivation-draft-v0.2-populated.md)).
+Paper draft, live: [`paper5-authority-derivation-draft-v0.4.md`](paper5-authority-derivation-draft-v0.4.md) ([populated](paper5-authority-derivation-draft-v0.4-populated.md)). Earlier versions are frozen and no longer regenerated or edited: v0.1 as of commit `37a2e7f` ([source](paper5-authority-derivation-draft-v0.1.md), [populated](paper5-authority-derivation-draft-v0.1-populated.md)), v0.2 as of commit `7112031` ([source](paper5-authority-derivation-draft-v0.2.md), [populated](paper5-authority-derivation-draft-v0.2-populated.md)), v0.3 as of commit `382be13` ([source](paper5-authority-derivation-draft-v0.3.md), [populated](paper5-authority-derivation-draft-v0.3-populated.md)).
 
 ## 60-second example
 
@@ -44,6 +44,6 @@ EOF
 ```
 
 On the committed v2 model this prints a 9-property core that is sufficient
-and the unique reduct (CH-A8, CH-A10, `paper5-authority-derivation-draft-v0.3.md`)
+and the unique reduct (CH-A8, CH-A10, `paper5-authority-derivation-draft-v0.4.md`)
 -- machine-checked per instance, not assumed in general (Negative
 Proposition N, `appendix-a-proofs.md`).
