@@ -397,6 +397,85 @@ constructions are exactly what `prereg/v5-synthesis.md` registered before
 prior iterations; nothing about them is retroactively edited to match
 this amendment.
 
+## Seventh amendment (v6, tag `prereg-p5-v6`, AuthorityBench)
+
+The sixth amendment concerns `synthesis.py`'s own capability (does it
+scale, does cost-aware synthesis diverge from cardinality-aware
+synthesis). This one asks the question `NOVELTY.md`'s own "ABAC policy
+mining" paragraph poses but had never been run: does a faithful,
+scoped reimplementation of Xu and Stoller's seed-and-generalize mining
+core (`mining_baseline.py`, registered precisely in `prereg/
+v6-authority-bench.md` before it was written) recover an attribute set
+that matches this project's own loss-derived minimum-cardinality reduct
+(`src/authority_compiler`'s packaged `derive_authority_contract`), on
+v1, v2, and v4 -- this artifact's entire existing domain portfolio, no
+new domain built for this milestone.
+
+The registered outcome, machine-checked, not assumed:
+
+- **v1**: **equal** -- the mined policy's attribute union (8 properties,
+  42 rules before simplify, 42 after -- none redundant) is identical to
+  `derive_authority_contract`'s own minimum-cardinality contract, both
+  matching v1's own core exactly (`core_is_sufficient: true`). Sound
+  (`checkers`-independent, direct: 0 mismatches between the mined
+  policy's grant decisions and the true labels over the full
+  7,776-tuple reachable set). Tractable in 1.44 seconds.
+- **v2**: **equal** -- 9 properties, 54 rules (none redundant), again
+  identical to `derive_authority_contract`'s answer and to v2's own core
+  (CH-A8/CH-A10's own "unique reduct" finding leaves no tie for either
+  method to land on differently). Sound, 0 mismatches. Tractable in 6.32
+  seconds.
+- **v4**: **mismatch** (as SETS: `derive_authority_contract`'s answer is
+  `{approval_token, branch, data_classification, delegated_role,
+  operation, repository, resource_owner}`; the mined policy's union is
+  `{approval_token, data_classification, delegated_role, environment,
+  operation, repository, resource_owner}`) -- but investigated, not left
+  as an unexplained anomaly, and NOT a soundness concern this
+  registration's own decision rule anticipated a mismatch might be:
+  `checkers/ch_b1_check.py`'s own already-committed, exhaustively-
+  enumerated `minimum_reducts` (Milestone C, `out/checkers/
+  ch_b1_check.json`) is **exactly these same two sets** -- v4's 6-property
+  core is not sufficient, and there are exactly two cardinality-7
+  reducts, one adding `branch` and the other adding `environment`
+  (Fifth amendment's own branch/environment co-variation explanation).
+  `derive_authority_contract`'s SAT-backed search happened to return the
+  `branch` variant; the independently-designed, independently-
+  implemented mining baseline happened to land on the `environment`
+  variant -- both are genuine, already-known, machine-verified minimum
+  reducts of the identical model, confirmed sound here too (16 rules
+  after simplify, dropped from 17; 0 mismatches between the mined
+  policy's grants and the true labels). A tie-break divergence between
+  two independently-computed, equally-valid global minima, not a
+  disagreement about which properties actually matter. Tractable in 1.26
+  seconds.
+
+**Decision: INCONCLUSIVE**, per the registered rule applied honestly to
+what was actually measured -- SUPPORTED needed a strict superset on at
+least one domain (mining using avoidably more attributes than
+necessary); NOT SUPPORTED needed equality on all three. Neither
+occurred: two domains equal, one a genuine mismatch that turned out, on
+investigation, to be the benign kind the registration's own third
+category exists for, not the soundness-concern kind. All 3 domains:
+`tractable: true`, `sound: true` -- the 20-minute-per-domain
+tractability budget was never approached (slowest domain, v2, finished
+in 6.32 seconds), and the scoped mining baseline never once granted a
+truly-denied tuple across 47,520 combined reachable tuples.
+
+This is independent evidence, from an external method reimplemented
+faithfully rather than authored to make a point, that this artifact's
+own core-versus-reduct results (CH-A8, CH-A10, CH-B1) describe genuine
+structural properties of these models -- recoverable by more than one
+method -- rather than an artifact of `synthesis.py`'s own particular
+search procedure. It is also a registered non-result for the specific
+question AuthorityBench set out to answer (does mining tend to be
+avoidably non-minimal): on these three domains, this scoped
+reimplementation was not avoidably non-minimal even once, honestly
+reported as such rather than framed as a win. `mining_baseline.py`
+implements exactly the algorithm `prereg/v6-authority-bench.md`
+registered, unmodified after this result was seen; nothing about the
+registered decision rule or the algorithm's seed order, generalization
+order, or simplify rule was adjusted to produce this outcome.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

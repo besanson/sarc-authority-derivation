@@ -1,0 +1,1079 @@
+{
+  "anomalous_domains": [
+    "v4"
+  ],
+  "decision": "INCONCLUSIVE",
+  "domains": [
+    {
+      "candidate_property_count": 9,
+      "domain": "v1",
+      "mining": {
+        "elapsed_seconds": 1.4404763000000003,
+        "mined_attribute_count": 8,
+        "mined_attributes": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "order_value",
+          "resource_class"
+        ],
+        "rule_count_after_simplify": 42,
+        "rule_count_before_simplify": 42,
+        "rules": [
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "day": 140,
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "day": 140,
+            "frozen": false,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": null,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          }
+        ],
+        "tractable": true
+      },
+      "reachable_tuple_count": 7776,
+      "relationship": "equal",
+      "soundness": {
+        "mismatch_count": 0,
+        "mismatches": [],
+        "sound": true
+      },
+      "this_project_answer": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "order_value",
+        "resource_class"
+      ],
+      "this_project_answer_count": 8,
+      "this_project_core": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "order_value",
+        "resource_class"
+      ],
+      "this_project_core_is_sufficient": true
+    },
+    {
+      "candidate_property_count": 10,
+      "domain": "v2",
+      "mining": {
+        "elapsed_seconds": 6.318296255000064,
+        "mined_attribute_count": 9,
+        "mined_attributes": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "min_order_quantity",
+          "order_value",
+          "resource_class"
+        ],
+        "rule_count_after_simplify": 54,
+        "rule_count_before_simplify": 54,
+        "rules": [
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 1000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "frozen": false,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-w2-replenish",
+            "budget_remaining": 5000.0,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 900.0,
+            "order_value": 1200.0,
+            "resource_class": "durable-goods"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "consumed_grant_ids": [],
+            "day": 140,
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "consumed_grant_ids": [],
+            "day": 140,
+            "frozen": false,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": null,
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 1000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          },
+          {
+            "actor_role": "agent-delegate",
+            "budget_remaining": 5000.0,
+            "day": 140,
+            "frozen": false,
+            "grant_id": "g-fresh",
+            "min_order_quantity": 500.0,
+            "order_value": 600.0,
+            "resource_class": "consumables"
+          }
+        ],
+        "tractable": true
+      },
+      "reachable_tuple_count": 24624,
+      "relationship": "equal",
+      "soundness": {
+        "mismatch_count": 0,
+        "mismatches": [],
+        "sound": true
+      },
+      "this_project_answer": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "min_order_quantity",
+        "order_value",
+        "resource_class"
+      ],
+      "this_project_answer_count": 9,
+      "this_project_core": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "min_order_quantity",
+        "order_value",
+        "resource_class"
+      ],
+      "this_project_core_is_sufficient": true
+    },
+    {
+      "candidate_property_count": 10,
+      "domain": "v4",
+      "mining": {
+        "elapsed_seconds": 1.2563511710000057,
+        "mined_attribute_count": 7,
+        "mined_attributes": [
+          "approval_token",
+          "data_classification",
+          "delegated_role",
+          "environment",
+          "operation",
+          "repository",
+          "resource_owner"
+        ],
+        "rule_count_after_simplify": 16,
+        "rule_count_before_simplify": 17,
+        "rules": [
+          {
+            "data_classification": "public",
+            "operation": "read",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "data_classification": "internal",
+            "operation": "read",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "delegated_role": "role-owner",
+            "operation": "read"
+          },
+          {
+            "delegated_role": "role-owner",
+            "operation": "write"
+          },
+          {
+            "approval_token": "valid",
+            "delegated_role": "role-owner",
+            "operation": "deploy"
+          },
+          {
+            "delegated_role": "role-owner",
+            "operation": "grant_role"
+          },
+          {
+            "delegated_role": "role-owner",
+            "operation": "delete",
+            "repository": "repo-internal-tools"
+          },
+          {
+            "data_classification": "public",
+            "delegated_role": "role-deployer",
+            "operation": "write",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "data_classification": "internal",
+            "delegated_role": "role-deployer",
+            "operation": "write",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "approval_token": "valid",
+            "delegated_role": "role-deployer",
+            "operation": "deploy",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "delegated_role": "role-security-admin",
+            "operation": "read"
+          },
+          {
+            "delegated_role": "role-security-admin",
+            "operation": "grant_role"
+          },
+          {
+            "delegated_role": "role-owner",
+            "environment": "staging",
+            "operation": "deploy"
+          },
+          {
+            "delegated_role": "role-deployer",
+            "environment": "staging",
+            "operation": "deploy",
+            "resource_owner": "tenant-a"
+          },
+          {
+            "delegated_role": "role-owner",
+            "environment": "development",
+            "operation": "deploy"
+          },
+          {
+            "delegated_role": "role-deployer",
+            "environment": "development",
+            "operation": "deploy",
+            "resource_owner": "tenant-a"
+          }
+        ],
+        "tractable": true
+      },
+      "reachable_tuple_count": 15120,
+      "relationship": "mismatch",
+      "soundness": {
+        "mismatch_count": 0,
+        "mismatches": [],
+        "sound": true
+      },
+      "this_project_answer": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "this_project_answer_count": 7,
+      "this_project_core": [
+        "approval_token",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "this_project_core_is_sufficient": false
+    }
+  ],
+  "intractable_domains": [],
+  "unsound_domains": []
+}

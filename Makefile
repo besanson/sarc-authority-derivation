@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -94,6 +94,17 @@ benchmarks:
 	mkdir -p out/results
 	python3 benchmarks.py
 
+# Milestone E4 (prereg-p5-v6): AuthorityBench -- the mining-baseline
+# comparison on v1/v2/v4. NOT wired into release-check or `paper`, same
+# reasoning as `benchmarks`: prereg/v6-authority-bench.md's own decision
+# rule is descriptive/two-sided, not a correctness gate on this repo's
+# own derivation results. Takes ~2.5 minutes (all 3 domains, well inside
+# the prereg's own 20-minute-per-domain tractability budget).
+authority-bench:
+	@echo "AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4..."
+	mkdir -p out/results
+	python3 authority_bench.py
+
 release-check:
 	@echo "=== release-check: full test suite ==="
 	mkdir -p out
@@ -164,6 +175,7 @@ help:
 	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
+	@echo "  make authority-bench AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4 (~2.5 min, not part of release-check)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."
