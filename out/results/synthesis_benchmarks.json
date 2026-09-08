@@ -1,0 +1,227 @@
+{
+  "contract_change_delta_demo": {
+    "base_contract": [
+      "x"
+    ],
+    "full_recomputation_cardinality": 2,
+    "full_recomputation_cardinality_gap": 0,
+    "full_recomputation_contract": [
+      "x",
+      "z"
+    ],
+    "incremental_is_sufficient": true,
+    "new_tuple_count": 1,
+    "updated_contract": [
+      "x",
+      "z"
+    ],
+    "updated_contract_cardinality": 2,
+    "was_still_sufficient": false
+  },
+  "experiment_1_scaling": {
+    "all_exact": true,
+    "planted_reduct_size": 5,
+    "runs": [
+      {
+        "contract": [
+          "p_1",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5"
+        ],
+        "exact": true,
+        "exhaustive_cross_check": true,
+        "n": 10,
+        "peak_memory_kb_delta": 184,
+        "reachable_tuple_count": 6,
+        "wall_time_seconds": 0.0004832599997826037
+      },
+      {
+        "contract": [
+          "p_1",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5"
+        ],
+        "exact": true,
+        "exhaustive_cross_check": null,
+        "n": 30,
+        "peak_memory_kb_delta": 0,
+        "reachable_tuple_count": 6,
+        "wall_time_seconds": 0.000470186000029571
+      },
+      {
+        "contract": [
+          "p_1",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5"
+        ],
+        "exact": true,
+        "exhaustive_cross_check": null,
+        "n": 50,
+        "peak_memory_kb_delta": 0,
+        "reachable_tuple_count": 6,
+        "wall_time_seconds": 0.00042551199999252276
+      },
+      {
+        "contract": [
+          "p_1",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5"
+        ],
+        "exact": true,
+        "exhaustive_cross_check": null,
+        "n": 100,
+        "peak_memory_kb_delta": 0,
+        "reachable_tuple_count": 6,
+        "wall_time_seconds": 0.0005184669998925528
+      }
+    ]
+  },
+  "experiment_2_cost_aware": {
+    "domains": [
+      {
+        "contracts_differ": false,
+        "cost_delta": 0.0,
+        "costs": {
+          "actor_role": 1.0,
+          "budget_remaining": 1.0,
+          "consumed_grant_ids": 1.0,
+          "day": 1.0,
+          "frozen": 1.0,
+          "grant_id": 1.0,
+          "order_value": 1.0,
+          "resource_class": 1.0,
+          "workflow": 1.0
+        },
+        "domain": "v1",
+        "minimum_cardinality_contract": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "order_value",
+          "resource_class"
+        ],
+        "minimum_cardinality_contract_cost": 8.0,
+        "minimum_cost_contract": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "order_value",
+          "resource_class"
+        ],
+        "minimum_cost_contract_cost": 8.0
+      },
+      {
+        "contracts_differ": false,
+        "cost_delta": 0.0,
+        "costs": {
+          "actor_role": 1.0,
+          "budget_remaining": 1.0,
+          "consumed_grant_ids": 1.0,
+          "day": 1.0,
+          "frozen": 1.0,
+          "grant_id": 1.0,
+          "min_order_quantity": 1.0,
+          "order_value": 1.0,
+          "resource_class": 1.0,
+          "workflow": 1.0
+        },
+        "domain": "v2",
+        "minimum_cardinality_contract": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "min_order_quantity",
+          "order_value",
+          "resource_class"
+        ],
+        "minimum_cardinality_contract_cost": 9.0,
+        "minimum_cost_contract": [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "min_order_quantity",
+          "order_value",
+          "resource_class"
+        ],
+        "minimum_cost_contract_cost": 9.0
+      },
+      {
+        "contracts_differ": false,
+        "cost_delta": 0.0,
+        "costs": {
+          "actor_identity": 1.0,
+          "approval_token": 1.0,
+          "branch": 1.0,
+          "data_classification": 1.0,
+          "delegated_role": 1.0,
+          "deployment_window": 1.0,
+          "environment": 1.0,
+          "operation": 1.0,
+          "repository": 1.0,
+          "resource_owner": 1.0
+        },
+        "domain": "v4",
+        "minimum_cardinality_contract": [
+          "approval_token",
+          "branch",
+          "data_classification",
+          "delegated_role",
+          "operation",
+          "repository",
+          "resource_owner"
+        ],
+        "minimum_cardinality_contract_cost": 7.0,
+        "minimum_cost_contract": [
+          "approval_token",
+          "branch",
+          "data_classification",
+          "delegated_role",
+          "operation",
+          "repository",
+          "resource_owner"
+        ],
+        "minimum_cost_contract_cost": 7.0
+      },
+      {
+        "contracts_differ": true,
+        "cost_delta": 3.0,
+        "costs": {
+          "a": 4.0,
+          "b1": 0.5,
+          "b2": 0.5
+        },
+        "domain": "xor_bijection",
+        "minimum_cardinality_contract": [
+          "a"
+        ],
+        "minimum_cardinality_contract_cost": 4.0,
+        "minimum_cost_contract": [
+          "b1",
+          "b2"
+        ],
+        "minimum_cost_contract_cost": 1.0
+      }
+    ],
+    "supported": true
+  }
+}

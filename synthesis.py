@@ -56,6 +56,7 @@ from pysat.formula import CNF, WCNF
 from pysat.solvers import Glucose3
 
 from discernibility import build_discernibility_family, remove_redundant_supersets
+from reduct import sufficiency
 
 
 def _property_variables(candidate_properties: Tuple[str, ...]) -> Dict[str, int]:
@@ -165,3 +166,74 @@ def find_minimum_cost_contract(
     with RC2(wcnf) as rc2:
         model = rc2.compute()
     return _included_from_model(model, var)
+
+
+def contract_change_delta(
+    base_contract: FrozenSet[str],
+    candidate_properties: Tuple[str, ...],
+    old_reachable: List[Any],
+    new_tuples: List[Any],
+    registry: Dict[str, Callable[[Any], bool]],
+) -> Dict[str, Any]:
+    """Milestone D5: `base_contract` is already known sufficient on
+    `old_reachable` (a prior synthesis result); `new_tuples` are what a
+    new transition or a new remediation operator makes newly reachable
+    (this whole SARC series' own convention: an operator's effect IS
+    additional reachable tuples, `domain.py`'s
+    `downroute_reachable_tuples_v2`/`retry_delay_reachable_tuples_v2`,
+    not a change to any existing tuple). Reports the DELTA, not just a
+    fresh answer:
+
+    1. `was_still_sufficient` -- checked directly (`reduct.sufficiency`,
+       a single pass over the COMBINED reachable set, not a full
+       discernibility-family rebuild) -- often the change adds nothing
+       that `base_contract` didn't already cover, and this is the cheap
+       way to know that without resynthesizing anything.
+    2. If not: `updated_contract` keeps every property `base_contract`
+       already has (pinned as hard unit clauses) and asks RC2 for the
+       minimum ADDITIONAL properties needed to restore sufficiency on
+       the combined set -- stable (never silently drops an
+       already-relied-on observation), not necessarily cardinality-
+       optimal in the batch sense (module docstring's own "incremental
+       vs. batch" trade-off; measured below, not assumed away).
+    3. `full_recomputation_contract`: `find_minimum_cardinality_contract`
+       run from scratch on the combined set, completely independently
+       of `base_contract` -- the correctness check D5 registers.
+       `updated_contract` is independently confirmed sufficient
+       (`incremental_is_sufficient`); `full_recomputation_cardinality_
+       gap` reports how much larger (if at all) keeping `base_contract`
+       pinned made the result, compared to the free-choice optimum --
+       the honest price of incrementality, not hidden."""
+    combined = list(old_reachable) + list(new_tuples)
+    was_still_sufficient, _ = sufficiency(tuple(sorted(base_contract)), combined, registry)
+
+    if was_still_sufficient:
+        updated_contract = base_contract
+    else:
+        clauses, var = _hard_clauses(candidate_properties, combined, registry)
+        wcnf = WCNF()
+        for clause in clauses:
+            wcnf.append(clause)
+        for p in base_contract:
+            wcnf.append([var[p]])  # hard: stay included, never dropped by an incremental update
+        for p in candidate_properties:
+            if p not in base_contract:
+                wcnf.append([-var[p]], weight=1)
+        with RC2(wcnf) as rc2:
+            model = rc2.compute()
+        updated_contract = _included_from_model(model, var)
+
+    incremental_is_sufficient, _ = sufficiency(tuple(sorted(updated_contract)), combined, registry)
+    full_recomputation_contract = find_minimum_cardinality_contract(candidate_properties, combined, registry)
+
+    return {
+        "base_contract": sorted(base_contract),
+        "new_tuple_count": len(new_tuples),
+        "was_still_sufficient": was_still_sufficient,
+        "updated_contract": sorted(updated_contract),
+        "updated_contract_cardinality": len(updated_contract),
+        "incremental_is_sufficient": incremental_is_sufficient,
+        "full_recomputation_contract": sorted(full_recomputation_contract),
+        "full_recomputation_cardinality": len(full_recomputation_contract),
+        "full_recomputation_cardinality_gap": len(updated_contract) - len(full_recomputation_contract),
+    }

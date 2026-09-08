@@ -331,6 +331,72 @@ shows the opposite, for a real, declared, explainable reason. Neither
 result generalizes to a domain not yet built; `reduct.py`'s own machinery
 is unmodified by this milestone.
 
+## Sixth amendment (v5, tag `prereg-p5-v5`, synthesis scaling and cost-aware results)
+
+The first five amendments concern what the derivation computes (Definition
+1's participation criterion, reachability, core-versus-reduct). This one
+concerns whether `discernibility.py`/`synthesis.py`'s SAT/MaxSAT contract
+synthesis (Milestone D1/D2) actually scales past exhaustive enumeration,
+and whether minimum-cardinality and minimum-cost synthesis are genuinely
+different capabilities on any domain this artifact has built -- two
+purpose-built benchmarks (`benchmarks.py`), both hand-derived and
+brute-force-verified before registration, `prereg/v5-synthesis.md`.
+
+The registered outcomes, machine-checked, not assumed:
+
+- **Experiment 1 (planted-reduct scaling)**: **`exact` holds at every
+  registered `n`** (10, 30, 50, 100) -- `find_minimum_cardinality_
+  contract` returns exactly the five planted signal properties every
+  time, cross-checked against `reduct.exact_reducts()`'s independent,
+  from-first-principles answer at `n = 10` (the only size where 2^10
+  exhaustion is affordable). Wall time stays sub-millisecond at every
+  `n` (0.0005s at `n=10` down to 0.0007s at `n=100`, no distinguishable
+  growth trend at this scale) and measured peak memory delta is 0 at
+  every `n` -- both descriptive, not pass/fail, per the prereg's own
+  registration. Mechanism, not just the number: the reachable set stays
+  fixed at `k + 1 = 6` tuples regardless of `n` by construction, and the
+  `n - 5` noise properties never appear in any discernibility-family
+  clause, so they cost `synthesis.py` nothing beyond one additional SAT
+  variable each -- exactly why `n = 100` stays cheap.
+- **Experiment 2 (cost-aware synthesis)**: **SUPPORTED** -- on the one
+  purpose-built domain with a genuine declared cost asymmetry
+  (`xor_bijection`: `cost(a) = 4.0` vs. `cost(b1) = cost(b2) = 0.5`),
+  `find_minimum_cardinality_contract` and `find_minimum_cost_contract`
+  disagree exactly as hand-derived: `{a}` (cardinality 1, cost 4.00)
+  vs. `{b1, b2}` (cardinality 2, cost 1.00), a cost delta of 3.00. This
+  artifact's own three real domains (v1, v2, v4) show **no** divergence
+  (`contracts_differ: false`, `cost_delta: 0.00` on each) -- reported
+  honestly as a fact about those domains' structure, not a shortfall of
+  the experiment: v1 and v2 each have a *unique* reduct (nothing else
+  sufficient to prefer on any objective), v4's two reducts are both
+  cardinality seven, and none of the three has a declared per-property
+  cost model of its own, so `_real_domain_costs` assigns every property
+  the identical floor cost -- under uniform cost, minimum-cardinality
+  and minimum-cost trivially coincide by construction. The registered
+  decision rule needed only one of the four domains to diverge; it was
+  always going to be the purpose-built one, not the other three, and
+  that is exactly what the hand-derivation before registration expected.
+- **`contract_change_delta` demonstration** (not a registered pass/fail
+  experiment, D5's own worked illustration): on a small model where a
+  new transition genuinely collides with an existing tuple under the
+  base contract's own projection, `was_still_sufficient: false`, the
+  incremental update (`{x} -> {x, z}`, `x` pinned throughout) is
+  independently confirmed sufficient, and matches the free-choice
+  `full_recomputation_contract` exactly in this illustration
+  (`full_recomputation_cardinality_gap: 0`) -- not a general guarantee:
+  `test_synthesis.py`'s own direct unit tests separately construct a
+  case (a deliberately non-minimal but still-sufficient `base_contract`)
+  where the gap is genuinely nonzero, the honest "price of
+  incrementality" the function's own docstring registers rather than
+  hides.
+
+Neither experiment required retuning `discernibility.py`/`synthesis.py`
+(D1/D2, unmodified by this milestone) to reach these outcomes; both
+constructions are exactly what `prereg/v5-synthesis.md` registered before
+`benchmarks.py` existed. v0.1-v4's own results stay frozen and cited as
+prior iterations; nothing about them is retroactively edited to match
+this amendment.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

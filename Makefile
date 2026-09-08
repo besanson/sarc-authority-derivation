@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -74,6 +74,26 @@ paper: experiments sweep formal
 	@echo "Populating paper draft from out/results/sweep_summary.json + out/checkers/*.json..."
 	python3 populate_paper.py
 
+# Milestone D5 (prereg-p5-v5): the two registered synthesis benchmarks
+# (planted-reduct scaling, cost-aware synthesis) + one contract_change_delta
+# demonstration. NOT wired into release-check or `paper` -- like
+# isolation_delta_check.py, it is expensive (~3 minutes: run_cost_aware_
+# experiment's build_discernibility_family calls are O(|true-verdict
+# tuples| x |false-verdict tuples|) per domain, over v1's 7,776-tuple and
+# v2's 24,624-tuple real reachable sets, twice each for the cardinality
+# and cost backends) for what prereg/v5-synthesis.md itself registers as
+# descriptive, non-gating output (only Experiment 1's `exact` and
+# Experiment 2's SUPPORTED/NOT-SUPPORTED carry a pass/fail character, and
+# neither is a correctness property of THIS repo's derivation results --
+# unlike `make formal`'s checkers -- so neither belongs in the mandatory
+# release gate). Re-run explicitly after any change to discernibility.py,
+# synthesis.py, benchmarks.py, or the real domains' declared models.
+benchmarks:
+	@echo "Synthesis benchmarks (prereg-p5-v5): planted-reduct scaling + cost-aware synthesis + contract_change_delta demo..."
+	@echo "(~3 minutes -- see Makefile comment above this target for why.)"
+	mkdir -p out/results
+	python3 benchmarks.py
+
 release-check:
 	@echo "=== release-check: full test suite ==="
 	mkdir -p out
@@ -143,6 +163,7 @@ help:
 	@echo "  make paper          Populate the paper draft from committed machine output"
 	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
+	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

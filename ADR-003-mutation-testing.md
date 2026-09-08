@@ -389,3 +389,128 @@ would have missed entirely, not merely a coverage-number fix); the
 remaining two are genuine equivalent mutants, each verified by directly
 executing both variants against the real, installed PySAT rather than
 reasoned about from the diff alone.
+
+## Milestone D5 update: `contract_change_delta` added to `synthesis.py`
+
+`contract_change_delta` (`prereg/v5-synthesis.md`'s own D5 registration,
+`synthesis.py`, no `pyproject.toml` change needed -- the file was already
+a mutation target) adds 76 new mutants (540 -> 616 total). First pass: 10
+survived, none accepted on the score alone:
+
+- **8 dict-key-name mutations** (`"base_contract"` case-mutated to
+  `"XXbase_contractXX"`/`"BASE_CONTRACT"`, and the same shape for
+  `new_tuple_count`, `updated_contract_cardinality`, and
+  `full_recomputation_cardinality`): a real, specific gap --
+  `test_contract_change_delta_extends_a_broken_contract_and_keeps_the_
+  pinned_property` and its siblings checked `was_still_sufficient`,
+  `updated_contract`, `incremental_is_sufficient`, and
+  `full_recomputation_contract`/`full_recomputation_cardinality_gap`,
+  but never read these four other keys of the same returned dict.
+  Closed by `test_contract_change_delta_reports_every_declared_field`,
+  which asserts all four directly, not a broader test rewrite.
+- **One real behavioral gap** (`if p not in base_contract:` mutated to
+  `if p in base_contract:`, dropping every soft "prefer excluded" clause
+  from non-base properties entirely while adding a no-op always-violated
+  one to already-hard-pinned base properties): investigated by direct
+  execution, not accepted as an obvious variant of classes 8/9 -- three
+  probe fixtures were built to determine whether this changes observable
+  output. A fully free variable (appearing in no discernibility clause)
+  was confirmed to stay excluded either way, and a "forced-singleton
+  plus absorbed OR-clause" construction collapsed to the same case once
+  `remove_redundant_supersets` absorbed the redundant clause -- neither
+  distinguished the mutation. A THIRD construction did: a colliding pair
+  differing in two DIFFERENT non-base properties simultaneously, with no
+  other clause a subset of `{y, z}` (so absorption cannot collapse it),
+  leaves a genuine, unabsorbed two-way choice in the CNF. Under the
+  correct code, the soft clauses make this tie cost-minimal (repeatably
+  resolved to `{x, z}` across 5 direct runs through
+  `contract_change_delta` itself); under the mutation, with no soft
+  clauses left on `y` or `z` at all, the same fixture repeatably resolves
+  to `{x, y}` instead (8 runs) -- both are valid same-cardinality
+  answers (the mutation was never observed to add an UNNECESSARY third
+  property in any of the three constructions), but WHICH valid answer is
+  returned demonstrably changes, which is exactly what `pytest.raises`-
+  style "any minimal answer accepted" testing would paper over. Closed
+  by `test_contract_change_delta_picks_a_minimum_cardinality_extension_
+  on_a_genuine_two_way_tie`, which pins the correct code's own
+  deterministic resolution of this specific tie.
+- **One new instance of the already-established class 9 pattern**
+  (`weight=1` -> `weight=2` on `contract_change_delta`'s own non-base
+  soft clauses, the identical shape class 9 already documents for
+  `find_minimum_cardinality_contract`'s soft clauses, in a different
+  function): re-verified directly rather than assumed identical by
+  family resemblance -- re-solving the tie-fixture's WCNF at weight 1,
+  2, 5, and 100 returns the identical `{x, z}` result at every weight.
+  Equivalent under class 9's own established reasoning (uniform positive
+  rescaling cannot change an argmin); not a new class, an additional
+  survivor within the same one.
+
+## Correction to class 8 (discovered while closing the gap above)
+
+Closing the two-way-tie gap above required directly executing both the
+correct and the `_property_variables` `i+1`/`i+2`-renumbered code on the
+SAME tie fixture (the standard this ADR already holds itself to for every
+equivalence claim). Doing so surfaced that the new test, run against a
+literal copy of `synthesis.py` with class 8's own mutation re-applied
+(`i + 1` -> `i + 2` in `_property_variables`, `mutmut show
+synthesis.x__property_variables__mutmut_2`), FAILS: the renumbered code
+resolves the identical two-way tie to `{x, y}`, not `{x, z}` --
+observably different, not equivalent, on this input. Class 8's original
+"Equivalent under any input" claim (Milestone D update, above) was
+verified only against that section's own two-state counterexample
+fixture, which -- despite itself documenting a tie
+(`test_find_minimum_cardinality_contract_is_a_singleton_reduct` already
+accepts `contract in ({"x"}, {"y"})` there) -- did not happen to expose
+numbering-sensitivity in its own tie-break. The corrected, narrower claim,
+verified directly rather than reasoned from the general shape of "a
+uniform relabeling": a uniform SAT-variable renumbering cannot change
+SUFFICIENCY or the CARDINALITY of the returned contract (both are
+properties of the clause structure, invariant to variable labels by
+construction), and cannot change the returned set when the optimal
+solution is UNIQUE -- but when several equally-optimal solutions exist (a
+genuine tie), WHICH one the underlying SAT solver's own tie-breaking
+resolves to can depend on the absolute variable numbers, because the
+solver's internal decision heuristics are keyed by variable ID, not only
+by clause structure. `synthesis.x__property_variables__mutmut_2` is
+correspondingly re-classified: no longer an accepted equivalent mutant --
+`test_contract_change_delta_picks_a_minimum_cardinality_extension_on_a_
+genuine_two_way_tie` (added for the gap above) kills it too, incidentally
+closing a Milestone D survivor this milestone did not set out to touch.
+v0.1-v4's own committed mutation results stay frozen and cited as prior
+iterations; Milestone D's own reported 0.9481 score and 28-survivor count
+are not retroactively edited -- they are what that milestone's own test
+suite actually achieved at the time, correct for the tests that existed
+then; this section records what changed and why, not a rewrite of that
+history.
+
+```
+Total mutants: 616
+Killed:        588
+Survived:        28
+No tests:         0
+Kill score = 588 / (588 + 28) = 0.9545 (95.5%)
+```
+
+Above threshold. Of the 28 survivors: 23 `derive.py` + 3 `reduct.py`
+(classes 1-5, 7, unchanged), 1 `find_minimum_cardinality_contract`
+(class 9's original instance, unchanged), and 1
+`contract_change_delta` (class 9's new instance, above) -- confirmed
+directly via `mutmut results` diffed against the pre-D5 list (`comm -23`/
+`comm -13` against the two runs' survivor sets), not assumed from the
+aggregate score. Zero survivors in `discernibility.py`; zero OTHER
+survivors in `synthesis.py` beyond the two class-9 instances --
+`_property_variables`'s own class 8 survivor is gone, per the correction
+above.
+
+## Decision (Milestone D5 update)
+
+Accept the 0.9545 kill score. Nine of the first pass's ten new survivors
+were real, closeable gaps (eight field-assertion gaps closed with direct
+key checks, one genuine tie-numbering-sensitivity bug closed with a
+fixture specifically constructed to expose it after two other
+constructions failed to); the tenth is a new instance of the
+already-established class 9 equivalence, re-verified rather than assumed
+from family resemblance. Closing the tie-numbering gap surfaced that
+Milestone D's own class 8 claim was overstated -- corrected here, in the
+open, rather than left standing on a verification that turned out to
+cover less than it claimed.
