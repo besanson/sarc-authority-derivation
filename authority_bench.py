@@ -14,13 +14,23 @@
 
 """
 Milestone E4 (`prereg/v6-authority-bench.md`, tag `prereg-p5-v6`):
-AuthorityBench itself -- runs the registered comparison (`mining_
-baseline.py`'s scoped Xu-and-Stoller-style mining vs. `src.
+AuthorityBench's own EXPLORATORY v6.0 run -- the registered comparison
+(`mining_baseline.py`'s scoped Xu-and-Stoller-style mining vs. `src.
 authority_compiler.derive_authority_contract`'s loss-derived minimum-
-cardinality reduct) on all 3 registered domains (v1, v2, v4, reused
-unmodified), applying the prereg's own registered comparison metric and
-two-sided decision rule -- neither adjusted here to change the outcome
-once measured."""
+cardinality reduct) on v1, v2, and v4 (reused unmodified), applying the
+prereg's own registered comparison metric and two-sided decision rule --
+neither adjusted here to change the outcome once measured.
+
+Per `prereg/v6.1-authoritybench-amendment.md`'s own "Disposition"
+section: this result is kept, not retracted, and marked
+`exploratory_v6_0: true` below -- it predates that amendment's full E2
+registration (three domains including a newly-built one, four
+baselines, six metrics) and is excluded from AuthorityBench's own
+benchmark tables. This module's own call sites are updated here only to
+track `src/authority_compiler`'s new four-parameter API (Step 1) so
+nothing is left broken between commits; the FULL rewrite (all four
+baselines, all three domains, all six metrics) is Step 4's own,
+separate, later commit."""
 from __future__ import annotations
 
 import json
@@ -66,8 +76,9 @@ def run_domain(
     mining_result = mine_policy(candidate_properties, reachable, registry, time_budget_seconds=TIME_BUDGET_SECONDS)
     soundness = verify_soundness(candidate_properties, reachable, registry, mining_result["rules"])
 
-    this_project = derive_authority_contract(candidate_properties, reachable, registry)
-    this_project_answer = this_project.minimum_cardinality_contract
+    candidate_context = {p: sorted({getattr(t, p) for t in reachable}, key=repr) for p in candidate_properties}
+    this_project = derive_authority_contract(registry, reachable, candidate_context)
+    this_project_answer = this_project.minimum_cardinality_reduct
     mined = mining_result["mined_attributes"]
     relationship = _relationship(mined, this_project_answer)
 
@@ -85,8 +96,8 @@ def run_domain(
             "elapsed_seconds": mining_result["elapsed_seconds"],
         },
         "soundness": soundness,
-        "this_project_core": sorted(this_project.core),
-        "this_project_core_is_sufficient": this_project.core_is_sufficient,
+        "this_project_core": sorted(this_project.core_attributes),
+        "this_project_core_is_sufficient": this_project.counterexamples is None,
         "this_project_answer": sorted(this_project_answer),
         "this_project_answer_count": len(this_project_answer),
         "relationship": relationship,
@@ -128,6 +139,9 @@ def run() -> Dict[str, Any]:
     decision = "SUPPORTED" if supported else ("NOT_SUPPORTED" if all_equal else "INCONCLUSIVE")
 
     return {
+        "exploratory_v6_0": True,
+        "excluded_from_benchmark_tables": True,
+        "superseded_by": "prereg/v6.1-authoritybench-amendment.md (Step 4's own authority-bench harness)",
         "domains": results,
         "decision": decision,
         "anomalous_domains": anomalous,

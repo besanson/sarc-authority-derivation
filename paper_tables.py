@@ -56,6 +56,7 @@ def build_slots(
     reduct_check_path: str = "out/checkers/reduct_check.json",
     core_insufficiency_counterexample_path: str = "out/checkers/core_insufficiency_counterexample.json",
     isolation_delta_check_path: str = "out/checkers/isolation_delta_check.json",
+    authority_compiler_check_path: str = "out/checkers/authority_compiler_check.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -68,6 +69,7 @@ def build_slots(
     rcheck = json.loads(Path(reachability_check_path).read_text())
     ch_a8 = json.loads(Path(sufficiency_check_path).read_text())
     ch_a10 = json.loads(Path(reduct_check_path).read_text())
+    ac_check = json.loads(Path(authority_compiler_check_path).read_text())
     neg_n_and_ch_a9 = json.loads(Path(core_insufficiency_counterexample_path).read_text())
     neg_prop_n_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "negative_proposition_n")
     ch_a9_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "ch_a9_constrained_procurement_variant")
@@ -172,6 +174,11 @@ def build_slots(
         "ch_a10_subsets_considered": f"{ch_a10['subsets_considered']:,}",
         "ch_a10_power_set_size": f"{2 ** len(ch_a10['candidate_properties']):,}",
         "ch_a10_candidate_property_count": str(len(ch_a10["candidate_properties"])),
+
+        # E1 (prereg/v6.1-authoritybench-amendment.md): does the packaged
+        # src/authority_compiler entry point agree with CH-A10's own,
+        # separately-verified core/reduct result -- confirmed, not assumed.
+        "authority_compiler_confirms_ch_a10": str(ac_check["clean"]),
 
         "neg_prop_n_status": _supported(neg_prop_n_case["supported"]),
         "neg_prop_n_matches_fixture": str(neg_prop_n_case["matches_registered_fixture_expectation"]),

@@ -8,7 +8,7 @@
       "candidate_property_count": 9,
       "domain": "v1",
       "mining": {
-        "elapsed_seconds": 1.4404763000000003,
+        "elapsed_seconds": 1.4036203869999326,
         "mined_attribute_count": 8,
         "mined_attributes": [
           "actor_role",
@@ -402,7 +402,7 @@
       "candidate_property_count": 10,
       "domain": "v2",
       "mining": {
-        "elapsed_seconds": 6.318296255000064,
+        "elapsed_seconds": 5.7456952969999975,
         "mined_attribute_count": 9,
         "mined_attributes": [
           "actor_role",
@@ -949,7 +949,7 @@
       "candidate_property_count": 10,
       "domain": "v4",
       "mining": {
-        "elapsed_seconds": 1.2563511710000057,
+        "elapsed_seconds": 1.1086002439999447,
         "mined_attribute_count": 7,
         "mined_attributes": [
           "approval_token",
@@ -1074,6 +1074,9 @@
       "this_project_core_is_sufficient": false
     }
   ],
+  "excluded_from_benchmark_tables": true,
+  "exploratory_v6_0": true,
   "intractable_domains": [],
+  "superseded_by": "prereg/v6.1-authoritybench-amendment.md (Step 4's own authority-bench harness)",
   "unsound_domains": []
 }

@@ -13,14 +13,38 @@
 # limitations under the License.
 #
 # Ported with attribution from sarc-suite-one-pass's pyproject.toml
-# (commit 782261e) -- see ADR-001. This repo has no packaging config of
-# its own (it is run in place, not installed) -- this file exists solely
-# to hold [tool.mutmut]'s configuration (Phase 2 / release-check mutation
-# gate, target participation.py + derive.py + reduct.py + domain_v4.py +
-# losses_v4.py + discernibility.py + synthesis.py, >=0.85, a hard gate as
-# of v0.3, extended v0.4/Milestone C and Milestone D -- see `make
-# mutate`/`mutation_check.py`) and [tool.pytest.ini_options]'s marker
+# (commit 782261e) -- see ADR-001. Originally held no packaging config of
+# its own (run in place, not installed) -- [project]/[project.scripts]
+# below (Milestone E1, prereg/v6.1-authoritybench-amendment.md's own
+# "authority_compiler's fuller API" section: "pyproject exposes... an
+# authority-bench command") is the first packaging section this file
+# gains, minimal on purpose: it does not change how anything else in this
+# repo is run (`python3 <script>.py` keeps working unchanged for every
+# other entry point; nothing here is installed as part of `make
+# bootstrap`/`make release-check`). The rest of this file still holds
+# [tool.mutmut]'s configuration (Phase 2 / release-check mutation gate,
+# target participation.py + derive.py + reduct.py + domain_v4.py +
+# losses_v4.py + discernibility.py + synthesis.py + src/authority_
+# compiler/api.py, >=0.85, a hard gate as of v0.3, extended v0.4/
+# Milestone C, Milestone D, and Milestone E1 -- see `make mutate`/
+# `mutation_check.py`) and [tool.pytest.ini_options]'s marker
 # registration.
+
+[project]
+name = "sarc-authority-derivation"
+version = "0.6.1"
+description = "Deriving Authority: a machine-checkable derivation from a declared loss model to the core attribute set a pre-action authority gate must observe."
+requires-python = ">=3.11"
+
+[project.scripts]
+authority-bench = "authority_bench:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["authority_bench"]
 
 [tool.pytest.ini_options]
 # pythonpath = ["src"]: Milestone E1's src/authority_compiler is imported

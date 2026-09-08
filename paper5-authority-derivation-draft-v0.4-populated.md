@@ -575,7 +575,11 @@ by construction, minimal.
   the unique reduct: **True**
   (`checkers/reduct_check.py`). Claim 3's antecedent (core sufficient)
   holds for this model per CH-A8, and its consequent (unique reduct)
-  is confirmed directly, not inferred.
+  is confirmed directly, not inferred. `src/authority_compiler`'s
+  packaged `derive_authority_contract` entry point (Milestone E)
+  independently confirms the identical core and reduct on this same
+  model: **True**
+  (`checkers/authority_compiler_check.py`).
 - **Negative Proposition N** (registered counterexample,
   `prereg/fixtures/negative-proposition-n-counterexample.json`):
   **SUPPORTED**, matching the fixture's own

@@ -1,0 +1,68 @@
+{
+  "already_committed_core": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "already_committed_minimum_reducts": [
+    [
+      "actor_role",
+      "budget_remaining",
+      "consumed_grant_ids",
+      "day",
+      "frozen",
+      "grant_id",
+      "min_order_quantity",
+      "order_value",
+      "resource_class"
+    ]
+  ],
+  "clean": true,
+  "core_agrees": true,
+  "minimal_reducts_agree": true,
+  "minimum_cardinality_reduct_is_one_of_the_already_committed_minimum_reducts": true,
+  "model": "v2",
+  "packaged_core_attributes": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "packaged_core_is_sufficient": true,
+  "packaged_minimal_reducts": [
+    [
+      "actor_role",
+      "budget_remaining",
+      "consumed_grant_ids",
+      "day",
+      "frozen",
+      "grant_id",
+      "min_order_quantity",
+      "order_value",
+      "resource_class"
+    ]
+  ],
+  "packaged_minimum_cardinality_reduct": [
+    "actor_role",
+    "budget_remaining",
+    "consumed_grant_ids",
+    "day",
+    "frozen",
+    "grant_id",
+    "min_order_quantity",
+    "order_value",
+    "resource_class"
+  ],
+  "reduct_check_core_is_unique_reduct": true
+}
