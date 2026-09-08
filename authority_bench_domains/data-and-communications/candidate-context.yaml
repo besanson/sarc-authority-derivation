@@ -6,6 +6,11 @@ candidate_properties:
   - internal
   - personal
   - special_category
+  observation_cost:
+    latency: 0.1
+    privacy: 0.3
+    staleness: 0.1
+    failure_probability: 0.1
 - name: legal_basis
   domain:
   - consent
@@ -13,33 +18,68 @@ candidate_properties:
   - legitimate_interest
   - legal_obligation
   - none_declared
+  observation_cost:
+    latency: 0.1
+    privacy: 0.2
+    staleness: 0.1
+    failure_probability: 0.1
 - name: recipient_type
   domain:
   - internal_only
   - processor_under_contract
   - third_party_controller
+  observation_cost:
+    latency: 0.1
+    privacy: 0.2
+    staleness: 0.1
+    failure_probability: 0.1
 - name: destination_region
   domain:
   - eea
   - adequacy_country
   - third_country_with_safeguards
   - third_country_no_safeguards
+  observation_cost:
+    latency: 0.4
+    privacy: 0.3
+    staleness: 0.2
+    failure_probability: 0.2
 - name: retention_status
   domain:
   - within_declared_period
   - beyond_declared_period
+  observation_cost:
+    latency: 0.4
+    privacy: 0.1
+    staleness: 0.3
+    failure_probability: 0.2
 - name: channel_encryption
   domain:
   - encrypted
   - unencrypted
+  observation_cost:
+    latency: 0.15
+    privacy: 0.1
+    staleness: 0.1
+    failure_probability: 0.1
 - name: erasure_request_state
   domain:
   - none
   - honored
   - pending_unhandled
+  observation_cost:
+    latency: 0.4
+    privacy: 0.2
+    staleness: 0.3
+    failure_probability: 0.2
 - name: actor_role
   domain:
   - agent-support-bot
   - agent-analytics-pipeline
   - agent-marketing-automation
   - agent-admin
+  observation_cost:
+    latency: 0.1
+    privacy: 0.1
+    staleness: 0.05
+    failure_probability: 0.1

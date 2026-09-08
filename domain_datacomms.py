@@ -68,6 +68,54 @@ PROPERTY_DOMAINS_DATACOMMS: Dict[str, List[str]] = {
 assert set(PROPERTY_DOMAINS_DATACOMMS.keys()) == set(CANDIDATE_PROPERTIES_DATACOMMS)
 
 
+# Milestone E, Step 4 (prereg-p5-v6.1): the "REAL declared per-property
+# costs for the new data-and-communications domain" the prereg's own
+# "Contract cost" metric section promises ("fields already present in
+# the request/decision context at zero round-trip cost... score low on
+# latency; destination_region/retention_status, which this domain's own
+# design implies may require a lookup against a separate record store,
+# score higher") -- registered in words at Step 2 but not, in fact,
+# encoded anywhere until this addition; completed here, before Step 4's
+# harness reads it, rather than left as a silent gap between what was
+# promised and what candidate-context.yaml actually shipped. Four
+# sub-factors per `benchmarks.py`'s own `COST_SUB_FACTOR_NAMES`
+# (latency, privacy, staleness, failure_probability), each reasoned
+# individually below, not copied across properties:
+#
+# - latency: LOW (0.1-0.15) for fields already present on the record's
+#   own declared metadata or the live connection/session at decision
+#   time (data_category, legal_basis, recipient_type, channel_
+#   encryption, actor_role); HIGH (0.4) for the three the prereg's own
+#   text calls out or that share the same shape -- a lookup against a
+#   separate record store (destination_region, retention_status,
+#   erasure_request_state).
+# - privacy: higher where the observation itself is more revealing
+#   about the data subject or the organisation's own infrastructure
+#   (data_category's sensitivity tier; destination_region's cross-
+#   border/vendor exposure; erasure_request_state ties directly to one
+#   data subject's rights exercise).
+# - staleness: higher where the value can plausibly change within a
+#   single decision window (retention_status, erasure_request_state);
+#   lowest where it is fixed for the life of the record or the calling
+#   agent (data_category, actor_role).
+# - failure_probability: higher wherever an external lookup is on the
+#   path (the same three higher-latency fields); low and uniform for
+#   fields sourced from the request's own context.
+PROPERTY_OBSERVATION_COSTS_DATACOMMS: Dict[str, Dict[str, float]] = {
+    "data_category": {"latency": 0.1, "privacy": 0.3, "staleness": 0.1, "failure_probability": 0.1},
+    "legal_basis": {"latency": 0.1, "privacy": 0.2, "staleness": 0.1, "failure_probability": 0.1},
+    "recipient_type": {"latency": 0.1, "privacy": 0.2, "staleness": 0.1, "failure_probability": 0.1},
+    "destination_region": {"latency": 0.4, "privacy": 0.3, "staleness": 0.2, "failure_probability": 0.2},
+    "retention_status": {"latency": 0.4, "privacy": 0.1, "staleness": 0.3, "failure_probability": 0.2},
+    "channel_encryption": {"latency": 0.15, "privacy": 0.1, "staleness": 0.1, "failure_probability": 0.1},
+    "erasure_request_state": {"latency": 0.4, "privacy": 0.2, "staleness": 0.3, "failure_probability": 0.2},
+    "actor_role": {"latency": 0.1, "privacy": 0.1, "staleness": 0.05, "failure_probability": 0.1},
+}
+
+assert set(PROPERTY_OBSERVATION_COSTS_DATACOMMS.keys()) == set(CANDIDATE_PROPERTIES_DATACOMMS)
+assert all(set(v.keys()) == {"latency", "privacy", "staleness", "failure_probability"} for v in PROPERTY_OBSERVATION_COSTS_DATACOMMS.values())
+
+
 def _internal_only_stays_in_eea(recipient_type: str, destination_region: str) -> bool:
     """The one declared reachability rule (`prereg/v6.1-authoritybench-
     amendment.md`): data that never leaves the organisation cannot, by

@@ -96,14 +96,22 @@ benchmarks:
 	mkdir -p out/results
 	python3 benchmarks.py
 
-# Milestone E4 (prereg-p5-v6): AuthorityBench -- the mining-baseline
-# comparison on v1/v2/v4. NOT wired into release-check or `paper`, same
-# reasoning as `benchmarks`: prereg/v6-authority-bench.md's own decision
-# rule is descriptive/two-sided, not a correctness gate on this repo's
-# own derivation results. Takes ~2.5 minutes (all 3 domains, well inside
-# the prereg's own 20-minute-per-domain tractability budget).
-authority-bench:
-	@echo "AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4..."
+# Milestone E, Step 4 (prereg-p5-v6.1): AuthorityBench run all -- all
+# four registered baselines (manual least-privilege, Xu-and-Stoller
+# mining, essential-variable analysis, exhaustive reduct) on all three
+# registered domains (v2, v4, data-and-communications), all six metrics.
+# Depends on `authority-bench-domains` (Step 2's YAML packaging, itself
+# depending on `formal`) and `xu-stoller-validation` (Step 3's gate
+# decision this run reads, not re-decides). Writes out/results/
+# authority_bench_v6_1.json -- out/results/authority_bench.json is v6.0's
+# own exploratory two-baseline/three-domain result (commit 0ecfeb3),
+# frozen, not touched by this target. NOT wired into release-check or
+# `paper`, same reasoning as `benchmarks`: not a correctness gate on this
+# repo's own derivation results. Takes well under a minute (all 3
+# domains, well inside the prereg's own 20-minute-per-domain
+# tractability budget).
+authority-bench: authority-bench-domains xu-stoller-validation
+	@echo "AuthorityBench run all (prereg-p5-v6.1): four baselines x three domains x six metrics..."
 	mkdir -p out/results
 	python3 authority_bench.py
 
@@ -205,7 +213,7 @@ help:
 	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
-	@echo "  make authority-bench AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4 (~2.5 min, not part of release-check)"
+	@echo "  make authority-bench AuthorityBench run all (prereg-p5-v6.1): four baselines x three domains x six metrics (not part of release-check)"
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"
 	@echo "  make clean          Remove all outputs"

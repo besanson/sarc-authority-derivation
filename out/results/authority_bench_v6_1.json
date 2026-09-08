@@ -1,0 +1,493 @@
+{
+  "domains": [
+    {
+      "baselines": {
+        "essential_variable_analysis": {
+          "attributes": [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ],
+          "baseline": "essential_variable_analysis",
+          "committed_checker_source": "out/checkers/reduct_check.json",
+          "contract_cost": 9.0,
+          "contract_size": 9,
+          "correctness": true,
+          "counterexamples": null,
+          "excluded": false,
+          "matches_already_committed_checker_core": true,
+          "peak_rss_delta_kb": 7988,
+          "runtime_seconds": 1.2464331140017748
+        },
+        "exhaustive_reduct": {
+          "baseline": "exhaustive_reduct",
+          "excluded": false,
+          "minimum_cardinality": 9,
+          "peak_rss_delta_kb": 0,
+          "reduct_count": 1,
+          "reducts": [
+            {
+              "attributes": [
+                "actor_role",
+                "budget_remaining",
+                "consumed_grant_ids",
+                "day",
+                "frozen",
+                "grant_id",
+                "min_order_quantity",
+                "order_value",
+                "resource_class"
+              ],
+              "contract_cost": 9.0,
+              "contract_size": 9,
+              "correctness": true,
+              "counterexamples": null
+            }
+          ],
+          "runtime_seconds": 23.956097808000777,
+          "subsets_considered": 1023
+        },
+        "manual_least_privilege": {
+          "attributes": [
+            "actor_role",
+            "budget_remaining",
+            "order_value",
+            "resource_class"
+          ],
+          "baseline": "manual_least_privilege",
+          "contract_cost": 4.0,
+          "contract_size": 4,
+          "correctness": false,
+          "counterexamples": {
+            "tuple_a": {
+              "actor_role": "agent-replenish",
+              "budget_remaining": 1000.0,
+              "consumed_grant_ids": [],
+              "day": 50,
+              "frozen": false,
+              "grant_id": null,
+              "min_order_quantity": 500.0,
+              "order_value": 600.0,
+              "resource_class": "consumables",
+              "workflow": "W1"
+            },
+            "tuple_a_prime": {
+              "actor_role": "agent-replenish",
+              "budget_remaining": 1000.0,
+              "consumed_grant_ids": [],
+              "day": 50,
+              "frozen": true,
+              "grant_id": null,
+              "min_order_quantity": 500.0,
+              "order_value": 600.0,
+              "resource_class": "consumables",
+              "workflow": "W1"
+            },
+            "verdict_a": false,
+            "verdict_a_prime": true
+          },
+          "excluded": false,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 1.2169984984211624e-06
+        },
+        "xu_stoller_mining": {
+          "attributes": [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ],
+          "baseline": "xu_stoller_mining",
+          "contract_cost": 9.0,
+          "contract_size": 9,
+          "correctness": true,
+          "counterexamples": null,
+          "excluded": false,
+          "mining_rule_count": 54,
+          "mining_rule_level_mismatch_count": 0,
+          "mining_rule_level_sound": true,
+          "mining_tractable": true,
+          "peak_rss_delta_kb": 128,
+          "runtime_seconds": 6.241192412000601
+        }
+      },
+      "candidate_property_count": 10,
+      "costs": {
+        "actor_role": 1.0,
+        "budget_remaining": 1.0,
+        "consumed_grant_ids": 1.0,
+        "day": 1.0,
+        "frozen": 1.0,
+        "grant_id": 1.0,
+        "min_order_quantity": 1.0,
+        "order_value": 1.0,
+        "resource_class": 1.0,
+        "workflow": 1.0
+      },
+      "domain": "v2",
+      "manual_attributes": [
+        "actor_role",
+        "order_value",
+        "resource_class",
+        "budget_remaining"
+      ],
+      "reachable_tuple_count": 24624,
+      "summary": {
+        "cheapest_sufficient_baseline_by_cost": "xu_stoller_mining",
+        "insufficient_baselines": [
+          "manual_least_privilege"
+        ],
+        "smallest_sufficient_baseline_by_size": "xu_stoller_mining",
+        "sufficient_baselines": [
+          "essential_variable_analysis",
+          "xu_stoller_mining"
+        ]
+      }
+    },
+    {
+      "baselines": {
+        "essential_variable_analysis": {
+          "attributes": [
+            "approval_token",
+            "data_classification",
+            "delegated_role",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          "baseline": "essential_variable_analysis",
+          "committed_checker_source": "out/checkers/ch_b1_check.json",
+          "contract_cost": 6.0,
+          "contract_size": 6,
+          "correctness": false,
+          "counterexamples": {
+            "tuple_a": {
+              "actor_identity": "agent-ci-bot",
+              "approval_token": "absent",
+              "branch": "main",
+              "data_classification": "public",
+              "delegated_role": "role-owner",
+              "deployment_window": "in_window",
+              "environment": "production",
+              "operation": "deploy",
+              "repository": "repo-billing",
+              "resource_owner": "tenant-a"
+            },
+            "tuple_a_prime": {
+              "actor_identity": "agent-ci-bot",
+              "approval_token": "absent",
+              "branch": "staging",
+              "data_classification": "public",
+              "delegated_role": "role-owner",
+              "deployment_window": "in_window",
+              "environment": "staging",
+              "operation": "deploy",
+              "repository": "repo-billing",
+              "resource_owner": "tenant-a"
+            },
+            "verdict_a": true,
+            "verdict_a_prime": false
+          },
+          "excluded": false,
+          "matches_already_committed_checker_core": true,
+          "peak_rss_delta_kb": 504,
+          "runtime_seconds": 0.649574434999522
+        },
+        "exhaustive_reduct": {
+          "baseline": "exhaustive_reduct",
+          "excluded": false,
+          "minimum_cardinality": 7,
+          "peak_rss_delta_kb": 0,
+          "reduct_count": 2,
+          "reducts": [
+            {
+              "attributes": [
+                "approval_token",
+                "branch",
+                "data_classification",
+                "delegated_role",
+                "operation",
+                "repository",
+                "resource_owner"
+              ],
+              "contract_cost": 7.0,
+              "contract_size": 7,
+              "correctness": true,
+              "counterexamples": null
+            },
+            {
+              "attributes": [
+                "approval_token",
+                "data_classification",
+                "delegated_role",
+                "environment",
+                "operation",
+                "repository",
+                "resource_owner"
+              ],
+              "contract_cost": 7.0,
+              "contract_size": 7,
+              "correctness": true,
+              "counterexamples": null
+            }
+          ],
+          "runtime_seconds": 13.90330942899891,
+          "subsets_considered": 1014
+        },
+        "manual_least_privilege": {
+          "attributes": [
+            "approval_token",
+            "delegated_role",
+            "environment",
+            "operation"
+          ],
+          "baseline": "manual_least_privilege",
+          "contract_cost": 4.0,
+          "contract_size": 4,
+          "correctness": false,
+          "counterexamples": {
+            "tuple_a": {
+              "actor_identity": "agent-ci-bot",
+              "approval_token": "valid",
+              "branch": "main",
+              "data_classification": "public",
+              "delegated_role": "role-owner",
+              "deployment_window": "in_window",
+              "environment": "production",
+              "operation": "delete",
+              "repository": "repo-billing",
+              "resource_owner": "tenant-a"
+            },
+            "tuple_a_prime": {
+              "actor_identity": "agent-ci-bot",
+              "approval_token": "valid",
+              "branch": "main",
+              "data_classification": "public",
+              "delegated_role": "role-owner",
+              "deployment_window": "in_window",
+              "environment": "production",
+              "operation": "delete",
+              "repository": "repo-internal-tools",
+              "resource_owner": "tenant-a"
+            },
+            "verdict_a": true,
+            "verdict_a_prime": false
+          },
+          "excluded": false,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 1.796001015463844e-06
+        },
+        "xu_stoller_mining": {
+          "attributes": [
+            "approval_token",
+            "data_classification",
+            "delegated_role",
+            "environment",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          "baseline": "xu_stoller_mining",
+          "contract_cost": 7.0,
+          "contract_size": 7,
+          "correctness": true,
+          "counterexamples": null,
+          "excluded": false,
+          "mining_rule_count": 16,
+          "mining_rule_level_mismatch_count": 0,
+          "mining_rule_level_sound": true,
+          "mining_tractable": true,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 1.092676398000549
+        }
+      },
+      "candidate_property_count": 10,
+      "costs": {
+        "actor_identity": 1.0,
+        "approval_token": 1.0,
+        "branch": 1.0,
+        "data_classification": 1.0,
+        "delegated_role": 1.0,
+        "deployment_window": 1.0,
+        "environment": 1.0,
+        "operation": 1.0,
+        "repository": 1.0,
+        "resource_owner": 1.0
+      },
+      "domain": "v4",
+      "manual_attributes": [
+        "delegated_role",
+        "operation",
+        "approval_token",
+        "environment"
+      ],
+      "reachable_tuple_count": 15120,
+      "summary": {
+        "cheapest_sufficient_baseline_by_cost": "xu_stoller_mining",
+        "insufficient_baselines": [
+          "essential_variable_analysis",
+          "manual_least_privilege"
+        ],
+        "smallest_sufficient_baseline_by_size": "xu_stoller_mining",
+        "sufficient_baselines": [
+          "xu_stoller_mining"
+        ]
+      }
+    },
+    {
+      "baselines": {
+        "essential_variable_analysis": {
+          "attributes": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ],
+          "baseline": "essential_variable_analysis",
+          "committed_checker_source": "out/checkers/ch_datacomms_check.json",
+          "contract_cost": 4.75,
+          "contract_size": 6,
+          "correctness": true,
+          "counterexamples": null,
+          "excluded": false,
+          "matches_already_committed_checker_core": true,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 0.23989002000053006
+        },
+        "exhaustive_reduct": {
+          "baseline": "exhaustive_reduct",
+          "excluded": false,
+          "minimum_cardinality": 6,
+          "peak_rss_delta_kb": 0,
+          "reduct_count": 1,
+          "reducts": [
+            {
+              "attributes": [
+                "channel_encryption",
+                "data_category",
+                "destination_region",
+                "erasure_request_state",
+                "legal_basis",
+                "retention_status"
+              ],
+              "contract_cost": 4.75,
+              "contract_size": 6,
+              "correctness": true,
+              "counterexamples": null
+            }
+          ],
+          "runtime_seconds": 1.8650193769990437,
+          "subsets_considered": 253
+        },
+        "manual_least_privilege": {
+          "attributes": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "legal_basis"
+          ],
+          "baseline": "manual_least_privilege",
+          "contract_cost": 2.65,
+          "contract_size": 4,
+          "correctness": false,
+          "counterexamples": {
+            "tuple_a": {
+              "actor_role": "agent-support-bot",
+              "channel_encryption": "encrypted",
+              "data_category": "internal",
+              "destination_region": "eea",
+              "erasure_request_state": "none",
+              "legal_basis": "consent",
+              "recipient_type": "internal_only",
+              "retention_status": "within_declared_period"
+            },
+            "tuple_a_prime": {
+              "actor_role": "agent-support-bot",
+              "channel_encryption": "encrypted",
+              "data_category": "internal",
+              "destination_region": "eea",
+              "erasure_request_state": "pending_unhandled",
+              "legal_basis": "consent",
+              "recipient_type": "internal_only",
+              "retention_status": "within_declared_period"
+            },
+            "verdict_a": false,
+            "verdict_a_prime": true
+          },
+          "excluded": false,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 1.796001015463844e-06
+        },
+        "xu_stoller_mining": {
+          "attributes": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ],
+          "baseline": "xu_stoller_mining",
+          "contract_cost": 4.75,
+          "contract_size": 6,
+          "correctness": true,
+          "counterexamples": null,
+          "excluded": false,
+          "mining_rule_count": 52,
+          "mining_rule_level_mismatch_count": 0,
+          "mining_rule_level_sound": true,
+          "mining_tractable": true,
+          "peak_rss_delta_kb": 0,
+          "runtime_seconds": 1.4622611229988252
+        }
+      },
+      "candidate_property_count": 8,
+      "costs": {
+        "actor_role": 0.35,
+        "channel_encryption": 0.44999999999999996,
+        "data_category": 0.6,
+        "destination_region": 1.0999999999999999,
+        "erasure_request_state": 1.1,
+        "legal_basis": 0.5,
+        "recipient_type": 0.5,
+        "retention_status": 1.0
+      },
+      "domain": "data-and-communications",
+      "manual_attributes": [
+        "data_category",
+        "legal_basis",
+        "destination_region",
+        "channel_encryption"
+      ],
+      "reachable_tuple_count": 8640,
+      "summary": {
+        "cheapest_sufficient_baseline_by_cost": "xu_stoller_mining",
+        "insufficient_baselines": [
+          "manual_least_privilege"
+        ],
+        "smallest_sufficient_baseline_by_size": "xu_stoller_mining",
+        "sufficient_baselines": [
+          "essential_variable_analysis",
+          "xu_stoller_mining"
+        ]
+      }
+    }
+  ],
+  "prereg": "prereg/v6.1-authoritybench-amendment.md",
+  "supersedes": "out/results/authority_bench.json (commit 0ecfeb3, exploratory_v6_0 -- kept, frozen, not re-read or re-written by this script)",
+  "xu_stoller_mining_validated": true,
+  "xu_stoller_validation_source": "out/results/xu_stoller_validation.json"
+}
