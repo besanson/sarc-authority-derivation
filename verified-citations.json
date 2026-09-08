@@ -306,6 +306,78 @@
       "first_author": "MITRE Corporation",
       "year": 2026,
       "verified_via": "Two independently-worded WebSearch queries (2026-09-07/08) both confirming technique ID (T1485), exact name, and parent tactic (Impact, TA0040); direct WebFetch of the live official attack.mitre.org page confirmed the same plus one sub-technique (T1485.001). Cited (prereg/v4-realistic-domain.md, losses_v4.destructive_action_without_recovery_path) as the failure mode a destructive operation with no declared remediation operator exists to catch."
+    },
+    {
+      "id": "bloem-shield-synthesis-2015",
+      "doi": "10.1007/978-3-662-46681-0_51",
+      "url": "https://doi.org/10.1007/978-3-662-46681-0_51",
+      "title": "Shield Synthesis: Runtime Enforcement for Reactive Systems",
+      "entry_type": "inproceedings",
+      "authors": ["Roderick Bloem", "Bettina Konighofer", "Robert Konighofer", "Chao Wang"],
+      "first_author": "Roderick Bloem",
+      "year": 2015,
+      "venue": "TACAS 2015 (21st International Conference on Tools and Algorithms for the Construction and Analysis of Systems), LNCS 9035, pp. 533-548",
+      "verified_via": "Direct WebFetch of https://tugraz.elsevierpure.com/en/publications/shield-synthesis-runtime-enforcement-for-reactive-systems, 2026-09-08 (after the original graz.elsevierpure.com URL 301-redirected there): confirmed exact title, full four-author order, TACAS 2015, LNCS volume 9035, page range 533-548, and DOI directly from the TU Graz research portal record. Cited in NOVELTY.md's Eighth amendment (prereg/v6.1-authoritybench-amendment.md, Step 5) as the shield-synthesis literature cluster: constructs a corrective law over an already-fixed signal interface, not a derivation of the interface itself."
+    },
+    {
+      "id": "schneider-enforceable-security-policies-2000",
+      "doi": "10.1145/353323.353382",
+      "url": "https://doi.org/10.1145/353323.353382",
+      "title": "Enforceable Security Policies",
+      "entry_type": "article",
+      "authors": ["Fred B. Schneider"],
+      "first_author": "Fred B. Schneider",
+      "year": 2000,
+      "venue": "ACM Transactions on Information and System Security (TISSEC) 3(1), pp. 30-50",
+      "verified_via": "Direct WebFetch of https://www.cs.cornell.edu/fbs/publications/EnfSecPols.pdf, 2026-09-08, read via page-image rendering (text extraction failed, image rendering succeeded): title 'Enforceable Security Policies', author 'FRED B. SCHNEIDER, Cornell University', and the exact venue line 'ACM Transactions on Information and System Security, Vol. 3, No. 1, February 2000, Pages 30-50' all visible directly on the rendered first page, along with the paper's own abstract stating it gives 'a precise characterization... for the class of security policies enforceable with mechanisms that work by monitoring system execution' (Execution Monitoring, EM). Cited in NOVELTY.md's Eighth amendment as the foundational runtime-enforcement/EM citation: characterizes what a monitor can enforce over an already-fixed action alphabet, not which properties belong in that alphabet."
+    },
+    {
+      "id": "ligatti-bauer-walker-edit-automata-2005",
+      "doi": "10.1007/s10207-004-0046-8",
+      "url": "https://doi.org/10.1007/s10207-004-0046-8",
+      "title": "Edit automata: enforcement mechanisms for run-time security policies",
+      "entry_type": "article",
+      "authors": ["Jay Ligatti", "Lujo Bauer", "David Walker"],
+      "first_author": "Jay Ligatti",
+      "year": 2005,
+      "venue": "International Journal of Information Security 4(1-2), pp. 2-16",
+      "verified_via": "Direct WebFetch of https://collaborate.princeton.edu/en/publications/edit-automata-enforcement-mechanisms-for-run-time-security-polici/, 2026-09-08: confirmed exact title, full three-author order, journal name, volume/issue (4(1-2)), page range (2-16), February 2005, and DOI directly from Princeton's own research-portal record (the Springer chapter page itself 303-redirected to an access-gated IdP login and could not be fetched directly). Cited in NOVELTY.md's Eighth amendment alongside Schneider 2000 as the edit-automata half of the runtime-enforcement cluster: extends the monitor's corrective repertoire (insert/suppress, not just truncate) over the same already-fixed action alphabet Schneider fixes, without deriving that alphabet."
+    },
+    {
+      "id": "ramadge-wonham-supervisory-control-1987",
+      "doi": "10.1137/0325013",
+      "url": "https://doi.org/10.1137/0325013",
+      "title": "Supervisory Control of a Class of Discrete Event Processes",
+      "entry_type": "article",
+      "authors": ["P. J. Ramadge", "W. M. Wonham"],
+      "first_author": "P. J. Ramadge",
+      "year": 1987,
+      "venue": "SIAM Journal on Control and Optimization 25(1), pp. 206-230",
+      "verified_via": "Direct WebFetch of https://collaborate.princeton.edu/en/publications/supervisory-control-of-a-class-of-discrete-event-processes/, 2026-09-08: confirmed exact title, both authors, journal name, volume/issue/pages (25(1), 206-230), 1987, and DOI directly from Princeton's own research-portal record (the ACM DL page itself returned 403 Forbidden). Cited in NOVELTY.md's Eighth amendment as the discrete-event/supervisory-control half of the controller-synthesis cluster: synthesizes a maximally permissive supervisor over an already-fixed plant event alphabet, not a derivation of the alphabet itself."
+    },
+    {
+      "id": "pnueli-rosner-reactive-synthesis-1989",
+      "doi": "10.1145/75277.75293",
+      "url": "https://doi.org/10.1145/75277.75293",
+      "title": "On the synthesis of a reactive module",
+      "entry_type": "inproceedings",
+      "authors": ["Amir Pnueli", "Roni Rosner"],
+      "first_author": "Amir Pnueli",
+      "year": 1989,
+      "venue": "POPL 1989 (16th ACM Symposium on Principles of Programming Languages), pp. 179-190",
+      "verified_via": "Two independently-worded WebSearch queries (2026-09-08) both returning the identical title, both authors, POPL 1989 venue, page range 179-190, and DOI 10.1145/75277.75293 (the ACM DL page itself returned 403 Forbidden to a direct WebFetch); both searches also independently distinguished this paper from the authors' related but distinct 'On the synthesis of an asynchronous reactive module' (ICALP 1989), confirming no conflation between the two. Cited in NOVELTY.md's Eighth amendment as the temporal-logic/reactive-synthesis half of the controller-synthesis cluster: constructs a winning strategy over already-declared input/output signals, not a derivation of which signals must be declared."
+    },
+    {
+      "id": "dennis-van-horn-capabilities-1966",
+      "doi": "10.1145/365230.365252",
+      "url": "https://doi.org/10.1145/365230.365252",
+      "title": "Programming semantics for multiprogrammed computations",
+      "entry_type": "article",
+      "authors": ["Jack B. Dennis", "Earl C. Van Horn"],
+      "first_author": "Jack B. Dennis",
+      "year": 1966,
+      "venue": "Communications of the ACM 9(3), pp. 143-155",
+      "verified_via": "Direct WebFetch of https://www.princeton.edu/~rblee/ELE572Papers/Fall04Readings/ProgramSemantics_DennisvanHorn.pdf, 2026-09-08, read via page-image rendering (text extraction failed, image rendering succeeded): title 'Programming Semantics for Multiprogrammed Computations', authors 'Jack B. Dennis and Earl C. Van Horn, Massachusetts Institute of Technology', and the exact venue line 'Volume 9 / Number 3 / March, 1966 -- Communications of the ACM', page 143, all visible directly on the rendered page. Cited in NOVELTY.md's Eighth amendment as the foundational capability-systems citation: the original C-list/capability primitive for representing and propagating authority once granted, not a derivation of which conditions must be checked before granting it -- the common ancestor of this project's own already-cited macaroons-ndss-2014/ucan-specification/biscuit-specification (cited elsewhere for the execution grant's own representation, not for this distinction)."
     }
   ]
 }

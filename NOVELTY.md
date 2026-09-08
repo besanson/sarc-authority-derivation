@@ -96,6 +96,19 @@ gate must observe, with the excluded residue emitted as a derived
 coverage list, in the remediation-coupled setting sarc-suite-one-pass
 establishes.
 
+**Extended (v6.1, tag `prereg-p5-v6.1`, Step 5; full paragraphs below in
+the Eighth amendment):** shield synthesis constructs a corrective law
+over an already-fixed signal interface; runtime enforcement and edit
+automata characterize and extend what a monitor may do to an
+already-fixed action stream; controller synthesis (supervisory control,
+reactive synthesis) constructs a control law over an already-fixed
+observable/controllable alphabet; capability systems specify how
+authority, once granted, is represented and propagated. None of the
+four derives the interface, stream, alphabet, or property set itself
+from a declared loss model, and none carries a machine-checked
+minimality result over it -- this paper's derivation sits upstream of
+all four, answering the question each of them assumes already settled.
+
 ## Amendment (v0.1.2, round-0 adjudicator review, finding F0)
 
 The fence above originally ended "...in a setting where remediation
@@ -475,6 +488,95 @@ implements exactly the algorithm `prereg/v6-authority-bench.md`
 registered, unmodified after this result was seen; nothing about the
 registered decision rule or the algorithm's seed order, generalization
 order, or simplify rule was adjusted to produce this outcome.
+
+## Eighth amendment (v6.1, tag `prereg-p5-v6.1`, fence extension: shield synthesis, runtime enforcement and edit automata, controller synthesis, capability systems)
+
+The first seven amendments concern this artifact's own formal model,
+experiment design, and empirical comparisons. This one extends the
+fence itself: four literature clusters neighbouring this paper's own
+runtime-authorization setting, not covered by Phase R's original
+reconnaissance, researched and fetch-verified here (`verified-
+citations.json`) following the identical discipline the original five
+clusters used -- what each established, and what this paper adds.
+
+### Shield synthesis (Bloem, Könighofer, Könighofer, and Wang 2015)
+
+Bloem, Bettina Könighofer, Robert Könighofer, and Wang (TACAS 2015)
+establish shield synthesis: given a reactive system and an
+omega-regular safety specification, synthesize a *shield* -- a runtime
+monitor placed between the system and its environment that corrects
+violating outputs with a minimal, well-defined deviation from the
+uncorrected system, guaranteeing the specification holds from that
+point forward. The shield's own inputs and outputs are the system's
+already-declared interface signals; shield synthesis solves for the
+corrective strategy over that fixed interface, not for which signals
+the interface must contain. This paper solves the strictly prior
+problem: which properties of the (action, context, evidence,
+control-state) space an enforcement point must observe at all, derived
+from a declared loss model with a machine-checked minimality guarantee
+-- a shield could be built downstream of this paper's derived contract,
+correcting exactly the properties this derivation identifies, but
+shield synthesis itself does not ask or answer that question.
+
+### Runtime enforcement and edit automata (Schneider 2000; Ligatti, Bauer, and Walker 2005)
+
+Schneider (TISSEC 2000) gives the foundational characterization of
+execution monitoring (EM): a monitor observing a target's execution
+steps and terminating it before an unacceptable one, precisely
+identifying the class of security policies (safety properties) EM can
+enforce and no more. Ligatti, Bauer, and Walker (2005) extend the
+monitor's own corrective repertoire beyond truncation to insertion and
+suppression (*edit automata*), enforcing a strictly larger class of
+policies over the identical target-action model Schneider fixes. Both
+frame the monitor's action alphabet -- the steps it watches and, for
+edit automata, edits -- as already given; neither asks which of a
+decision's available properties must be part of that alphabet in the
+first place. This paper answers exactly that antecedent question, with
+a machine-checked minimality guarantee neither work claims or needs for
+its own, narrower question (what the monitor may do to an already-fixed
+stream, not which stream it must watch).
+
+### Controller synthesis (Ramadge and Wonham 1987; Pnueli and Rosner 1989)
+
+Ramadge and Wonham (1987) establish supervisory control theory: given a
+plant modelled as a formal-language generator and a legal (safety)
+language, synthesize the maximally permissive supervisor restricting
+the plant's behaviour to a controllable sublanguage of the legal one.
+Pnueli and Rosner (POPL 1989) establish reactive synthesis in the
+temporal-logic tradition: given a specification over declared input and
+output signals, construct a reactive module realizing it against an
+adversarial environment, or prove none exists. Both presuppose the
+plant's or module's own observable/controllable event or signal
+alphabet and synthesize a control law *within* it -- Ramadge and
+Wonham's own minimality result (maximal permissiveness) is a claim
+about the supervisor's behaviour given that alphabet, not about the
+alphabet itself. This paper derives the alphabet: which properties a
+controller (here, a pre-action authority gate) must observe, from a
+declared loss model, before any supervisor or reactive module is
+synthesized over it.
+
+### Capability systems (Dennis and Van Horn 1966)
+
+Dennis and Van Horn establish the capability as the foundational
+access-control primitive still in use today: an unforgeable reference
+that both designates a computing object and carries the authority to
+perform specific operations on it, held in a per-computation C-list and
+propagated only by controlled copying, rather than a name-based check
+against an access-control list. This defines *how* authority, once a
+decision to grant it is made, is represented and delegated -- it does
+not address which conditions of the calling context must be checked
+before a capability is minted, exercised, or refused in the first
+place. This paper's derivation is upstream of the capability question
+in the same way it is upstream of shield synthesis, runtime
+enforcement, and controller synthesis: it derives what a gate must
+observe before that decision, not how the resulting authority is
+represented once made. (`macaroons-ndss-2014`, `ucan-specification`,
+and `biscuit-specification` -- already cited in Section 6 of the paper
+draft for the execution grant's own bearer-token design -- are modern
+engineering descendants of exactly this Dennis-and-Van-Horn lineage:
+cited there for the grant's representation, cited here for the same
+reason their common ancestor is, since neither layer of that lineage
+derives the observed property set this paper does.)
 
 ## Kill-criteria check (task brief R3)
 
