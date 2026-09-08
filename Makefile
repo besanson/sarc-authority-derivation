@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains xu-stoller-validation ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -118,6 +118,23 @@ authority-bench-domains: formal
 	@echo "Packaging AuthorityBench's three domains as YAML (authority_bench_domains/)..."
 	python3 build_authority_bench_domain_yaml.py
 
+# Milestone E, Step 3 (prereg-p5-v6.1): the Xu-and-Stoller validation
+# gate for the "ABAC policy mining" baseline -- runs mining_baseline.py
+# (unmodified) against the real "Health Care Sample Policy" case study
+# from Xu and Stoller's own published software release, and checks the
+# result against Figure 5's published statistics under the tolerance
+# registered in xu_stoller_validation.py's own module docstring, decided
+# there before this was ever run. NOT wired into release-check or `paper`
+# -- same reasoning as `benchmarks`/`authority-bench`: a one-time gate
+# decision (VALIDATED vs. EXCLUDED: UNVALIDATED), not a correctness
+# property of this repo's own derivation results, and not something that
+# needs re-deciding on every release. Re-run explicitly after any change
+# to mining_baseline.py.
+xu-stoller-validation:
+	@echo "Xu-and-Stoller validation gate (prereg-p5-v6.1): mining_baseline.py vs. the real healthcare.abac case study..."
+	mkdir -p out/results
+	python3 xu_stoller_validation.py
+
 release-check:
 	@echo "=== release-check: full test suite ==="
 	mkdir -p out
@@ -190,6 +207,7 @@ help:
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
 	@echo "  make authority-bench AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4 (~2.5 min, not part of release-check)"
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
+	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

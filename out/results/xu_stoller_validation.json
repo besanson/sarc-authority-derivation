@@ -1,0 +1,47 @@
+{
+  "citation_id": "xu-stoller-healthcare-case-study-data",
+  "disposition": "VALIDATED",
+  "source": "https://www3.cs.stonybrook.edu/~stoller/software/ABAC-Mining.zip (ABACMining/case-studies/healthcare.abac), retrieved 2026-09-08",
+  "tier_1_transcription_oracle": {
+    "computed_average_rule_coverage": 6.666666666666667,
+    "computed_up_count": 51,
+    "pass": true,
+    "per_original_rule_coverage": [
+      8,
+      9,
+      4,
+      4,
+      12,
+      8,
+      7,
+      4,
+      4
+    ],
+    "published_average_rule_coverage": 6.7,
+    "published_up_count": 51
+  },
+  "tier_2_formulation_agreement": {
+    "disagreement_count": 0,
+    "first_disagreements": [],
+    "pass": true,
+    "triples_checked": 420
+  },
+  "tier_3_mining_soundness": {
+    "elapsed_seconds": 0.025666941000054067,
+    "mismatch_count": 0,
+    "pass": true,
+    "sound": true,
+    "tractable": true
+  },
+  "tier_4_rule_count_tolerance": {
+    "pass": true,
+    "published_rule_count": 9,
+    "rule_count_after_simplify": 9,
+    "rule_count_before_simplify": 9,
+    "tolerance_band": [
+      3,
+      27
+    ]
+  },
+  "validated": true
+}
