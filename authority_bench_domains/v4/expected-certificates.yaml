@@ -1,0 +1,26 @@
+domain: software-and-cloud-v4
+source: out/checkers/ch_b1_check.json (CH-B1, already committed, already machine-checked)
+core_attributes:
+- approval_token
+- data_classification
+- delegated_role
+- operation
+- repository
+- resource_owner
+is_core_sufficient: false
+minimum_reducts:
+- - approval_token
+  - branch
+  - data_classification
+  - delegated_role
+  - operation
+  - repository
+  - resource_owner
+- - approval_token
+  - data_classification
+  - delegated_role
+  - environment
+  - operation
+  - repository
+  - resource_owner
+minimum_reduct_cardinality: 7

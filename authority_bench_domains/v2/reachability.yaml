@@ -1,0 +1,5 @@
+domain: procurement-v2
+rules:
+- name: min_order_quantity_cross_field_filter
+  description: 'prereg/v2-reachability-redesign.md''s own declared rank-0 filter:
+    order_value >= min_order_quantity.'

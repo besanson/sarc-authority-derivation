@@ -1,0 +1,11 @@
+domain: software-and-cloud-v4
+policy_name: manual-least-privilege
+attributes:
+- delegated_role
+- operation
+- approval_token
+- environment
+rationale: a conventional RBAC-plus-change-control set. Registered as plausibly missing
+  resource_owner (cross-tenant isolation, easy to overlook without deliberate multi-tenant
+  threat modelling -- CH-B1's own counterexample pair already turns on exactly this
+  kind of gap), repository, and data_classification.

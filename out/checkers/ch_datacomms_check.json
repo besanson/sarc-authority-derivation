@@ -1,0 +1,55 @@
+{
+  "candidate_properties": [
+    "data_category",
+    "legal_basis",
+    "recipient_type",
+    "destination_region",
+    "retention_status",
+    "channel_encryption",
+    "erasure_request_state",
+    "actor_role"
+  ],
+  "core_attributes": [
+    "channel_encryption",
+    "data_category",
+    "destination_region",
+    "erasure_request_state",
+    "legal_basis",
+    "retention_status"
+  ],
+  "core_is_sufficient": true,
+  "core_is_unique_reduct": true,
+  "core_sufficiency_certificate_or_counterexample": {
+    "partition_cell_count": 960,
+    "uniform_verdict_within_every_cell": true
+  },
+  "minimum_reduct_cardinality": 6,
+  "minimum_reducts": [
+    [
+      "channel_encryption",
+      "data_category",
+      "destination_region",
+      "erasure_request_state",
+      "legal_basis",
+      "retention_status"
+    ]
+  ],
+  "proposition_1_prime_claim_1_identity_holds": true,
+  "proposition_1_prime_claim_2_core_subset_of_every_reduct": true,
+  "reachable_tuples_swept": 8640,
+  "reducts": [
+    [
+      "channel_encryption",
+      "data_category",
+      "destination_region",
+      "erasure_request_state",
+      "legal_basis",
+      "retention_status"
+    ]
+  ],
+  "redundant_attributes": [
+    "actor_role",
+    "recipient_type"
+  ],
+  "subsets_considered": 253
+}

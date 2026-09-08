@@ -1,0 +1,11 @@
+domain: procurement-v2
+policy_name: manual-least-privilege
+attributes:
+- actor_role
+- order_value
+- resource_class
+- budget_remaining
+rationale: 'hand-authored by a security-conscious reviewer without formal derivation:
+  the ''obviously relevant'' business-risk properties. Registered as plausibly missing
+  grant_id/consumed_grant_ids (replay-prevention machinery, not obvious without deliberate
+  replay-threat modelling), day/frozen (temporal/freeze-state conditions), and min_order_quantity.'

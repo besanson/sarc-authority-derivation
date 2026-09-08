@@ -1,0 +1,7 @@
+domain: software-and-cloud-v4
+rules:
+- name: production_branch_implies_production_environment
+  description: prereg/v4-realistic-domain.md's first reachability rule.
+- name: contractor_readonly_tenant_scope
+  description: prereg/v4-realistic-domain.md's second reachability rule (delegated_role
+    implies resource_owner scope, narrowed to role-contractor-readonly).

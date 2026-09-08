@@ -1,0 +1,14 @@
+domain: software-and-cloud-v4
+losses:
+- name: unauthorised_mutation
+  citation: rbac-sandhu-1996
+- name: production_deployment_without_approval
+  citation: nist-sp-800-53-cm3
+- name: secret_exposure
+  citation: cwe-798
+- name: cross_tenant_action
+  citation: csa-ccm-tenant-isolation
+- name: privilege_escalation
+  citation: mitre-attack-ta0004-privilege-escalation
+- name: destructive_action_without_recovery_path
+  citation: mitre-attack-t1485-data-destruction

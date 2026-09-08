@@ -1,0 +1,53 @@
+domain: software-and-cloud-v4
+candidate_properties:
+- name: actor_identity
+  domain:
+  - agent-ci-bot
+  - agent-oncall-engineer
+  - agent-contractor
+  - agent-automated-pipeline
+- name: delegated_role
+  domain:
+  - role-owner
+  - role-deployer
+  - role-contractor-readonly
+  - role-security-admin
+- name: repository
+  domain:
+  - repo-billing
+  - repo-public-website
+  - repo-internal-tools
+- name: branch
+  domain:
+  - main
+  - staging
+  - feature
+- name: environment
+  domain:
+  - production
+  - staging
+  - development
+- name: resource_owner
+  domain:
+  - tenant-a
+  - tenant-b
+- name: operation
+  domain:
+  - read
+  - write
+  - deploy
+  - delete
+  - grant_role
+- name: approval_token
+  domain:
+  - valid
+  - absent
+- name: deployment_window
+  domain:
+  - in_window
+  - out_of_window
+- name: data_classification
+  domain:
+  - public
+  - internal
+  - secret

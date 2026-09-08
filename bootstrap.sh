@@ -83,8 +83,8 @@ echo "Delegating engine installs + LaTeX toolchain to sarc-suite-one-pass's own 
 bash "$ONE_PASS_DIR/bootstrap.sh"
 
 echo
-echo "Installing this repo's own toolchain (pytest, hypothesis, mutmut, jsonschema, scipy, python-sat)..."
-pip install -q pytest hypothesis mutmut jsonschema "scipy==1.17.1" python-sat
+echo "Installing this repo's own toolchain (pytest, hypothesis, mutmut, jsonschema, scipy, python-sat, pyyaml)..."
+pip install -q pytest hypothesis mutmut jsonschema "scipy==1.17.1" python-sat pyyaml
 
 echo
 echo "=== Verifying the imported baseline: sarc-suite-one-pass's own release-check ==="

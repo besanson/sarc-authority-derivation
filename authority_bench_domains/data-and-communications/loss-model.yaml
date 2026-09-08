@@ -1,0 +1,14 @@
+domain: data-and-communications
+losses:
+- name: unlawful_processing
+  citation: gdpr-2016-679 (Art. 6)
+- name: special_category_without_basis
+  citation: gdpr-2016-679 (Art. 9)
+- name: unsafeguarded_transfer
+  citation: gdpr-2016-679 (Art. 44)
+- name: retention_violation
+  citation: gdpr-2016-679 (Art. 5(1)(e))
+- name: unconfidential_channel
+  citation: eprivacy-directive-2002-58 (Art. 5)
+- name: unfulfilled_erasure
+  citation: gdpr-2016-679 (Art. 17)

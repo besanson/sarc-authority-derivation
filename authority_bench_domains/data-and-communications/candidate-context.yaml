@@ -1,0 +1,45 @@
+domain: data-and-communications
+candidate_properties:
+- name: data_category
+  domain:
+  - public
+  - internal
+  - personal
+  - special_category
+- name: legal_basis
+  domain:
+  - consent
+  - contract
+  - legitimate_interest
+  - legal_obligation
+  - none_declared
+- name: recipient_type
+  domain:
+  - internal_only
+  - processor_under_contract
+  - third_party_controller
+- name: destination_region
+  domain:
+  - eea
+  - adequacy_country
+  - third_country_with_safeguards
+  - third_country_no_safeguards
+- name: retention_status
+  domain:
+  - within_declared_period
+  - beyond_declared_period
+- name: channel_encryption
+  domain:
+  - encrypted
+  - unencrypted
+- name: erasure_request_state
+  domain:
+  - none
+  - honored
+  - pending_unhandled
+- name: actor_role
+  domain:
+  - agent-support-bot
+  - agent-analytics-pipeline
+  - agent-marketing-automation
+  - agent-admin

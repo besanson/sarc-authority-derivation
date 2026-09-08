@@ -1,0 +1,14 @@
+domain: procurement-v2
+losses:
+- name: order_value_beyond_entitlement
+  citation: prereg/loss-model.yaml (v1, carried into v2)
+- name: procurement_outside_temporal_window
+  citation: prereg/loss-model.yaml (v1, carried into v2)
+- name: resource_class_not_entitled
+  citation: prereg/loss-model.yaml (v1, carried into v2)
+- name: replayed_consumed_grant
+  citation: prereg/loss-model.yaml (v1, carried into v2)
+- name: spend_against_depleted_delegated_budget
+  citation: prereg/loss-model.yaml (v1, carried into v2)
+- name: action_on_frozen_control_state
+  citation: prereg/loss-model.yaml (v1, carried into v2)

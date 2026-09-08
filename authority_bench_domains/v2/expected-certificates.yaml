@@ -1,0 +1,24 @@
+domain: procurement-v2
+source: out/checkers/reduct_check.json (CH-A8/CH-A10, already committed, already machine-checked)
+core_attributes:
+- actor_role
+- budget_remaining
+- consumed_grant_ids
+- day
+- frozen
+- grant_id
+- min_order_quantity
+- order_value
+- resource_class
+core_is_unique_reduct: true
+minimum_reducts:
+- - actor_role
+  - budget_remaining
+  - consumed_grant_ids
+  - day
+  - frozen
+  - grant_id
+  - min_order_quantity
+  - order_value
+  - resource_class
+minimum_reduct_cardinality: 9

@@ -1,0 +1,4 @@
+domain: data-and-communications
+rules:
+- name: internal_only_stays_in_eea
+  description: recipient_type == internal_only implies destination_region == eea (prereg/v6.1-authoritybench-amendment.md).

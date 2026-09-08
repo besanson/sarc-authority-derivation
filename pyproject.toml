@@ -71,10 +71,13 @@ markers = [
 # (prereg/v5-synthesis.md, tag prereg-p5-v5); src/authority_compiler/
 # api.py added Milestone E1 (packages participation.py/reduct.py/
 # synthesis.py behind one call, no new derivation semantics --
-# prereg/v6-authority-bench.md, tag prereg-p5-v6) -- ADR-003 is being
-# extended, not superseded, by any of these additions.
-source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py"]
+# prereg/v6-authority-bench.md, tag prereg-p5-v6); domain_datacomms.py/
+# losses_datacomms.py added Milestone E Step 2 (the independently-built
+# data-and-communications domain, prereg/v6.1-authoritybench-
+# amendment.md, tag prereg-p5-v6.1) -- ADR-003 is being extended, not
+# superseded, by any of these additions.
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -93,4 +96,6 @@ pytest_add_cli_args_test_selection = [
     "test_discernibility.py",
     "test_synthesis.py",
     "test_authority_compiler.py",
+    "test_domain_datacomms.py",
+    "test_losses_datacomms.py",
 ]

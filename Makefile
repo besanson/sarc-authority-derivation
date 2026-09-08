@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -37,6 +37,7 @@ formal: derive derive_v2
 	python3 -m checkers.reduct_check
 	python3 -m checkers.core_insufficiency_counterexample
 	python3 -m checkers.ch_b1_check
+	python3 -m checkers.ch_datacomms_check
 	python3 -m checkers.discernibility_check
 	python3 -m checkers.synthesis_exactness_check
 	python3 -m checkers.authority_compiler_check
@@ -105,6 +106,17 @@ authority-bench:
 	@echo "AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4..."
 	mkdir -p out/results
 	python3 authority_bench.py
+
+# Milestone E, Step 2 (prereg-p5-v6.1): per-domain YAML packaging
+# (candidate-context/loss-model/reachability/baseline-manual-policy/
+# expected-certificates) for all three registered AuthorityBench
+# domains. Depends on `formal` (reduct_check.json/ch_b1_check.json/
+# ch_datacomms_check.json must be fresh) -- run explicitly, not part of
+# release-check, same non-gating reasoning as `benchmarks`/
+# `authority-bench`.
+authority-bench-domains: formal
+	@echo "Packaging AuthorityBench's three domains as YAML (authority_bench_domains/)..."
+	python3 build_authority_bench_domain_yaml.py
 
 release-check:
 	@echo "=== release-check: full test suite ==="
@@ -177,6 +189,7 @@ help:
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
 	@echo "  make authority-bench AuthorityBench (prereg-p5-v6): mining-baseline comparison on v1/v2/v4 (~2.5 min, not part of release-check)"
+	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

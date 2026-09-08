@@ -1,0 +1,50 @@
+domain: procurement-v2
+candidate_properties:
+- name: actor_role
+  domain:
+  - agent-replenish
+  - agent-w2-replenish
+  - agent-delegate
+  - agent-unauthorized
+- name: resource_class
+  domain:
+  - consumables
+  - durable-goods
+  - capital-equipment
+- name: order_value
+  domain:
+  - 600.0
+  - 1200.0
+  - 2500.0
+- name: day
+  domain:
+  - 50
+  - 140
+  - 300
+- name: workflow
+  domain:
+  - W1
+  - W2
+- name: grant_id
+  domain:
+  - null
+  - g-fresh
+  - g-consumed
+- name: consumed_grant_ids
+  domain:
+  - []
+  - - g-consumed
+- name: budget_remaining
+  domain:
+  - 0.0
+  - 1000.0
+  - 5000.0
+- name: frozen
+  domain:
+  - false
+  - true
+- name: min_order_quantity
+  domain:
+  - 500.0
+  - 900.0
+  - 2000.0

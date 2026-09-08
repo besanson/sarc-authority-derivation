@@ -1,0 +1,10 @@
+domain: data-and-communications
+policy_name: manual-least-privilege
+attributes:
+- data_category
+- legal_basis
+- destination_region
+- channel_encryption
+rationale: the 'obviously GDPR-flavoured' properties. Registered as plausibly missing
+  retention_status and erasure_request_state (ongoing-obligation controls, easy to
+  treat as a process concern rather than a gating one).
