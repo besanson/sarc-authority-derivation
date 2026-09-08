@@ -111,6 +111,20 @@ def _sibling_shas() -> Dict[str, Dict[str, Any]]:
     return result
 
 
+def _reproduction_timing() -> Any:
+    """Milestone E, Step 6 (`prereg/v6.1-authoritybench-amendment.md`):
+    folds `time_reproduction.py`'s own sidecar artifact (a genuinely
+    bare `git clone` + `bootstrap.sh` + `make release-check`, timed in a
+    disposable temp directory) into this report's own schema -- read
+    here, not recomputed: actually performing that sequence from INSIDE
+    this same report-generation step would be circular (this repo's own
+    `make release-check` already calls this script as its last step).
+    `None` when the sidecar has never been generated (an ordinary `make
+    release-check` run does not perform the timed reproduction itself)."""
+    p = Path("out/reproduction_timing.json")
+    return json.loads(p.read_text()) if p.exists() else None
+
+
 def _artifact_hashes() -> Dict[str, str]:
     import hashlib
     hashes = {}
@@ -187,6 +201,7 @@ def build_report() -> Dict[str, Any]:
         "formal_check_summary": formal_summary,
         "formal_checks_passed": bool(formal_summary.get("all_true")),
         "mutation": mutation,
+        "reproduction_timing": _reproduction_timing(),
         "artifact_hashes": _artifact_hashes(),
         "paper_freshness_status": "verified byte-identical earlier in this same "
                                    "`make release-check` run (populated-draft "

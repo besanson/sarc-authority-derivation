@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains xu-stoller-validation ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains xu-stoller-validation time-reproduction ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -143,6 +143,26 @@ xu-stoller-validation:
 	mkdir -p out/results
 	python3 xu_stoller_validation.py
 
+# Milestone E, Step 6 (prereg-p5-v6.1): a genuinely bare `git clone` of
+# this repo alone (NOT the pinned siblings, which bootstrap.sh's own
+# phase clones) through `bash bootstrap.sh && make release-check`,
+# timed end to end in a disposable temp directory this script deletes
+# when it finishes. Writes out/reproduction_timing.json; run `make
+# release-check` again afterward (or just `python3 reproducibility_
+# report.py`) to fold the timing into out/reproducibility-report.json's
+# own `reproduction_timing` field. NOT wired into release-check itself
+# -- it would be circular (this repo's own release-check already runs
+# inside the sequence being timed) and takes far longer than a normal
+# release-check (bootstrap.sh clones four more repos over the network
+# and runs sarc-suite-one-pass's own full release-check as its
+# imported-baseline verification step). Target "about five minutes"
+# (task brief's own E4 language) is descriptive, not a pass/fail gate --
+# see time_reproduction.py's own module docstring.
+time-reproduction:
+	@echo "Timed bare-clone reproduction (prereg-p5-v6.1): git clone + bootstrap.sh + make release-check, in a disposable temp directory..."
+	mkdir -p out
+	python3 time_reproduction.py
+
 release-check:
 	@echo "=== release-check: full test suite ==="
 	mkdir -p out
@@ -216,6 +236,7 @@ help:
 	@echo "  make authority-bench AuthorityBench run all (prereg-p5-v6.1): four baselines x three domains x six metrics (not part of release-check)"
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"
+	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."
