@@ -23,6 +23,13 @@
 # registration.
 
 [tool.pytest.ini_options]
+# pythonpath = ["src"]: Milestone E1's src/authority_compiler is imported
+# as `authority_compiler` (no `src.` prefix) -- mutmut's own configuration.py
+# treats a top-level `src/` directory as a source root to import THROUGH,
+# not a real dotted package component (`src.authority_compiler` trips its
+# trampoline instrumentation: "Module name starts with `src.`, which is
+# invalid"), so `src/` deliberately carries no `__init__.py` of its own.
+pythonpath = ["src"]
 markers = [
     "slow: exercises a full-scenario simulation end to end rather than a unit-scoped check -- included in the default `make test` run, but selectable/deselectable via -m 'slow' / -m 'not slow'.",
 ]
@@ -37,10 +44,13 @@ markers = [
 # v0.3 (prereg/v3-core-reduct-correction.md); domain_v4.py/losses_v4.py
 # added v0.4/Milestone C (prereg/v4-realistic-domain.md, tag
 # prereg-p5-v4); discernibility.py/synthesis.py added Milestone D
-# (prereg/v5-synthesis.md, tag prereg-p5-v5) -- ADR-003 is being
+# (prereg/v5-synthesis.md, tag prereg-p5-v5); src/authority_compiler/
+# api.py added Milestone E1 (packages participation.py/reduct.py/
+# synthesis.py behind one call, no new derivation semantics --
+# prereg/v6-authority-bench.md, tag prereg-p5-v6) -- ADR-003 is being
 # extended, not superseded, by any of these additions.
-source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py"]
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -48,6 +58,7 @@ also_copy = [
     "schemas_check.py",
     "prereg/",
     "schemas/",
+    "src/authority_compiler/__init__.py",
 ]
 pytest_add_cli_args_test_selection = [
     "test_participation.py",
@@ -57,4 +68,5 @@ pytest_add_cli_args_test_selection = [
     "test_losses_v4.py",
     "test_discernibility.py",
     "test_synthesis.py",
+    "test_authority_compiler.py",
 ]
