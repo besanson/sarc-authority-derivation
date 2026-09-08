@@ -2,6 +2,39 @@
   "_schema_note": "Phase R gate (task spec, ported from sarc-suite-one-pass's V4 gate): a citation may enter the paper only after it is verified by fetching its source page and recording url, title, first_author, year into this file. arxiv_id/doi are the machine-checkable tokens a future citation_check.py matches against paper text; verified_via records how/when the fetch was done (WebSearch snippets that quote the source's own indexed text, and/or a direct WebFetch of the source page, both dated). entry_type is one of article/inproceedings/incollection/misc; misc is used for arXiv preprints (no formal venue yet), technical reports/handbooks, and standards/webpages where no DOI-backed venue exists.",
   "citations": [
     {
+      "id": "salomaa-essential-variables-1963",
+      "url": "https://arxiv.org/abs/math/0701332",
+      "title": "On essential variables of functions, especially in the algebra of logic",
+      "entry_type": "misc",
+      "authors": ["Arto Salomaa"],
+      "first_author": "Arto Salomaa",
+      "year": 1963,
+      "venue": "Annales Academiae Scientiarum Fennicae, Series A I, Mathematics, Volume 339, pp. 3-11",
+      "verified_via": "WebSearch, 2026-09-08: exact citation ('A. Salomaa, On essential variables of functions, especially in the algebra of logic, Ann. Acad. Sci. Fenn. Ser. A I. Math. 339 (1963) 3-11') confirmed directly via WebFetch of arxiv.org/html/math/0701332 (Couceiro, M. and Lehtonen, E., 'On the effect of variable identification on the essential arity of functions'), item [11] of its own reference list -- Salomaa's 1963 paper itself predates arXiv and has no freely-accessible copy located; the arXiv URL recorded here (math/0701332) is the freely-available paper that cites it and, fetch-confirmed, states the identical mathematical definition of an essential variable this project relies on: 'there are elements a_1,...,a_n,b such that f(a_1,...,a_i,...,a_n) != f(a_1,...,a_{i-1},b,a_{i+1},...,a_n)' -- term for term Definition 1 (participation.py), independently sourced from switching/Boolean-function theory rather than rough-set theory (Pawlak 1982; Skowron and Rauszer 1992, already cited). Used in prereg/v6.1-authoritybench-amendment.md's 'essential-variable analysis' baseline."
+    },
+    {
+      "id": "gdpr-2016-679",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+      "title": "Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation)",
+      "entry_type": "misc",
+      "authors": ["European Parliament and Council of the European Union"],
+      "first_author": "European Parliament and Council of the European Union",
+      "year": 2016,
+      "venue": "Official Journal of the European Union, OJ L 119, 4.5.2016, pp. 1-88 (CELEX 32016R0679)",
+      "verified_via": "WebFetch of https://eur-lex.europa.eu/eli/reg/2016/679/oj, 2026-09-08 (title, regulation number, adoption date, and Official Journal citation confirmed directly from the official EU legislative portal); Article 6(1) (lawful bases), Article 9(1)/9(2) (special category data, ten enumerated exceptions -- legitimate interest confirmed NOT among them via a second direct fetch of gdpr-info.eu/art-9-gdpr/, 2026-09-08), Article 17 (erasure), Article 44 (general principle for transfers), and Article 5(1)(e) (storage limitation) are each cited by name in prereg/v6.1-authoritybench-amendment.md's own loss-predicate table, not paraphrased from memory."
+    },
+    {
+      "id": "eprivacy-directive-2002-58",
+      "url": "https://eur-lex.europa.eu/eli/dir/2002/58/oj/eng",
+      "title": "Directive 2002/58/EC of the European Parliament and of the Council of 12 July 2002 concerning the processing of personal data and the protection of privacy in the electronic communications sector (Directive on privacy and electronic communications)",
+      "entry_type": "misc",
+      "authors": ["European Parliament and Council of the European Union"],
+      "first_author": "European Parliament and Council of the European Union",
+      "year": 2002,
+      "venue": "Official Journal of the European Union, OJ L 201, 31.7.2002, pp. 37-47 (CELEX 32002L0058)",
+      "verified_via": "WebSearch, 2026-09-08: official EUR-Lex location and Official Journal citation (L 201, 31/07/2002, pp. 37-47) confirmed; Article 5(1)'s confidentiality-of-communications text ('Member States shall ensure the confidentiality of communications... shall prohibit listening, tapping, storage or other kinds of interception or surveillance of communications... without the consent of the users concerned') retrieved directly. Cited in prereg/v6.1-authoritybench-amendment.md's `unconfidential_channel` loss predicate."
+    },
+    {
       "id": "sarc-suite-one-pass-paper4",
       "arxiv_id": "2608.18360",
       "url": "https://arxiv.org/abs/2608.18360",
