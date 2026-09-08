@@ -1,0 +1,106 @@
+{
+  "candidate_properties": [
+    "actor_identity",
+    "delegated_role",
+    "repository",
+    "branch",
+    "environment",
+    "resource_owner",
+    "operation",
+    "approval_token",
+    "deployment_window",
+    "data_classification"
+  ],
+  "core_attributes": [
+    "approval_token",
+    "data_classification",
+    "delegated_role",
+    "operation",
+    "repository",
+    "resource_owner"
+  ],
+  "core_cardinality": 6,
+  "core_is_unique_reduct": false,
+  "counterexample": {
+    "tuple_a": {
+      "actor_identity": "agent-ci-bot",
+      "approval_token": "absent",
+      "branch": "main",
+      "data_classification": "public",
+      "delegated_role": "role-owner",
+      "deployment_window": "in_window",
+      "environment": "production",
+      "operation": "deploy",
+      "repository": "repo-billing",
+      "resource_owner": "tenant-a"
+    },
+    "tuple_a_prime": {
+      "actor_identity": "agent-ci-bot",
+      "approval_token": "absent",
+      "branch": "staging",
+      "data_classification": "public",
+      "delegated_role": "role-owner",
+      "deployment_window": "in_window",
+      "environment": "staging",
+      "operation": "deploy",
+      "repository": "repo-billing",
+      "resource_owner": "tenant-a"
+    },
+    "verdict_a": true,
+    "verdict_a_prime": false
+  },
+  "is_core_sufficient": false,
+  "minimum_reduct_cardinality": 7,
+  "minimum_reducts": [
+    [
+      "approval_token",
+      "branch",
+      "data_classification",
+      "delegated_role",
+      "operation",
+      "repository",
+      "resource_owner"
+    ],
+    [
+      "approval_token",
+      "data_classification",
+      "delegated_role",
+      "environment",
+      "operation",
+      "repository",
+      "resource_owner"
+    ]
+  ],
+  "num_reducts": 2,
+  "power_set_size": 1024,
+  "reachable_tuples_swept": 15120,
+  "reducts": [
+    [
+      "approval_token",
+      "branch",
+      "data_classification",
+      "delegated_role",
+      "operation",
+      "repository",
+      "resource_owner"
+    ],
+    [
+      "approval_token",
+      "data_classification",
+      "delegated_role",
+      "environment",
+      "operation",
+      "repository",
+      "resource_owner"
+    ]
+  ],
+  "redundant_attributes": [
+    "actor_identity",
+    "branch",
+    "deployment_window",
+    "environment"
+  ],
+  "subsets_considered": 1014,
+  "sufficiency_certificate": null,
+  "supported": true
+}

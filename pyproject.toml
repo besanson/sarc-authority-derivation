@@ -16,9 +16,10 @@
 # (commit 782261e) -- see ADR-001. This repo has no packaging config of
 # its own (it is run in place, not installed) -- this file exists solely
 # to hold [tool.mutmut]'s configuration (Phase 2 / release-check mutation
-# gate, target participation.py + derive.py + reduct.py, >=0.85, a hard
-# gate as of v0.3 -- see `make mutate`/`mutation_check.py`) and
-# [tool.pytest.ini_options]'s marker registration.
+# gate, target participation.py + derive.py + reduct.py + domain_v4.py +
+# losses_v4.py, >=0.85, a hard gate as of v0.3, extended v0.4/Milestone C
+# -- see `make mutate`/`mutation_check.py`) and [tool.pytest.ini_options]'s
+# marker registration.
 
 [tool.pytest.ini_options]
 markers = [
@@ -30,11 +31,13 @@ markers = [
 # the mutation-testing target files (mutmut's file walk does not respect
 # .gitignore, so source_paths = ["."] would blindly copy .git/, out/, and
 # the pinned sibling clones). also_copy lists the additional files
-# participation.py/derive.py/reduct.py's imports need at test time.
-# reduct.py added v0.3 (prereg/v3-core-reduct-correction.md) -- ADR-003
-# is being extended, not superseded, by this addition.
-source_paths = ["participation.py", "derive.py", "reduct.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py"]
+# participation.py/derive.py/reduct.py/domain_v4.py/losses_v4.py's imports
+# need at test time. reduct.py added v0.3 (prereg/v3-core-reduct-
+# correction.md); domain_v4.py/losses_v4.py added v0.4/Milestone C
+# (prereg/v4-realistic-domain.md, tag prereg-p5-v4) -- ADR-003 is being
+# extended, not superseded, by either addition.
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -47,4 +50,6 @@ pytest_add_cli_args_test_selection = [
     "test_participation.py",
     "test_derive.py",
     "test_reduct.py",
+    "test_domain_v4.py",
+    "test_losses_v4.py",
 ]

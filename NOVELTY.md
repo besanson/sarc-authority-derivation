@@ -281,6 +281,56 @@ tightly enough to matter. v0.1/v0.2/v0.3's own committed results stay
 frozen and cited as prior iterations; nothing about them is
 retroactively edited to match this correction.
 
+## Fifth amendment (v4, tag `prereg-p5-v4`, core-versus-reduct on an independently-built domain)
+
+The first four amendments all concern this artifact's own single retail-
+procurement domain. This one asks whether core-versus-reduct
+(Definitions 4-6) shows up at all on a domain built independently, from
+a different application area, with loss predicates transcribed from
+published security/access-control sources (RBAC96, NIST SP 800-53,
+CWE-798, the CSA Cloud Controls Matrix, MITRE ATT&CK) rather than
+authored for this project -- a software-and-cloud execution-agent
+domain: ten candidate observations, six loss predicates, registered
+`prereg/v4-realistic-domain.md` before any code existed.
+
+The registered outcome, machine-checked, not assumed:
+
+- **CH-B1** (does this independently-built domain's core fail to be
+  sufficient, or does more than one reduct exist?): **SUPPORTED**
+  (`checkers/ch_b1_check.py`) -- over the domain's 15,120-tuple
+  executable-reachable set, the 6-property core (`approval_token`,
+  `data_classification`, `delegated_role`, `operation`, `repository`,
+  `resource_owner`) is **not sufficient**: a concrete counterexample pair
+  agrees on all six core properties (same actor, role, repository,
+  tenant, operation `deploy`, `approval_token` absent) yet differs in
+  verdict, because they differ in `branch`/`environment` -- and exactly
+  **two** reducts exist, both of cardinality seven, one adding `branch`
+  to the core and the other adding `environment`.
+
+The mechanism is exactly Negative Proposition N's abstract shape (an
+empty-or-partial core with multiple singleton-or-larger reducts),
+occurring here for a concrete, explainable reason instead of a toy
+fixture: the prereg's own "production branch implies production
+environment" reachability rule declares `branch` and `environment` as a
+one-to-one pairing, so neither ever has an *individual* singleton-
+perturbation witness holding the other fixed (Definition 1's own
+criterion) even though `production_deployment_without_approval` reads
+`environment` directly -- each is redundant given the other, so the core
+excludes both, and either one alone (not neither) is needed to restore
+sufficiency. `actor_identity` and `deployment_window` are also redundant
+(no predicate above reads either), a different, unsurprising kind of
+non-participation from `branch`/`environment`'s co-variation-driven one
+-- both kinds are named separately in the checker's own output, not
+conflated.
+
+This is independent evidence that the procurement domain's own core-
+happens-to-be-sufficient result (CH-A8, CH-A10) is a fact about that
+domain's particular structure, not a general property core-versus-
+reduct analysis tends to find: a second, independently-built domain
+shows the opposite, for a real, declared, explainable reason. Neither
+result generalizes to a domain not yet built; `reduct.py`'s own machinery
+is unmodified by this milestone.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

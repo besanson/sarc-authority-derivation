@@ -235,3 +235,63 @@ are equivalent mutants under class 1/2/4's own established reasoning,
 verified directly rather than assumed; the boundary case that class 7
 could have missed (core equal to a unique reduct) was caught during this
 review and closed with a real test, not left as an unexplained gap.
+
+## v0.4 / Milestone C update: `domain_v4.py`/`losses_v4.py` added
+
+`pyproject.toml`'s `[tool.mutmut]` target set extends to include
+`domain_v4.py`/`losses_v4.py` (the independent software-and-cloud domain,
+`prereg/v4-realistic-domain.md`, tag `prereg-p5-v4`); `test_domain_v4.py`
+and `test_losses_v4.py` are added to test selection.
+
+First pass (117 new mutants from the two new files): 40 survived, score
+dropped to 0.8382 (342/408) -- below threshold, correctly caught by the
+hard gate rather than silently accepted. All 40 traced to a real,
+specific gap, not accepted as equivalent: `test_domain_v4.py`'s original
+tests only checked "at least one tuple satisfies each predicate" and
+`has_recovery_path`/reachability's aggregate tuple COUNT, never each
+predicate's own individual clauses or each field's actual per-tuple
+VALUE. Two rounds of precise tests closed all 40:
+
+1. `test_losses_v4.py` (new, mirroring `test_losses.py`'s own precision):
+   one positive case and one "near-miss" negative case per AND-clause,
+   per predicate -- e.g. `unauthorised_mutation`'s two clauses are each
+   independently toggled back to safe and re-checked, not just the
+   overall positive case asserted once. Closed 35 of the 40.
+2. Two gaps remained after that pass, found by `mutmut show`, not
+   guessed: (a) `secret_exposure`'s `operation in {"read", "write"}` was
+   only exercised with `"read"` -- a case-mutated `"write"` variant
+   survived untested; closed by adding a `"write"`-operation positive
+   case. (b) Three `StateTupleV4` fields nothing predicate-level reads
+   (`actor_identity`, `repository` was also implicated, `deployment_
+   window`) had their tuple-construction silently mutated to `None` and
+   nothing noticed, because no test checked a reachable tuple's fields
+   actually carry their own loop variable's value rather than a
+   placeholder -- closed by
+   `test_rank0_reachable_every_field_takes_every_declared_value`, a
+   single general test asserting every one of the ten fields' full
+   declared domain actually appears somewhere in the reachable set.
+
+```
+Total mutants: 408
+Killed:        382
+Survived:        26
+No tests:         0
+Kill score = 382 / (382 + 26) = 0.9363 (93.6%)
+```
+
+Above threshold; all 26 survivors are the same pre-existing
+`participation.py`/`derive.py`/`reduct.py` equivalence classes 1-5 and 7
+documented above, unchanged in kind -- zero survivors in
+`domain_v4.py`/`losses_v4.py` after the fixes above (confirmed directly
+via `mutmut results | grep domain_v4`, not assumed from the aggregate
+score alone).
+
+## Decision (v0.4 / Milestone C update)
+
+Accept the 0.9363 kill score. The first pass's real gap (predicate
+clauses and field values checked only in aggregate, not individually)
+is closed with tests that have independent value beyond moving the
+number -- the same standard the original first pass held itself to for
+`participation.py`/`derive.py`. No new equivalent-mutant class is
+introduced by this milestone; the two new files' every mutant that survived
+traced to an actual, closeable test gap.

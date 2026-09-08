@@ -17,9 +17,11 @@ test:
 	python3 -m pytest -v
 
 # Phase 2 / V2 gate: exhaustive checkers over the enumerated finite model.
-# v2 additions (tag prereg-p5-v2: Proposition 0-general + CH-A5/CH-A6/CH-A7)
-# and v3 additions (tag prereg-p5-v3: Proposition 1'/N + CH-A8/CH-A9/CH-A10)
-# run alongside v1's own gate below, never in place of it.
+# v2 additions (tag prereg-p5-v2: Proposition 0-general + CH-A5/CH-A6/CH-A7),
+# v3 additions (tag prereg-p5-v3: Proposition 1'/N + CH-A8/CH-A9/CH-A10), and
+# v4's independent domain (tag prereg-p5-v4: CH-B1) run alongside v1's own
+# gate below, never in place of it -- CH-B1 needs no `derive`/`derive_v2`
+# prerequisite (domain_v4.py is entirely self-contained).
 formal: derive derive_v2
 	@echo "V2 gate: exhaustive checkers (reachability measurement, participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
 	python3 -m checkers.reachability_check
@@ -34,6 +36,7 @@ formal: derive derive_v2
 	python3 -m checkers.sufficiency_check
 	python3 -m checkers.reduct_check
 	python3 -m checkers.core_insufficiency_counterexample
+	python3 -m checkers.ch_b1_check
 	python3 -m checkers.proof_status_lint
 	@echo "See appendix-a-proofs.md for the proofs these checkers verify."
 
