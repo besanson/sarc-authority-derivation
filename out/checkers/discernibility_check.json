@@ -1,0 +1,38 @@
+{
+  "all_models_agree": true,
+  "models": [
+    {
+      "all_agree": true,
+      "candidate_property_count": 9,
+      "family_size": 510,
+      "mismatches": [],
+      "model": "v1",
+      "power_set_size": 512,
+      "reachable_tuples_swept": 7776,
+      "reduced_family_size": 8,
+      "subsets_checked": 512
+    },
+    {
+      "all_agree": true,
+      "candidate_property_count": 10,
+      "family_size": 1022,
+      "mismatches": [],
+      "model": "v2",
+      "power_set_size": 1024,
+      "reachable_tuples_swept": 24624,
+      "reduced_family_size": 9,
+      "subsets_checked": 1024
+    },
+    {
+      "all_agree": true,
+      "candidate_property_count": 10,
+      "family_size": 508,
+      "mismatches": [],
+      "model": "v4",
+      "power_set_size": 1024,
+      "reachable_tuples_swept": 15120,
+      "reduced_family_size": 7,
+      "subsets_checked": 1024
+    }
+  ]
+}

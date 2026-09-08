@@ -58,7 +58,7 @@ from mutation_check import run as _mutation_run
 OUTPUT_PATH = Path("out/reproducibility-report.json")
 ENGINES_LOCK = Path("engines.lock")
 
-DEPENDENCY_NAMES = ["pytest", "hypothesis", "mutmut", "jsonschema", "scipy"]
+DEPENDENCY_NAMES = ["pytest", "hypothesis", "mutmut", "jsonschema", "scipy", "python-sat"]
 
 ARTIFACT_PATHS = [
     "paper5-authority-derivation-draft-v0.3-populated.md",

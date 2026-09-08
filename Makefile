@@ -37,6 +37,8 @@ formal: derive derive_v2
 	python3 -m checkers.reduct_check
 	python3 -m checkers.core_insufficiency_counterexample
 	python3 -m checkers.ch_b1_check
+	python3 -m checkers.discernibility_check
+	python3 -m checkers.synthesis_exactness_check
 	python3 -m checkers.proof_status_lint
 	@echo "See appendix-a-proofs.md for the proofs these checkers verify."
 

@@ -295,3 +295,97 @@ number -- the same standard the original first pass held itself to for
 `participation.py`/`derive.py`. No new equivalent-mutant class is
 introduced by this milestone; the two new files' every mutant that survived
 traced to an actual, closeable test gap.
+
+## Milestone D update: `discernibility.py`/`synthesis.py` added
+
+`pyproject.toml`'s `[tool.mutmut]` target set extends to
+`discernibility.py`/`synthesis.py` (the discernibility IR and PySAT
+SAT/MaxSAT backends, `prereg/v5-synthesis.md`, tag `prereg-p5-v5`);
+`test_discernibility.py`/`test_synthesis.py` added to test selection.
+
+First pass (132 new mutants): 7 survived. Five traced to real,
+closeable gaps, closed the same way as every prior pass -- not accepted
+on the aggregate score:
+
+- `remove_redundant_supersets`'s `sorted(family, key=len)` mutated to
+  drop the `key=len` entirely survived twice (two different AST
+  mutations of the same drop) because every existing test's family
+  happened to already sort correctly under Python's OWN default
+  frozenset ordering (subset comparison) too -- not because size-order
+  is inessential. `test_remove_redundant_supersets_requires_size_order_
+  not_input_or_default_order` constructs a family
+  (`[{a,b}, {c}, {a}]`) where the two orderings diverge and confirmed,
+  by direct execution, that dropping `key=len` really does produce a
+  wrong (non-minimal) result on it -- not merely asserted from reading
+  the code.
+- `existing <= candidate` narrowed to `existing < candidate` (the same
+  boundary-comparison shape ADR-003's own v0.3 update already treated
+  once, `verify_core_identity`'s core-subset check): survives whenever
+  no two sets in a test's family are ever exactly equal.
+  `test_remove_redundant_supersets_drops_an_exact_duplicate` supplies a
+  literal duplicate, the one case `<=` and `<` disagree on.
+- `find_minimum_cost_contract`'s two `ValueError` messages, both
+  mutated to `ValueError(None)`: `pytest.raises(ValueError)` alone does
+  not inspect the message, so a wrong or missing message survives even
+  though the exception TYPE and the rejection behavior are both already
+  correctly tested. Closed by adding `match=` to both existing
+  `pytest.raises` calls -- a small precision fix, not a new test.
+
+Two survivors are genuine equivalent mutants, verified by direct
+execution against the actual installed PySAT, not assumed from reading
+the diff:
+
+### 8. Uniform SAT-variable renumbering (1 survivor, `_property_variables`)
+
+`i + 1` -> `i + 2` (every property's variable number shifts by the same
+constant). `_hard_clauses` builds clauses from `var[p]` and
+`_included_from_model` decodes the model through that SAME `var` dict,
+so a uniform shift changes which INTEGER labels the solver sees but
+never changes which PROPERTIES end up included -- confirmed directly:
+re-solving the two-state counterexample's own CNF under both the `+1`
+and `+2` numbering schemes returns the identical included set (`{x}`)
+in both cases. Equivalent under any input, the same standard class 2
+already applied to a byte-different, semantically-identical AST
+reformatting.
+
+### 9. Uniform MaxSAT soft-clause weight scaling (1 survivor, `find_minimum_cardinality_contract`)
+
+`weight=1` -> `weight=2` on every one of the per-property soft clauses
+uniformly. RC2 minimizes TOTAL weighted cost subject to the hard
+clauses; scaling every soft clause's weight by the same positive
+constant scales the reported total cost by that constant but cannot
+change which assignment achieves the minimum (the argmin of a sum is
+invariant to a uniform positive rescaling) -- confirmed directly:
+re-solving a representative WCNF at weight 1, 2, and 5 returns the
+identical model in all three cases, only `rc2.cost` itself changes
+(1/2/5), a value this function does not even return. Equivalent under
+any input, by the same "internal number with no downstream consumer"
+reasoning class 4 already established for `derive.py`'s own explicit-
+default-argument case -- here the invariant one is a scalar factor on a
+MaxSAT weight, not a keyword argument's value, but the underlying shape
+(a change that cannot reach an externally observable outcome) is the
+same.
+
+```
+Total mutants: 540
+Killed:        512
+Survived:        28
+No tests:         0
+Kill score = 512 / (512 + 28) = 0.9481 (94.8%)
+```
+
+Above threshold; the 26 pre-existing survivors (classes 1-5, 7) are
+unchanged in kind. `discernibility.py`/`synthesis.py` contribute exactly
+the 2 new equivalence classes above -- zero other survivors in either
+file after the fixes.
+
+## Decision (Milestone D update)
+
+Accept the 0.9481 kill score. Five of the first pass's seven survivors
+were real, closeable gaps and are closed with tests that have
+independent value (an order-dependent correctness bug in
+`remove_redundant_supersets` that a less deliberately-constructed family
+would have missed entirely, not merely a coverage-number fix); the
+remaining two are genuine equivalent mutants, each verified by directly
+executing both variants against the real, installed PySAT rather than
+reasoned about from the diff alone.

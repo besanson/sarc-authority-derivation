@@ -1,0 +1,173 @@
+{
+  "exact_on_every_feasible_model": true,
+  "models": [
+    {
+      "exact": true,
+      "exhaustive_min_cardinality": 8,
+      "exhaustive_num_reducts": 1,
+      "exhaustive_reducts": [
+        [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "order_value",
+          "resource_class"
+        ]
+      ],
+      "exhaustive_subsets_considered": 511,
+      "maxsat_min_cardinality_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "order_value",
+        "resource_class"
+      ],
+      "maxsat_min_cardinality_matches_exhaustive_reduct": true,
+      "maxsat_min_cost_uniform_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "order_value",
+        "resource_class"
+      ],
+      "maxsat_min_cost_uniform_matches_cardinality_backend": true,
+      "model": "v1",
+      "reachable_tuples_swept": 7776,
+      "sat_any_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "order_value",
+        "resource_class"
+      ],
+      "sat_any_contract_is_sufficient": true
+    },
+    {
+      "exact": true,
+      "exhaustive_min_cardinality": 9,
+      "exhaustive_num_reducts": 1,
+      "exhaustive_reducts": [
+        [
+          "actor_role",
+          "budget_remaining",
+          "consumed_grant_ids",
+          "day",
+          "frozen",
+          "grant_id",
+          "min_order_quantity",
+          "order_value",
+          "resource_class"
+        ]
+      ],
+      "exhaustive_subsets_considered": 1023,
+      "maxsat_min_cardinality_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "min_order_quantity",
+        "order_value",
+        "resource_class"
+      ],
+      "maxsat_min_cardinality_matches_exhaustive_reduct": true,
+      "maxsat_min_cost_uniform_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "min_order_quantity",
+        "order_value",
+        "resource_class"
+      ],
+      "maxsat_min_cost_uniform_matches_cardinality_backend": true,
+      "model": "v2",
+      "reachable_tuples_swept": 24624,
+      "sat_any_contract": [
+        "actor_role",
+        "budget_remaining",
+        "consumed_grant_ids",
+        "day",
+        "frozen",
+        "grant_id",
+        "min_order_quantity",
+        "order_value",
+        "resource_class"
+      ],
+      "sat_any_contract_is_sufficient": true
+    },
+    {
+      "exact": true,
+      "exhaustive_min_cardinality": 7,
+      "exhaustive_num_reducts": 2,
+      "exhaustive_reducts": [
+        [
+          "approval_token",
+          "branch",
+          "data_classification",
+          "delegated_role",
+          "operation",
+          "repository",
+          "resource_owner"
+        ],
+        [
+          "approval_token",
+          "data_classification",
+          "delegated_role",
+          "environment",
+          "operation",
+          "repository",
+          "resource_owner"
+        ]
+      ],
+      "exhaustive_subsets_considered": 1014,
+      "maxsat_min_cardinality_contract": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "maxsat_min_cardinality_matches_exhaustive_reduct": true,
+      "maxsat_min_cost_uniform_contract": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "maxsat_min_cost_uniform_matches_cardinality_backend": true,
+      "model": "v4",
+      "reachable_tuples_swept": 15120,
+      "sat_any_contract": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "sat_any_contract_is_sufficient": true
+    }
+  ]
+}

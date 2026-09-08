@@ -17,9 +17,10 @@
 # its own (it is run in place, not installed) -- this file exists solely
 # to hold [tool.mutmut]'s configuration (Phase 2 / release-check mutation
 # gate, target participation.py + derive.py + reduct.py + domain_v4.py +
-# losses_v4.py, >=0.85, a hard gate as of v0.3, extended v0.4/Milestone C
-# -- see `make mutate`/`mutation_check.py`) and [tool.pytest.ini_options]'s
-# marker registration.
+# losses_v4.py + discernibility.py + synthesis.py, >=0.85, a hard gate as
+# of v0.3, extended v0.4/Milestone C and Milestone D -- see `make
+# mutate`/`mutation_check.py`) and [tool.pytest.ini_options]'s marker
+# registration.
 
 [tool.pytest.ini_options]
 markers = [
@@ -30,14 +31,16 @@ markers = [
 # Mirrors sarc-suite-one-pass's ADR-002 pattern: source_paths names exactly
 # the mutation-testing target files (mutmut's file walk does not respect
 # .gitignore, so source_paths = ["."] would blindly copy .git/, out/, and
-# the pinned sibling clones). also_copy lists the additional files
-# participation.py/derive.py/reduct.py/domain_v4.py/losses_v4.py's imports
-# need at test time. reduct.py added v0.3 (prereg/v3-core-reduct-
-# correction.md); domain_v4.py/losses_v4.py added v0.4/Milestone C
-# (prereg/v4-realistic-domain.md, tag prereg-p5-v4) -- ADR-003 is being
-# extended, not superseded, by either addition.
-source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py"]
+# the pinned sibling clones). also_copy lists the additional files these
+# targets' imports need at test time (third-party packages like PySAT
+# are installed globally, via bootstrap.sh, not copied). reduct.py added
+# v0.3 (prereg/v3-core-reduct-correction.md); domain_v4.py/losses_v4.py
+# added v0.4/Milestone C (prereg/v4-realistic-domain.md, tag
+# prereg-p5-v4); discernibility.py/synthesis.py added Milestone D
+# (prereg/v5-synthesis.md, tag prereg-p5-v5) -- ADR-003 is being
+# extended, not superseded, by any of these additions.
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -52,4 +55,6 @@ pytest_add_cli_args_test_selection = [
     "test_reduct.py",
     "test_domain_v4.py",
     "test_losses_v4.py",
+    "test_discernibility.py",
+    "test_synthesis.py",
 ]
