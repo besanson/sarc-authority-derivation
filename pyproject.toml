@@ -106,6 +106,21 @@ authority_compiler = "src/authority_compiler"
 # trampoline instrumentation: "Module name starts with `src.`, which is
 # invalid"), so `src/` deliberately carries no `__init__.py` of its own.
 pythonpath = ["src"]
+# norecursedirs adds "mutants" to pytest's own defaults (pytest replaces
+# the whole default list once this key is set at all, so the stock
+# entries are repeated here rather than only appended to): `make mutate`
+# leaves mutants/ (mutmut's own working copy, including a full copy of
+# every test_*.py, intentionally left on disk between runs for mutmut's
+# own incremental caching -- see `make clean`'s paired `rm -rf mutants
+# .mutmut-cache`) sitting at the repo root. A bare `pytest -v` with no
+# path argument (`make test`/release-check's own first step) recurses
+# into it and collects those copies too; since neither copy carries an
+# `__init__.py`, pytest's rootless import model requires every collected
+# test file to have a globally unique basename, and mutants/test_*.py
+# collides with test_*.py at the repo root ("import file mismatch").
+# This is a pure test-collection hygiene fix, unrelated to mutmut's own
+# directory/caching semantics, which are untouched.
+norecursedirs = ["*.egg", ".*", "_darcs", "build", "CVS", "dist", "node_modules", "venv", "{arch}", "mutants"]
 markers = [
     "slow: exercises a full-scenario simulation end to end rather than a unit-scoped check -- included in the default `make test` run, but selectable/deselectable via -m 'slow' / -m 'not slow'.",
 ]
