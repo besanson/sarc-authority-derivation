@@ -26,15 +26,34 @@ Writes `out/results/discernibility_scaling_v5_1.json` --
 output) is untouched; `benchmarks.py` itself is not modified, the same
 "kept, frozen, superseded by a new file" convention already used for
 `out/results/authority_bench.json`/`authority_bench_v6_1.json`.
+
+**Disposition (`prereg/v5.3-combinatorial-hardness-scaling.md`, tag
+`prereg-p5-v5.3`)**: this module's own v5.1 functions and result above
+are unmodified and stay *the tuple-scaling result* -- kept, cited, not
+exploratory -- answering the question it was always registered for
+(does the discernibility-family construction and each synthesis
+backend scale as the reachable set grows, at a small, exhaustible
+candidate-property count). `run_v53`/`run_hardness_family` below,
+added alongside, answer a different question (what happens at a large
+candidate-attribute universe, where exhaustive cross-check stops being
+available and the discernibility structure is rich rather than
+minimal) and their own result, `out/results/discernibility_scaling_v5_
+3.json`, is *the primary scaling table* from this amendment forward.
+Run via `python3 discernibility_scaling_benchmark.py v5.3` (`make
+discernibility-hardness-scaling`); the original `python3
+discernibility_scaling_benchmark.py` (no argument, `make
+discernibility-scaling`) still runs v5.1 alone, unchanged.
 """
 from __future__ import annotations
 
 import json
+import multiprocessing
 import resource
+import sys
 import time
 from dataclasses import make_dataclass
 from pathlib import Path
-from typing import Any, Callable, Dict, FrozenSet, List, Tuple
+from typing import Any, Callable, Dict, FrozenSet, List, Optional, Tuple
 
 from discernibility import build_discernibility_family, remove_redundant_supersets
 from reduct import exact_reducts, sufficiency
@@ -173,6 +192,248 @@ def run_family(
     }
 
 
+
+# -- v5.3: combinatorial-hardness scaling (prereg/v5.3-combinatorial-hardness-scaling.md) --
+# `run_family`/`make_multi_reduct_family`/`multi_reduct_registry`/`multi_reduct_costs`
+# above are v5.1's own, unmodified (registration discipline: v5.1 stays
+# exactly as committed). Everything below is new, added alongside.
+
+OUTPUT_PATH_V53 = Path("out/results/discernibility_scaling_v5_3.json")
+DIVERSITY_FLAG_COUNT = 25
+PADDING_DEPTH = 8
+EXHAUSTIVE_BUDGET_SECONDS = 300
+REGISTERED_HARDNESS_FAMILIES = (
+    ("family_a", 5, 30),
+    ("family_b", 10, 60),
+    ("family_c", 15, 100),
+)
+
+
+def make_combinatorial_hardness_family(k: int, n: int, d_flags: int = DIVERSITY_FLAG_COUNT, padding_depth: int = PADDING_DEPTH):
+    """`prereg/v5.3`'s own construction, hand-derived and proved there
+    before this function was written. Boolean candidate properties:
+    signal `p_1..p_k`, diversity flags `f_1..f_d_flags`, and (if
+    `n > k + d_flags`) inert padding properties `z_1..z_(n-k-d_flags)`
+    held at `0` on every reachable tuple. Reachable set: one tuple `T_0`
+    (all signal `1`, everything else `0`) plus, for every signal
+    position `i`, every flag offset `e` (`1..d_flags`), every padding
+    depth `j` (`1..padding_depth`), one tuple with signal position `i`
+    flipped to `0` and flags `{((e-1+t) mod d_flags)+1 : t=0..j-1}` set
+    to `1` -- exactly `1 + k * d_flags * padding_depth` tuples.
+    Returns `(candidate_properties, reachable, signal_names,
+    flag_names)` -- the predicted reducts `S`/`F` are `frozenset(signal_
+    names)`/`frozenset(flag_names)`, not recomputed by callers."""
+    signal_names = tuple(f"p_{i + 1}" for i in range(k))
+    flag_names = tuple(f"f_{e + 1}" for e in range(d_flags))
+    padding_count = n - k - d_flags
+    if padding_count < 0:
+        raise ValueError(f"n={n} smaller than k+d_flags={k + d_flags}")
+    padding_names = tuple(f"z_{i + 1}" for i in range(padding_count))
+    names = signal_names + flag_names + padding_names
+    HardnessTuple = make_dataclass(f"HardnessTuple_k{k}_n{n}", [(name, int) for name in names], frozen=True)
+
+    def base_values() -> Dict[str, int]:
+        return {name: 0 for name in names}
+
+    def positive() -> Any:
+        values = base_values()
+        for name in signal_names:
+            values[name] = 1
+        return HardnessTuple(**values)
+
+    def negative(flip_index: int, e: int, j: int) -> Any:
+        values = base_values()
+        for idx, name in enumerate(signal_names):
+            values[name] = 0 if idx == flip_index else 1
+        for t in range(j):
+            values[flag_names[(e - 1 + t) % d_flags]] = 1
+        return HardnessTuple(**values)
+
+    reachable: List[Any] = [positive()]
+    for i in range(k):
+        for e in range(1, d_flags + 1):
+            for j in range(1, padding_depth + 1):
+                reachable.append(negative(i, e, j))
+
+    return names, reachable, signal_names, flag_names
+
+
+def combinatorial_hardness_registry(signal_names: Tuple[str, ...]) -> Dict[str, Callable[[Any], bool]]:
+    return {"all_signal_set": lambda t: all(getattr(t, p) == 1 for p in signal_names)}
+
+
+def combinatorial_hardness_costs(candidate_properties: Tuple[str, ...], signal_names: Tuple[str, ...]) -> Dict[str, float]:
+    """`prereg/v5.3`'s own declared costs: every signal property `1.0`,
+    every flag/padding property `100.0` -- `S` (signal) remains the
+    unique minimum-cost sufficient set (`cost(S) = k <= 15`,
+    `cost(F) = 2500`), not only the unique minimum-cardinality one."""
+    signal = set(signal_names)
+    return {p: (1.0 if p in signal else 100.0) for p in candidate_properties}
+
+
+def _exact_reducts_worker(candidate_properties: Tuple[str, ...], reachable: List[Any], registry: Dict[str, Callable[[Any], bool]], queue: "multiprocessing.Queue") -> None:
+    t0 = time.perf_counter()
+    reducts, subsets_considered = exact_reducts(candidate_properties, reachable, registry)
+    elapsed = time.perf_counter() - t0
+    queue.put((reducts, subsets_considered, elapsed))
+
+
+def exhaustive_with_budget(
+    candidate_properties: Tuple[str, ...],
+    reachable: List[Any],
+    registry: Dict[str, Callable[[Any], bool]],
+    budget_seconds: int = EXHAUSTIVE_BUDGET_SECONDS,
+) -> Dict[str, Any]:
+    """`prereg/v5.3`'s registered 300-second exhaustive-cross-check
+    budget: `reduct.exact_reducts()` has no native cancellation, so a
+    separate process is the reliable way to abandon a still-running
+    pure-Python computation on timeout (verified directly against this
+    installed Python/multiprocessing: default "fork" start method on
+    Linux passes `make_dataclass` instances to the child without any
+    pickling error, and `terminate()` after a `join(timeout=...)` that
+    finds the process still alive reliably reclaims it). Returns either
+    `{"feasible": True, "reducts": [...], "subsets_considered": ...,
+    "wall_time_seconds": ...}` or `{"feasible": False, "budget_seconds":
+    ..., "wall_time_seconds": ...}` -- the real, measured outcome at
+    this specific family, not assumed from the registered expectation
+    (`prereg/v5.3`'s own "expected -- but not assumed -- infeasible")."""
+    queue: "multiprocessing.Queue" = multiprocessing.Queue()
+    process = multiprocessing.Process(target=_exact_reducts_worker, args=(candidate_properties, reachable, registry, queue))
+    t0 = time.perf_counter()
+    process.start()
+    process.join(timeout=budget_seconds)
+    if process.is_alive():
+        process.terminate()
+        process.join()
+        return {"feasible": False, "budget_seconds": budget_seconds, "wall_time_seconds": time.perf_counter() - t0}
+    reducts, subsets_considered, elapsed = queue.get()
+    return {
+        "feasible": True,
+        "reducts": [sorted(r) for r in reducts],
+        "subsets_considered": subsets_considered,
+        "wall_time_seconds": elapsed,
+    }
+
+
+def run_hardness_family(
+    name: str,
+    k: int,
+    n: int,
+    d_flags: int = DIVERSITY_FLAG_COUNT,
+    padding_depth: int = PADDING_DEPTH,
+    budget_seconds: int = EXHAUSTIVE_BUDGET_SECONDS,
+) -> Dict[str, Any]:
+    """The six registered v5.3 metrics (family size before/after
+    pruning, number of reducts, exact, wall time, peak memory) per
+    backend, plus the two-sided SAT-vs-MaxSAT advantage comparison, on
+    one combinatorial-hardness family. `exact` for cardinality/cost
+    MaxSAT is checked against the hand-derived `S` (prereg/v5.3's own
+    proof: the unique minimum reduct by cardinality and cost), cross-
+    validated against `reduct.exact_reducts()` directly wherever the
+    exhaustive budget does not expire first. `d_flags`/`padding_depth`/
+    `budget_seconds` default to the three registered families' own
+    values (`DIVERSITY_FLAG_COUNT`/`PADDING_DEPTH`/
+    `EXHAUSTIVE_BUDGET_SECONDS`) -- overridable so tests can exercise
+    this exact function at a toy scale where exhaustion genuinely
+    completes in well under a second, not just the construction helper
+    alone; the registered run (`run_v53`) always uses the defaults."""
+    candidate_properties, reachable, signal_names, flag_names = make_combinatorial_hardness_family(k, n, d_flags, padding_depth)
+    registry = combinatorial_hardness_registry(signal_names)
+    costs = combinatorial_hardness_costs(candidate_properties, signal_names)
+    S = frozenset(signal_names)
+    F = frozenset(flag_names)
+
+    family_before = build_discernibility_family(candidate_properties, reachable, registry)
+    family_after = remove_redundant_supersets(family_before)
+
+    exhaustive = exhaustive_with_budget(candidate_properties, reachable, registry, budget_seconds)
+    if exhaustive["feasible"]:
+        exhaustive_reducts = {frozenset(r) for r in exhaustive["reducts"]}
+        number_of_reducts: Dict[str, Any] = {"source": "exhaustive", "count": len(exhaustive_reducts)}
+        exhaustive_agrees_with_hand_proof = exhaustive_reducts == {S, F}
+    else:
+        exhaustive_reducts = None
+        number_of_reducts = {"source": "hand_derived_prediction", "count": 2}
+        exhaustive_agrees_with_hand_proof = None
+
+    def contract_cost(contract: FrozenSet[str]) -> float:
+        return sum(costs[p] for p in contract)
+
+    any_contract, any_elapsed, any_rss = _timed(lambda: find_any_sufficient_contract(candidate_properties, reachable, registry))
+    any_is_sufficient, _ = sufficiency(tuple(sorted(any_contract)), reachable, registry)
+    any_frozen = frozenset(any_contract)
+    any_matches = "S" if any_frozen == S else ("F" if any_frozen == F else "neither")
+
+    card_contract, card_elapsed, card_rss = _timed(lambda: find_minimum_cardinality_contract(candidate_properties, reachable, registry))
+    card_exact = frozenset(card_contract) == S
+    card_exhaustive_agrees = (frozenset(card_contract) in exhaustive_reducts and len(card_contract) == min(len(r) for r in exhaustive_reducts)) if exhaustive_reducts else None
+
+    cost_contract, cost_elapsed, cost_rss = _timed(lambda: find_minimum_cost_contract(candidate_properties, reachable, registry, costs))
+    cost_exact = frozenset(cost_contract) == S
+    cost_exhaustive_agrees = (frozenset(cost_contract) in exhaustive_reducts and contract_cost(cost_contract) == min(contract_cost(r) for r in exhaustive_reducts)) if exhaustive_reducts else None
+
+    cardinality_advantage = len(any_contract) - len(card_contract)
+    time_overhead_ratio = (card_elapsed / any_elapsed) if any_elapsed > 0 else None
+
+    return {
+        "family": name,
+        "k": k,
+        "n": n,
+        "candidate_property_count": len(candidate_properties),
+        "reachable_tuple_count": len(reachable),
+        "predicted_reducts": {"S": sorted(S), "F": sorted(F)},
+        "discernibility_family_size_before_superset_removal": len(family_before),
+        "discernibility_family_size_after_superset_removal": len(family_after),
+        "number_of_reducts": number_of_reducts,
+        "exhaustive_cross_check": {**exhaustive, "agrees_with_hand_proof": exhaustive_agrees_with_hand_proof},
+        "backends": {
+            "sat_any_sufficient": {
+                "contract_cardinality": len(any_contract),
+                "is_sufficient": any_is_sufficient,
+                "matches": any_matches,
+                "wall_time_seconds": any_elapsed,
+                "peak_memory_kb_delta": any_rss,
+            },
+            "cardinality_maxsat": {
+                "contract": sorted(card_contract),
+                "exact": card_exact,
+                "exhaustive_cross_check_agrees": card_exhaustive_agrees,
+                "wall_time_seconds": card_elapsed,
+                "peak_memory_kb_delta": card_rss,
+            },
+            "weighted_maxsat_cost": {
+                "contract": sorted(cost_contract),
+                "exact": cost_exact,
+                "exhaustive_cross_check_agrees": cost_exhaustive_agrees,
+                "contract_cost": contract_cost(cost_contract),
+                "wall_time_seconds": cost_elapsed,
+                "peak_memory_kb_delta": cost_rss,
+            },
+        },
+        "maxsat_advantage": {
+            "cardinality_advantage": cardinality_advantage,
+            "meaningful_cardinality_advantage": cardinality_advantage > 0,
+            "time_overhead_ratio_cardinality_maxsat_over_sat": time_overhead_ratio,
+        },
+    }
+
+
+def run_v53() -> Dict[str, Any]:
+    families = [run_hardness_family(name, k, n) for name, k, n in REGISTERED_HARDNESS_FAMILIES]
+    return {
+        "prereg": "prereg/v5.3-combinatorial-hardness-scaling.md",
+        "tuple_scaling_result": "out/results/discernibility_scaling_v5_1.json (prereg/v5.1-discernibility-scaling.md) -- kept, cited, not superseded by this file",
+        "families": families,
+    }
+
+
+def main_v53() -> None:
+    result = run_v53()
+    OUTPUT_PATH_V53.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH_V53.write_text(json.dumps(result, indent=2, sort_keys=True))
+    print(json.dumps(result, indent=2, sort_keys=True))
+
+
 def _real_domain_families() -> List[Tuple[str, Tuple[str, ...], List[Any], Dict[str, Any], Dict[str, float]]]:
     from benchmarks import _real_domain_costs, declared_cost
     from domain import CANDIDATE_PROPERTIES_V2, executable_reachable_tuples_v2, load_loss_model, load_pair_test_grid, property_domains_v2
@@ -219,4 +480,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "v5.3":
+        main_v53()
+    else:
+        main()

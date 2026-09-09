@@ -1,0 +1,339 @@
+{
+  "families": [
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "p_1",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5"
+          ],
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 256,
+          "wall_time_seconds": 0.007666702999813424
+        },
+        "sat_any_sufficient": {
+          "contract_cardinality": 5,
+          "is_sufficient": true,
+          "matches": "S",
+          "peak_memory_kb_delta": 640,
+          "wall_time_seconds": 0.007936316999803239
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "p_1",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5"
+          ],
+          "contract_cost": 5.0,
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.0073765100000855455
+        }
+      },
+      "candidate_property_count": 30,
+      "discernibility_family_size_after_superset_removal": 125,
+      "discernibility_family_size_before_superset_removal": 1000,
+      "exhaustive_cross_check": {
+        "agrees_with_hand_proof": null,
+        "budget_seconds": 300,
+        "feasible": false,
+        "wall_time_seconds": 300.1032920489997
+      },
+      "family": "family_a",
+      "k": 5,
+      "maxsat_advantage": {
+        "cardinality_advantage": 0,
+        "meaningful_cardinality_advantage": false,
+        "time_overhead_ratio_cardinality_maxsat_over_sat": 0.9660278186977033
+      },
+      "n": 30,
+      "number_of_reducts": {
+        "count": 2,
+        "source": "hand_derived_prediction"
+      },
+      "predicted_reducts": {
+        "F": [
+          "f_1",
+          "f_10",
+          "f_11",
+          "f_12",
+          "f_13",
+          "f_14",
+          "f_15",
+          "f_16",
+          "f_17",
+          "f_18",
+          "f_19",
+          "f_2",
+          "f_20",
+          "f_21",
+          "f_22",
+          "f_23",
+          "f_24",
+          "f_25",
+          "f_3",
+          "f_4",
+          "f_5",
+          "f_6",
+          "f_7",
+          "f_8",
+          "f_9"
+        ],
+        "S": [
+          "p_1",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5"
+        ]
+      },
+      "reachable_tuple_count": 1001
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "p_1",
+            "p_10",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5",
+            "p_6",
+            "p_7",
+            "p_8",
+            "p_9"
+          ],
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 128,
+          "wall_time_seconds": 0.04055946300013602
+        },
+        "sat_any_sufficient": {
+          "contract_cardinality": 10,
+          "is_sufficient": true,
+          "matches": "S",
+          "peak_memory_kb_delta": 1024,
+          "wall_time_seconds": 0.04100763199994617
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "p_1",
+            "p_10",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5",
+            "p_6",
+            "p_7",
+            "p_8",
+            "p_9"
+          ],
+          "contract_cost": 10.0,
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.03810118999990664
+        }
+      },
+      "candidate_property_count": 60,
+      "discernibility_family_size_after_superset_removal": 250,
+      "discernibility_family_size_before_superset_removal": 2000,
+      "exhaustive_cross_check": {
+        "agrees_with_hand_proof": null,
+        "budget_seconds": 300,
+        "feasible": false,
+        "wall_time_seconds": 300.1034162210003
+      },
+      "family": "family_b",
+      "k": 10,
+      "maxsat_advantage": {
+        "cardinality_advantage": 0,
+        "meaningful_cardinality_advantage": false,
+        "time_overhead_ratio_cardinality_maxsat_over_sat": 0.9890710831629893
+      },
+      "n": 60,
+      "number_of_reducts": {
+        "count": 2,
+        "source": "hand_derived_prediction"
+      },
+      "predicted_reducts": {
+        "F": [
+          "f_1",
+          "f_10",
+          "f_11",
+          "f_12",
+          "f_13",
+          "f_14",
+          "f_15",
+          "f_16",
+          "f_17",
+          "f_18",
+          "f_19",
+          "f_2",
+          "f_20",
+          "f_21",
+          "f_22",
+          "f_23",
+          "f_24",
+          "f_25",
+          "f_3",
+          "f_4",
+          "f_5",
+          "f_6",
+          "f_7",
+          "f_8",
+          "f_9"
+        ],
+        "S": [
+          "p_1",
+          "p_10",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5",
+          "p_6",
+          "p_7",
+          "p_8",
+          "p_9"
+        ]
+      },
+      "reachable_tuple_count": 2001
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "p_1",
+            "p_10",
+            "p_11",
+            "p_12",
+            "p_13",
+            "p_14",
+            "p_15",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5",
+            "p_6",
+            "p_7",
+            "p_8",
+            "p_9"
+          ],
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 296,
+          "wall_time_seconds": 0.052114847999746416
+        },
+        "sat_any_sufficient": {
+          "contract_cardinality": 15,
+          "is_sufficient": true,
+          "matches": "S",
+          "peak_memory_kb_delta": 1280,
+          "wall_time_seconds": 0.05318910699998014
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "p_1",
+            "p_10",
+            "p_11",
+            "p_12",
+            "p_13",
+            "p_14",
+            "p_15",
+            "p_2",
+            "p_3",
+            "p_4",
+            "p_5",
+            "p_6",
+            "p_7",
+            "p_8",
+            "p_9"
+          ],
+          "contract_cost": 15.0,
+          "exact": true,
+          "exhaustive_cross_check_agrees": null,
+          "peak_memory_kb_delta": 104,
+          "wall_time_seconds": 0.05226237300030334
+        }
+      },
+      "candidate_property_count": 100,
+      "discernibility_family_size_after_superset_removal": 375,
+      "discernibility_family_size_before_superset_removal": 3000,
+      "exhaustive_cross_check": {
+        "agrees_with_hand_proof": null,
+        "budget_seconds": 300,
+        "feasible": false,
+        "wall_time_seconds": 300.1039208289999
+      },
+      "family": "family_c",
+      "k": 15,
+      "maxsat_advantage": {
+        "cardinality_advantage": 0,
+        "meaningful_cardinality_advantage": false,
+        "time_overhead_ratio_cardinality_maxsat_over_sat": 0.9798030262054573
+      },
+      "n": 100,
+      "number_of_reducts": {
+        "count": 2,
+        "source": "hand_derived_prediction"
+      },
+      "predicted_reducts": {
+        "F": [
+          "f_1",
+          "f_10",
+          "f_11",
+          "f_12",
+          "f_13",
+          "f_14",
+          "f_15",
+          "f_16",
+          "f_17",
+          "f_18",
+          "f_19",
+          "f_2",
+          "f_20",
+          "f_21",
+          "f_22",
+          "f_23",
+          "f_24",
+          "f_25",
+          "f_3",
+          "f_4",
+          "f_5",
+          "f_6",
+          "f_7",
+          "f_8",
+          "f_9"
+        ],
+        "S": [
+          "p_1",
+          "p_10",
+          "p_11",
+          "p_12",
+          "p_13",
+          "p_14",
+          "p_15",
+          "p_2",
+          "p_3",
+          "p_4",
+          "p_5",
+          "p_6",
+          "p_7",
+          "p_8",
+          "p_9"
+        ]
+      },
+      "reachable_tuple_count": 3001
+    }
+  ],
+  "prereg": "prereg/v5.3-combinatorial-hardness-scaling.md",
+  "tuple_scaling_result": "out/results/discernibility_scaling_v5_1.json (prereg/v5.1-discernibility-scaling.md) -- kept, cited, not superseded by this file"
+}

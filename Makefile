@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -109,11 +109,34 @@ benchmarks:
 # per domain -- the synthetic families themselves stay under 3 seconds
 # even at 100,001 tuples, by design: only one tuple carries the True
 # verdict, so their own discernibility-family cost is linear in
-# reachable-set size, not quadratic).
+# reachable-set size, not quadratic). This is now THE TUPLE-SCALING
+# RESULT (prereg-p5-v5.3, see `discernibility-hardness-scaling` below)
+# -- kept, cited, not exploratory, answering its own registered
+# question about reachable-set growth at a small, exhaustible
+# candidate-property count.
 discernibility-scaling:
-	@echo "Discernibility scaling (prereg-p5-v5.1): growing reachable sets, two planted reducts, three backends, six families..."
+	@echo "Discernibility scaling (prereg-p5-v5.1, the tuple-scaling result): growing reachable sets, two planted reducts, three backends, six families..."
 	mkdir -p out/results
 	python3 discernibility_scaling_benchmark.py
+
+# Milestone (prereg-p5-v5.3): combinatorial-hardness discernibility
+# scaling -- THE PRIMARY SCALING TABLE from this amendment forward.
+# Three families pairing planted minimum-reduct size (5/10/15) with a
+# LARGE candidate-attribute universe (30/60/100, far past exhaustive-
+# cross-check tractability), a rich discernibility structure (hundreds
+# of sets after superset removal, not one), and a genuine two-sided
+# SAT-vs-MaxSAT advantage comparison. NOT wired into release-check or
+# `paper`, same reasoning as `benchmarks`. Slow: each family attempts
+# exhaustive cross-check under a registered 300-second wall-clock
+# budget (prereg/v5.3's own hand-derivation: expected, not assumed,
+# infeasible at every family -- C(30,5)=142,506 size-5 subsets alone,
+# before any pruning is possible, for the smallest family), so a full
+# run can take up to ~15 minutes even though each SAT/MaxSAT backend
+# call itself is fast.
+discernibility-hardness-scaling:
+	@echo "Discernibility scaling (prereg-p5-v5.3, the primary scaling table): large attribute universes, diverse discernibility structure, three backends, three families..."
+	mkdir -p out/results
+	python3 discernibility_scaling_benchmark.py v5.3
 
 # Milestone E, Step 4 (prereg-p5-v6.1): AuthorityBench run all -- all
 # four registered baselines (manual least-privilege, Xu-and-Stoller
@@ -324,7 +347,8 @@ help:
 	@echo "  make quick-reproduce  release-check's full path MINUS the mutation gate (see Makefile comment); not a substitute for release-check"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling (exploratory_v5_0) + cost-aware + contract_change_delta (~3 min, not part of release-check)"
-	@echo "  make discernibility-scaling  Discernibility scaling on growing reachable sets (prereg-p5-v5.1): two planted reducts, three backends, six families"
+	@echo "  make discernibility-scaling  Discernibility scaling on growing reachable sets (prereg-p5-v5.1, the tuple-scaling result): two planted reducts, three backends, six families"
+	@echo "  make discernibility-hardness-scaling  Combinatorial-hardness discernibility scaling (prereg-p5-v5.3, the primary scaling table): large attribute universes, three backends, three families (slow, ~15 min)"
 	@echo "  make authority-bench AuthorityBench run all (prereg-p5-v6.1): four baselines x three domains x six metrics (not part of release-check)"
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"

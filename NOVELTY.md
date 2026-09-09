@@ -776,6 +776,83 @@ than originally assumed: it gives a contributor without `mutmut` set
 up, or who specifically wants release-check's hard gate skipped, a
 real, working path -- not a faster one.
 
+## Twelfth amendment (v5.3, tag `prereg-p5-v5.3`, combinatorial-hardness discernibility scaling -- real results)
+
+`prereg/v5.3-combinatorial-hardness-scaling.md` registered three
+families pairing a planted minimum-reduct size (`k = 5, 10, 15`) with a
+large candidate-attribute universe (`n = 30, 60, 100`) -- far past
+where `reduct.exact_reducts()`'s own exhaustive search stays tractable
+-- built from a signal set `S` (size `k`), 25 "diversity flag"
+properties, and inert padding, with a registered 300-second wall-clock
+budget for exhaustive cross-check and a concrete, two-sided
+SAT-vs-MaxSAT advantage comparison. v5.1's own result stays exactly as
+committed, not retroactively edited, and is now referred to as **the
+tuple-scaling result** in every document that names it
+(`discernibility_scaling_benchmark.py`'s own module docstring,
+`Makefile`) -- this amendment's result is the new primary scaling
+table.
+
+**Every hand-derived prediction confirmed exactly, real numbers, not
+massaged towards them:**
+
+- Reachable-set sizes: 1,001 / 2,001 / 3,001 (`1 + 200k`, exactly).
+- Discernibility family size before superset removal: 1,000 / 2,000 /
+  3,000 (`200k`, exactly).
+- Discernibility family size after superset removal: **125 / 250 /
+  375** (`25k`, exactly) -- the registered "hundreds of sets," at
+  every family.
+- Exhaustive cross-check: **infeasible at all three families**, each
+  run consuming the full registered 300-second budget (300.10s,
+  300.10s, 300.10s) before being abandoned -- the expected outcome
+  registered in advance (`C(30,5) = 142,506` size-5 subsets alone,
+  before any pruning is possible, for the smallest family), confirmed
+  by genuinely attempting it, not assumed from the start. `number_of_
+  reducts` correctly falls back to the hand-derived prediction (`2`,
+  every family) with that source labelled explicitly, not silently
+  presented as a measured count.
+- Cardinality-MaxSAT and cost-MaxSAT: **exact at every family** --
+  both backends return `S` exactly (cardinality `5`/`10`/`15`, cost
+  `5.0`/`10.0`/`15.0`, matching `cost(S) = k` precisely), on every one
+  of the three families.
+
+**The two-sided question, answered for real, not assumed either way**:
+does MaxSAT provide a meaningful cardinality advantage over plain SAT
+here? **No -- on all three families.** `find_any_sufficient_contract`
+(Glucose3, a satisfiability check, not an optimizer) happened to
+return `S` itself at every family, not the trivial all-`n`-properties
+answer or the larger accidental reduct `F` -- `cardinality_advantage =
+0` and `meaningful_cardinality_advantage = false` at `k = 5, 10, 15`
+alike. This is the registered outcome this document's own two-sided
+framing specifically anticipated and pre-committed to accept: "MaxSAT
+provides no meaningful advantage" is not a benchmark failure, it is
+exactly what was found, reported as found. The likely mechanism (not
+itself registered as a claim, offered as an observation): this CNF's
+clauses are all positive-literal "include at least one of these"
+constraints with no clause ever forcing an unconstrained variable to
+be `true`, so a solver whose unit-propagation/decision defaults favor
+excluding variables tends toward small models on this specific
+construction -- a property of this construction and this solver, not a
+general guarantee, and not one this registration asserts will
+generalize. The cost side of the same comparison was, if anything, the
+mirror image of the a-priori expectation too: `time_overhead_ratio`
+came out **below 1** at every family (0.966, 0.989, 0.980) -- RC2's
+optimization pass was marginally *faster* than the plain SAT check
+here, not slower, at these problem sizes (hundreds of clauses over
+30-100 variables, both well under a tenth of a second either way).
+
+No code adjustment was made to chase either outcome -- the construction,
+the 25-flag/depth-8 padding scheme, and the declared costs are exactly
+as registered before this benchmark was ever run
+(`out/results/discernibility_scaling_v5_3.json`).
+
+No new engineering bug was found while building this one (unlike the
+Tenth and Eleventh amendments): the construction was verified against a
+toy-scale instantiation, run through this repository's own real
+`discernibility.py`/`reduct.py`, before the prereg document was written
+-- the deliberate cost of that up-front verification (not itself part
+of the registered pipeline or its results) is exactly why the real run
+matched every prediction on the first attempt.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for
