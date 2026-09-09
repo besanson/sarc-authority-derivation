@@ -18,7 +18,7 @@ Terminology lint (Milestone A4, review-secondary/improvement-plan-9.5-
 never applied as a patch, per this repo's own external-review
 discipline).
 
-Live prose -- the v0.3 paper draft and README.md; this repository ships
+Live prose -- the v0.5 paper draft and README.md; this repository ships
 no separate RESEARCH-GUIDE.md (the Makefile's own `help` target names
 one that was never created), so "guide" resolves to README.md, the only
 guide-equivalent document actually present -- must never assert that a
@@ -62,7 +62,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.4.md", "README.md"]
+DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.5.md", "README.md"]
 OUTPUT_PATH = Path("out/checkers/terminology_lint.json")
 
 CLAIM_TERMS: Dict[str, re.Pattern] = {

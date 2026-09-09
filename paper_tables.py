@@ -57,6 +57,10 @@ def build_slots(
     core_insufficiency_counterexample_path: str = "out/checkers/core_insufficiency_counterexample.json",
     isolation_delta_check_path: str = "out/checkers/isolation_delta_check.json",
     authority_compiler_check_path: str = "out/checkers/authority_compiler_check.json",
+    ch_b1_check_path: str = "out/checkers/ch_b1_check.json",
+    discernibility_scaling_v5_1_path: str = "out/results/discernibility_scaling_v5_1.json",
+    discernibility_scaling_v5_3_path: str = "out/results/discernibility_scaling_v5_3.json",
+    authority_bench_v6_1_path: str = "out/results/authority_bench_v6_1.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -74,6 +78,10 @@ def build_slots(
     neg_prop_n_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "negative_proposition_n")
     ch_a9_case = next(c for c in neg_n_and_ch_a9["cases"] if c["name"] == "ch_a9_constrained_procurement_variant")
     isolation_delta = json.loads(Path(isolation_delta_check_path).read_text())
+    ch_b1 = json.loads(Path(ch_b1_check_path).read_text())
+    v5_1 = json.loads(Path(discernibility_scaling_v5_1_path).read_text())
+    v5_3 = json.loads(Path(discernibility_scaling_v5_3_path).read_text())
+    ab = json.loads(Path(authority_bench_v6_1_path).read_text())
     proof_status = _lint_proof_status()
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
@@ -196,6 +204,99 @@ def build_slots(
         "v4_budget_predicate_decisions_swept": f"{isolation_delta['budget_predicate_fire_diagnostic']['total_decisions_swept']:,}",
         "v4_budget_predicate_cells_with_fire": str(isolation_delta["budget_predicate_fire_diagnostic"]["cells_with_at_least_one_fire"]),
         "v4_budget_predicate_n_cells": str(isolation_delta["budget_predicate_fire_diagnostic"]["n_cells"]),
+    }
+    slots.update(_v05_slots(ch_b1, v5_1, v5_3, ab))
+    return slots
+
+
+def _v05_slots(ch_b1: Dict[str, Any], v5_1: Dict[str, Any], v5_3: Dict[str, Any], ab: Dict[str, Any]) -> Dict[str, str]:
+    """v0.5 (Package B, review-secondary/final-gap-plan-9.5-2026-09-09.pdf):
+    slots for the code/cloud flagship (CH-B1), the tuple-scaling and
+    combinatorial-hardness results (v5.1/v5.3), and AuthorityBench
+    (v6.1) -- sourced solely from their own already-committed JSON, same
+    discipline as every slot above."""
+    reduct_branch = next(r for r in ch_b1["minimum_reducts"] if "branch" in r)
+    reduct_environment = next(r for r in ch_b1["minimum_reducts"] if "environment" in r)
+
+    v5_1_by_family = {f["family"]: f for f in v5_1["synthetic_families"]}
+    v5_1_q5 = v5_1_by_family["multi_reduct_q5"]
+
+    v5_3_by_family = {f["family"]: f for f in v5_3["families"]}
+
+    ab_by_domain = {d["domain"]: d for d in ab["domains"]}
+    ab_v2, ab_v4, ab_dc = ab_by_domain["v2"], ab_by_domain["v4"], ab_by_domain["data-and-communications"]
+
+    def ab_manual_correct(dom: Dict[str, Any]) -> str:
+        return _supported(bool(dom["baselines"]["manual_least_privilege"]["correctness"]))
+
+    def ab_mining_size(dom: Dict[str, Any]) -> str:
+        return str(dom["baselines"]["xu_stoller_mining"]["contract_size"])
+
+    slots: Dict[str, str] = {
+        # CH-B1 (prereg/v4-realistic-domain.md, tag prereg-p5-v4): the
+        # code/cloud flagship -- a real domain (not planted for this
+        # purpose) whose core is insufficient and which has two distinct
+        # minimum reducts, `out/checkers/ch_b1_check.json`.
+        "ch_b1_candidate_property_count": str(len(ch_b1["candidate_properties"])),
+        "ch_b1_core_cardinality": str(ch_b1["core_cardinality"]),
+        "ch_b1_core_list": ", ".join(sorted(ch_b1["core_attributes"])),
+        "ch_b1_core_sufficient_status": _supported(ch_b1["is_core_sufficient"]),
+        "ch_b1_num_reducts": str(ch_b1["num_reducts"]),
+        "ch_b1_min_reduct_cardinality": str(ch_b1["minimum_reduct_cardinality"]),
+        "ch_b1_reduct_branch_list": ", ".join(sorted(reduct_branch)),
+        "ch_b1_reduct_environment_list": ", ".join(sorted(reduct_environment)),
+        "ch_b1_reachable_swept": f"{ch_b1['reachable_tuples_swept']:,}",
+        "ch_b1_power_set_size": f"{ch_b1['power_set_size']:,}",
+
+        # v5.1 (prereg/v5.1-discernibility-scaling.md, tag prereg-p5-v5.1):
+        # the tuple-scaling result -- kept, cited, not exploratory (v5.3's
+        # own registration text). Largest registered family only; all
+        # three share the same predicted structure (two singleton
+        # reducts, pruned family size 1), `out/results/
+        # discernibility_scaling_v5_1.json`.
+        "v5_1_max_reachable_tuples": f"{v5_1_q5['reachable_tuple_count']:,}",
+        "v5_1_family_size_after_pruning": str(v5_1_q5["discernibility_family_size_after_superset_removal"]),
+        "v5_1_num_reducts": str(len(v5_1_q5["exhaustive_cross_check"]["reducts"])),
+
+        # v5.3 (prereg/v5.3-combinatorial-hardness-scaling.md, tag
+        # prereg-p5-v5.3): the primary scaling table -- three families
+        # pairing planted minimum-reduct size with a large candidate-
+        # attribute universe, `out/results/discernibility_scaling_v5_3.json`.
+        "v5_3_family_a_k": str(v5_3_by_family["family_a"]["k"]),
+        "v5_3_family_a_n": str(v5_3_by_family["family_a"]["n"]),
+        "v5_3_family_a_reachable": f"{v5_3_by_family['family_a']['reachable_tuple_count']:,}",
+        "v5_3_family_a_pruned_family_size": str(v5_3_by_family["family_a"]["discernibility_family_size_after_superset_removal"]),
+        "v5_3_family_b_k": str(v5_3_by_family["family_b"]["k"]),
+        "v5_3_family_b_n": str(v5_3_by_family["family_b"]["n"]),
+        "v5_3_family_b_reachable": f"{v5_3_by_family['family_b']['reachable_tuple_count']:,}",
+        "v5_3_family_b_pruned_family_size": str(v5_3_by_family["family_b"]["discernibility_family_size_after_superset_removal"]),
+        "v5_3_family_c_k": str(v5_3_by_family["family_c"]["k"]),
+        "v5_3_family_c_n": str(v5_3_by_family["family_c"]["n"]),
+        "v5_3_family_c_reachable": f"{v5_3_by_family['family_c']['reachable_tuple_count']:,}",
+        "v5_3_family_c_pruned_family_size": str(v5_3_by_family["family_c"]["discernibility_family_size_after_superset_removal"]),
+        "v5_3_exhaustive_budget_seconds": str(v5_3_by_family["family_a"]["exhaustive_cross_check"]["budget_seconds"]),
+        "v5_3_maxsat_advantage_any_family": _supported(
+            any(f["maxsat_advantage"]["meaningful_cardinality_advantage"] for f in v5_3["families"])
+        ),
+
+        # v6.1 (prereg/v6.1-authoritybench-amendment.md, tag
+        # prereg-p5-v6.1): AuthorityBench run all, `out/results/
+        # authority_bench_v6_1.json`. Domain names as registered: "v2"
+        # (procurement), "v4" (code/cloud), "data-and-communications".
+        "ab_domain_count": str(len(ab["domains"])),
+        "ab_v2_candidate_property_count": str(ab_v2["candidate_property_count"]),
+        "ab_v2_reachable_tuple_count": f"{ab_v2['reachable_tuple_count']:,}",
+        "ab_v2_manual_correct": ab_manual_correct(ab_v2),
+        "ab_v2_mining_size": ab_mining_size(ab_v2),
+        "ab_v4_candidate_property_count": str(ab_v4["candidate_property_count"]),
+        "ab_v4_reachable_tuple_count": f"{ab_v4['reachable_tuple_count']:,}",
+        "ab_v4_manual_correct": ab_manual_correct(ab_v4),
+        "ab_v4_mining_size": ab_mining_size(ab_v4),
+        "ab_dc_candidate_property_count": str(ab_dc["candidate_property_count"]),
+        "ab_dc_reachable_tuple_count": f"{ab_dc['reachable_tuple_count']:,}",
+        "ab_dc_manual_correct": ab_manual_correct(ab_dc),
+        "ab_dc_mining_size": ab_mining_size(ab_dc),
+        "ab_xu_stoller_mining_validated": _supported(ab["xu_stoller_mining_validated"]),
     }
     return slots
 

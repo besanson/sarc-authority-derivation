@@ -61,7 +61,7 @@ ENGINES_LOCK = Path("engines.lock")
 DEPENDENCY_NAMES = ["pytest", "hypothesis", "mutmut", "jsonschema", "scipy", "python-sat", "pyyaml"]
 
 ARTIFACT_PATHS = [
-    "paper5-authority-derivation-draft-v0.4-populated.md",
+    "paper5-authority-derivation-draft-v0.5-populated.md",
     "appendix-a-proofs.md",
     "NOVELTY.md",
     "review-secondary/external-research-review-2026-09-06.pdf",
