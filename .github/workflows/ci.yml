@@ -28,6 +28,16 @@
 # executable the pinned upstream bootstrap invokes needs an apt package:
 # its LaTeX toolchain (tectonic) is vendored as a pinned binary download
 # by that repo's own bootstrap.sh, not installed via apt.
+#
+# `package` job (Package A, review-secondary/final-gap-plan-9.5-2026-09-09.pdf's
+# own mandatory CI smoke test): deliberately INDEPENDENT of `bootstrap.sh`
+# and the pinned siblings -- building and black-box-testing a wheel needs
+# neither, and keeping this job free of the (slow) bootstrap phase means
+# a packaging regression is caught fast, not only after paying for the
+# full `test` job's own ~35-minute release-check. Runs the identical
+# `make package-smoke-test` a contributor runs locally, on the same
+# Python 3.11/3.12 matrix as `test`, so both are "latest HEAD green" in
+# the sense the acceptance criterion means.
 
 name: ci
 
@@ -62,3 +72,24 @@ jobs:
       - name: make release-check
         working-directory: sarc-authority-derivation
         run: make release-check
+
+  package:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: sarc-authority-derivation
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install build toolchain (python -m build)
+        run: pip install -q build
+
+      - name: make package-smoke-test
+        working-directory: sarc-authority-derivation
+        run: make package-smoke-test

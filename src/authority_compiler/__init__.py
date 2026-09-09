@@ -15,9 +15,31 @@
 behind one call. See `authority_compiler.api` for the implementation --
 every field `derive_authority_contract` returns is computed by an
 existing, already-verified top-level module (participation.py, reduct.py,
-synthesis.py), unmodified."""
+synthesis.py), unmodified.
+
+**Public API stability statement (Package A, review-secondary/
+final-gap-plan-9.5-2026-09-09.pdf):** `derive_authority_contract` and
+`AuthorityContract` (this module's `__all__`, in full) are this
+package's stable public surface -- their names, parameter order, and
+`AuthorityContract`'s own field set do not change without a version
+bump and a NOVELTY.md amendment explaining why. `authority_compiler.api`
+is an implementation module: importable, but not itself part of the
+stability contract -- import from `authority_compiler` directly, not
+`authority_compiler.api`, to stay on the stable surface. `__version__`
+tracks this distribution's own release (`importlib.metadata`, falling
+back to a sentinel when not installed -- e.g. `pythonpath` test-mode,
+`reproducibility_report.py`'s own `_dependency_versions` uses the same
+fallback pattern for the same reason: an uninstalled, path-injected
+import must not crash on a metadata lookup that has nothing to find)."""
 from __future__ import annotations
+
+import importlib.metadata
 
 from authority_compiler.api import AuthorityContract, derive_authority_contract
 
-__all__ = ["AuthorityContract", "derive_authority_contract"]
+try:
+    __version__ = importlib.metadata.version("sarc-authority-derivation")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "0+unknown"
+
+__all__ = ["AuthorityContract", "derive_authority_contract", "__version__"]

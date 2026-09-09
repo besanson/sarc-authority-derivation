@@ -5,6 +5,14 @@ __pycache__/
 mutants/
 .mutmut-cache
 
+# Package A (review-secondary/final-gap-plan-9.5-2026-09-09.pdf): sdist/
+# wheel build output (`python -m build`) -- regenerable from pyproject.toml
+# + the source files it names, same "regenerable build output" policy as
+# out/ below.
+dist/
+build/
+*.egg-info/
+
 # Regenerable build output, same policy as sarc-suite-one-pass's own
 # .gitignore: everything under out/ is reproducible from the pinned
 # siblings (engines.lock) + the frozen seed list (prereg/seeds.json) +

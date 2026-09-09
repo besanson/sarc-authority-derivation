@@ -51,6 +51,7 @@ rows are directly comparable against it without a fifth comparator.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import resource
 import time
@@ -307,6 +308,18 @@ def _json_default(obj: Any) -> Any:
 
 
 def main() -> None:
+    # Package A (review-secondary/final-gap-plan-9.5-2026-09-09.pdf's
+    # own mandatory CI smoke test): the console script previously took
+    # no arguments at all, so `authority-bench --help` silently ran the
+    # full four-baseline/three-domain benchmark instead of printing
+    # usage and exiting -- argparse's own free `-h`/`--help` (any parser,
+    # even one with zero declared arguments, gets it) fixes that without
+    # changing the no-argument case `make authority-bench` already relies on.
+    argparse.ArgumentParser(
+        prog="authority-bench",
+        description="AuthorityBench (prereg-p5-v6.1): four baselines x three domains x six metrics. "
+                     "Writes out/results/authority_bench_v6_1.json.",
+    ).parse_args()
     result = run()
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(result, indent=2, sort_keys=True, default=_json_default))

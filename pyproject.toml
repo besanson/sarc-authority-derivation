@@ -29,12 +29,39 @@
 # Milestone C, Milestone D, and Milestone E1 -- see `make mutate`/
 # `mutation_check.py`) and [tool.pytest.ini_options]'s marker
 # registration.
+#
+# Package A (review-secondary/final-gap-plan-9.5-2026-09-09.pdf's own
+# P0): until this amendment, [tool.setuptools] named only `authority_
+# bench` (py-modules) -- pytest could still import `authority_compiler`
+# because [tool.pytest.ini_options]'s own `pythonpath = ["src"]` injects
+# it into the TEST path, but a wheel built from this file never
+# contained `src/authority_compiler` at all, and even `authority_bench`
+# itself was not truly installable standalone: BOTH modules' own real
+# dependency closure (traced by direct import inspection, not assumed)
+# reaches seven more top-level single-file modules --
+# reduct/synthesis/participation/discernibility/losses/domain/mining_
+# baseline -- none of which were previously declared either. `packages`/
+# `package-dir` below add ONLY `authority_compiler` as a real package
+# (mapped to its actual `src/` location); `py-modules` grows to name
+# every module in that traced closure, so a wheel built from this file
+# now contains everything both `import authority_compiler` and `import
+# authority_bench` actually need, standalone, with no repository root,
+# pytest pythonpath, editable install, or sibling directory required --
+# verified directly (see A3's own CI job), not merely declared.
 
 [project]
 name = "sarc-authority-derivation"
 version = "0.6.1"
 description = "Deriving Authority: a machine-checkable derivation from a declared loss model to the core attribute set a pre-action authority gate must observe."
 requires-python = ">=3.11"
+# Runtime dependencies of the traced closure below (bootstrap.sh installs
+# both, unpinned, the same convention kept here rather than inventing a
+# new one): pyyaml (domain.py's own loaders) and python-sat (synthesis.py's
+# SAT/MaxSAT backends).
+dependencies = [
+    "pyyaml",
+    "python-sat",
+]
 
 [project.scripts]
 authority-bench = "authority_bench:main"
@@ -44,7 +71,32 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["authority_bench"]
+# `authority_bench` plus its full traced import closure (module docstring
+# comment above): reduct -> participation -> domain/losses; synthesis ->
+# discernibility/reduct; authority_bench itself -> mining_baseline/reduct.
+# Every name here is a real top-level module this repo already runs via
+# `python3 <name>.py` / `make <target>` unchanged -- none is moved,
+# duplicated, or renamed by this packaging declaration.
+py-modules = [
+    "authority_bench",
+    "reduct",
+    "synthesis",
+    "participation",
+    "discernibility",
+    "losses",
+    "domain",
+    "mining_baseline",
+]
+# `authority_compiler` is the one real src-layout PACKAGE (a directory,
+# not a single file) -- mapped explicitly to its actual location rather
+# than a blanket `package-dir = {"" = "src"}`, because that blanket form
+# would also redirect the py-modules above (which stay at the repo root)
+# to look under src/, breaking them. An explicit, one-entry mapping says
+# exactly what it does and nothing more.
+packages = ["authority_compiler"]
+
+[tool.setuptools.package-dir]
+authority_compiler = "src/authority_compiler"
 
 [tool.pytest.ini_options]
 # pythonpath = ["src"]: Milestone E1's src/authority_compiler is imported

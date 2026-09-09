@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce package-smoke-test ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -324,6 +324,31 @@ mutate:
 	mutmut export-cicd-stats
 	python3 mutation_check.py
 
+# Package A (review-secondary/final-gap-plan-9.5-2026-09-09.pdf's own
+# mandatory CI smoke test): a genuine black-box check that a BUILT WHEEL
+# -- not this repo's own source tree -- contains a working
+# authority_compiler. Independent of `bootstrap`/the pinned siblings
+# (packaging needs none of them); the CI `package` job runs this exact
+# target, on Python 3.11 and 3.12, so a local `make package-smoke-test`
+# reproduces precisely what CI checks. See authority_compiler_smoke.py's
+# own docstring for why its body is fed to the fresh venv's python on
+# STDIN (`python - < ...`), never run as `python authority_compiler_
+# smoke.py` -- the two are not equivalent for a black-box test.
+package-smoke-test:
+	@echo "=== package-smoke-test: build sdist+wheel ==="
+	rm -rf dist build sarc_authority_derivation.egg-info
+	python3 -m build
+	@echo "=== package-smoke-test: fresh venv, wheel-only install ==="
+	rm -rf /tmp/sarc-p5-ac-smoke
+	python3 -m venv /tmp/sarc-p5-ac-smoke
+	/tmp/sarc-p5-ac-smoke/bin/pip install -q dist/*.whl
+	@echo "=== package-smoke-test: black-box import + derive one contract (neutral cwd, not this repo) ==="
+	cd /tmp && /tmp/sarc-p5-ac-smoke/bin/python - < "$(CURDIR)/authority_compiler_smoke.py"
+	@echo "=== package-smoke-test: authority-bench --help ==="
+	/tmp/sarc-p5-ac-smoke/bin/authority-bench --help
+	rm -rf /tmp/sarc-p5-ac-smoke dist build sarc_authority_derivation.egg-info
+	@echo "package-smoke-test: PASS"
+
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
@@ -354,6 +379,7 @@ help:
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"
 	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
 	@echo "  make time-quick-reproduce  Same harness, timing make quick-reproduce instead (repair 3): comparable bare-clone figure minus mutation"
+	@echo "  make package-smoke-test  Package A: build sdist+wheel, install into a fresh venv, black-box import+derive+CLI check -- no repo root, pythonpath, editable install, or siblings"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."
