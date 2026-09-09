@@ -1,7 +1,10 @@
 {
   "baseline_missed": 369,
+  "budget_loss_fire_count": 0,
   "derived_missed": 0,
   "n_decisions": 1470,
+  "period_budget": 3316.712700000001,
+  "period_budget_multiplier": 1.15,
   "replay_admissions_grant_binding_off": 72,
   "replay_admissions_grant_binding_on": 0,
   "replay_probe_count": 72,

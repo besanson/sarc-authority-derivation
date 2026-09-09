@@ -783,7 +783,15 @@ formal-track, evaluated once, not per seed. **CH-A4: [GENERATED: ch_a4_status]**
   parameter set, not a proof that isolation never matters -- a tighter
   budget multiplier or a different declared loss model could still see
   it bind, and the isolated design (and its own regression test) is now
-  in place either way.
+  in place either way. **Closed, not left open**: `prereg/
+  v5.2-budget-binding-scenario.md` registered, and this artifact then
+  ran, exactly that -- the same [GENERATED: n_seeds] seeds and both
+  workflows under a deliberately tighter budget multiplier. The budget
+  loss now fires on every one of the [GENERATED: n_cells] cells, and
+  CH-A1's derived-zero-miss guarantee holds on every one of them too
+  (NOVELTY.md's Tenth amendment, `out/results/budget_binding_
+  scenario_summary.json`) -- no longer a structural guarantee left
+  untested by this specific mechanism.
 - **v0.1 and v0.2's Proposition 1 overclaimed a general sufficiency
   guarantee Definition 1's method does not provide, and an external
   review caught it, not this paper's own drafting or its formal

@@ -1,0 +1,29 @@
+{
+  "budget_loss_fire_count_ci": {
+    "ci95_high": 2751.721506210203,
+    "ci95_low": 1838.6451604564636,
+    "mean": 2295.1833333333334,
+    "n": 60
+  },
+  "budget_loss_fired_at_least_once": true,
+  "cells_with_at_least_one_fire": 60,
+  "ch_a1_baseline_missed_ci": {
+    "ci95_high": 2464.4197511214916,
+    "ci95_low": 1647.146915545175,
+    "mean": 2055.7833333333333,
+    "n": 60
+  },
+  "ch_a1_derived_missed_ci": {
+    "ci95_high": 0.0,
+    "ci95_low": 0.0,
+    "mean": 0.0,
+    "n": 60
+  },
+  "ch_a1_holds_on_all_cells": true,
+  "ch_a1_holds_on_cells_where_budget_loss_fired": true,
+  "decision": "SUPPORTED: budget loss fired, CH-A1's derived-zero-miss guarantee held on every cell where it fired",
+  "n_cells": 60,
+  "period_budget_multiplier": 0.25,
+  "prereg": "prereg/v5.2-budget-binding-scenario.md",
+  "total_budget_loss_fire_count": 137711
+}

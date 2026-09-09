@@ -152,7 +152,7 @@ def _make_arm_states(period_budget: float) -> Dict[str, "ArmState"]:
     return {name: ArmState(budget_remaining=period_budget, ledger=GrantLedger()) for name in ARM_NAMES}
 
 
-def calibrate_period_budget(enriched: List["EnrichedDecision"]) -> float:
+def calibrate_period_budget(enriched: List["EnrichedDecision"], multiplier: float = PERIOD_BUDGET_MULTIPLIER) -> float:
     """The resource gate's delegated pool, per period (one day for W1,
     one commitment window for W2 -- both are exactly 'one distinct `day`
     value', since W2's plan already contains only one entry per SKU per
@@ -160,13 +160,19 @@ def calibrate_period_budget(enriched: List["EnrichedDecision"]) -> float:
     distribution (median total order_value_post across all periods this
     plan actually produced), not hand-picked -- PERIOD_BUDGET_MULTIPLIER
     is deliberately just above 1.0 so the pool binds on above-median
-    periods without being either always-empty or never-binding."""
+    periods without being either always-empty or never-binding.
+
+    `multiplier` (prereg/v5.2-budget-binding-scenario.md): optional
+    override, defaulting to the module constant -- every existing call
+    site that does not pass it (including the frozen v0.4 sweep) is
+    byte-for-byte unaffected; `budget_binding_scenario.py` is the one
+    caller that passes a different, deliberately tighter value."""
     totals: Dict[int, float] = {}
     for d in enriched:
         totals[d.day] = totals.get(d.day, 0.0) + d.order_value_post
     ordered = sorted(totals.values())
     median = ordered[len(ordered) // 2]
-    return median * PERIOD_BUDGET_MULTIPLIER
+    return median * multiplier
 
 
 def _authority_role_ceiling(role: str, loss_model: Dict[str, Any]) -> float:
@@ -249,6 +255,12 @@ def process_decision(
       derived's, once a past spurious escalation changed its budget
       trajectory), AND an additional forced denial whenever
       `workflow == "W2"`.
+
+    `period_budget_multiplier` (prereg/v5.2-budget-binding-scenario.md):
+    optional, keyword-only, defaulting to the module constant -- threaded
+    through to `calibrate_period_budget` unchanged. `sweep.py`'s own call
+    site never passes it, so the frozen v0.4 sweep is unaffected;
+    `budget_binding_scenario.py` is the one caller that does.
     """
     def state_for(arm: ArmState) -> StateTuple:
         return StateTuple(
@@ -301,7 +313,7 @@ def process_decision(
     }
 
 
-def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
+def run_seed_workflow(seed: int, workflow: str, *, period_budget_multiplier: float = PERIOD_BUDGET_MULTIPLIER) -> Dict[str, Any]:
     """Runs both grant_binding=on and grant_binding=off in one pass over
     the same decision stream (CH-A3's paired comparison): 'on' consults a
     real GrantLedger per decision, so a replay probe's second consumption
@@ -323,7 +335,7 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
     )
     all_skus = load_all_skus(DATA_PATH)
     enriched = enrich_plan(plan, seed, workflow, all_skus)
-    period_budget = calibrate_period_budget(enriched)
+    period_budget = calibrate_period_budget(enriched, period_budget_multiplier)
 
     loss_model = load_loss_model()
     registry = load_loss_registry(loss_model)
@@ -341,6 +353,7 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
     replay_probe_count = 0
     replay_admissions_grant_binding_on = 0
     replay_admissions_grant_binding_off = 0
+    budget_loss_fire_count = 0  # prereg/v5.2-budget-binding-scenario.md: spend_against_depleted_delegated_budget, derived's own trajectory
 
     for d in enriched:
         if d.day != current_period_day:
@@ -355,6 +368,15 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
             order_value=d.order_value_post, order_value_cap=baseline_cap,
         )
         baseline_admits = baseline_response == op_composition.Response.ADMIT
+
+        # prereg/v5.2-budget-binding-scenario.md: losses.spend_against_
+        # depleted_delegated_budget's own definition (order_value >
+        # budget_remaining), evaluated against derived's own trajectory
+        # BEFORE process_decision applies this decision's admission
+        # effects to it (budget_remaining is only ever decremented
+        # inside process_decision, never here).
+        if d.order_value_post > arms["derived"].budget_remaining:
+            budget_loss_fire_count += 1
 
         outcome = process_decision(
             arms,
@@ -396,4 +418,7 @@ def run_seed_workflow(seed: int, workflow: str) -> Dict[str, Any]:
         "replay_probe_count": replay_probe_count,
         "replay_admissions_grant_binding_on": replay_admissions_grant_binding_on,
         "replay_admissions_grant_binding_off": replay_admissions_grant_binding_off,
+        "period_budget_multiplier": period_budget_multiplier,
+        "period_budget": period_budget,
+        "budget_loss_fire_count": budget_loss_fire_count,
     }

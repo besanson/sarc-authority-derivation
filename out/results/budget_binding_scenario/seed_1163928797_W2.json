@@ -1,0 +1,15 @@
+{
+  "baseline_missed": 526,
+  "budget_loss_fire_count": 594,
+  "derived_missed": 0,
+  "n_decisions": 1470,
+  "period_budget": 721.0245000000002,
+  "period_budget_multiplier": 0.25,
+  "replay_admissions_grant_binding_off": 80,
+  "replay_admissions_grant_binding_on": 0,
+  "replay_probe_count": 80,
+  "seed": 1163928797,
+  "spurious_escalations_overinclusive": 772,
+  "true_violations": 837,
+  "workflow": "W2"
+}
