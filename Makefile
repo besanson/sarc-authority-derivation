@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction quick-reproduce ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -182,6 +182,18 @@ time-reproduction:
 	mkdir -p out
 	python3 time_reproduction.py
 
+# Repair 3 (no separate prereg -- tooling, not a registered result): the
+# same bare-clone+bootstrap+restore harness as `time-reproduction` above,
+# timing `make quick-reproduce` instead of `make release-check`, so the
+# two figures are measured under identical bare-clone conditions and are
+# genuinely comparable side by side. Writes out/reproduction_timing_quick.json,
+# folded into out/reproducibility-report.json's own quick_reproduce_timing
+# field alongside reproduction_timing.
+time-quick-reproduce:
+	@echo "Timed bare-clone reproduction, quick-reproduce path (repair 3): git clone + bootstrap.sh + make quick-reproduce, in a disposable temp directory..."
+	mkdir -p out
+	python3 time_reproduction.py quick-reproduce
+
 release-check:
 	@echo "=== release-check: full test suite ==="
 	mkdir -p out
@@ -304,6 +316,7 @@ help:
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"
 	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
+	@echo "  make time-quick-reproduce  Same harness, timing make quick-reproduce instead (repair 3): comparable bare-clone figure minus mutation"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

@@ -53,7 +53,7 @@ from checkers._provenance import head_sha
 from checkers.proof_status_lint import lint as _lint_proof_status
 from checkers.terminology_lint import lint as _lint_terminology
 from checkers.typed_numerals_lint import run as _lint_typed_numerals
-from mutation_check import run as _mutation_run
+import mutation_check
 
 OUTPUT_PATH = Path("out/reproducibility-report.json")
 ENGINES_LOCK = Path("engines.lock")
@@ -123,6 +123,34 @@ def _reproduction_timing() -> Any:
     release-check` run does not perform the timed reproduction itself)."""
     p = Path("out/reproduction_timing.json")
     return json.loads(p.read_text()) if p.exists() else None
+
+
+def _quick_reproduce_timing() -> Any:
+    """Repair 3 (tooling, not a registered result -- no prereg needed):
+    folds `time_reproduction.py quick-reproduce`'s own sidecar artifact
+    (the same bare-clone+bootstrap harness as `_reproduction_timing`
+    above, timing `make quick-reproduce` -- release-check's own recipe
+    minus the mutation gate -- instead of `make release-check`) into
+    this report, alongside `reproduction_timing`, for a genuine
+    apples-to-apples comparison. `None` when the sidecar has never been
+    generated."""
+    p = Path("out/reproduction_timing_quick.json")
+    return json.loads(p.read_text()) if p.exists() else None
+
+
+def _mutation_run() -> Any:
+    """Wraps `mutation_check.run()` (the same hard-gate logic `make
+    mutate` itself uses) for this report's own read-only consumption.
+    `None` when `mutants/mutmut-cicd-stats.json` does not exist yet --
+    a real case, not hypothetical: `make quick-reproduce` (repair 3)
+    deliberately skips `make mutate` and still calls this script as its
+    own last step, so a contributor's very first quick-reproduce run
+    (no `mutants/` directory on disk at all) must not crash here.
+    `make release-check` itself always runs `make mutate` first, so
+    this is never `None` on that path."""
+    if not mutation_check.STATS_PATH.exists():
+        return None
+    return mutation_check.run()
 
 
 def _artifact_hashes() -> Dict[str, str]:
@@ -202,6 +230,7 @@ def build_report() -> Dict[str, Any]:
         "formal_checks_passed": bool(formal_summary.get("all_true")),
         "mutation": mutation,
         "reproduction_timing": _reproduction_timing(),
+        "quick_reproduce_timing": _quick_reproduce_timing(),
         "artifact_hashes": _artifact_hashes(),
         "paper_freshness_status": "verified byte-identical earlier in this same "
                                    "`make release-check` run (populated-draft "
