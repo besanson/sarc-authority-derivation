@@ -710,6 +710,72 @@ constant, and every existing call site that does not pass the new
 parameter, are unchanged -- the frozen v0.4 sweep's own reported
 numbers are exactly as committed.
 
+## Eleventh amendment (repair 3: `make quick-reproduce`, timed for real alongside the ~35-minute figure)
+
+Step 6's own `time_reproduction.py` timed exactly one path end to end:
+a bare `git clone` + `bootstrap.sh` + `make release-check` (mutation
+gate included), ~35.4 minutes. `make quick-reproduce` -- release-
+check's own recipe with only the mutation-testing step removed --
+already had a Makefile target but no real timing figure of its own.
+`time_reproduction.py` was extended to accept an optional `make`
+target argument so the SAME clone+bootstrap+restore harness could time
+`make quick-reproduce` too, under identical bare-clone conditions,
+writing `out/reproduction_timing_quick.json` alongside the existing
+`out/reproduction_timing.json` (both gitignored build output, same as
+`out/reproducibility-report.json` -- reported here, not committed as
+raw JSON, same as Step 6's own figure always was).
+
+**A real crash, found by actually running it, not hypothesized in
+advance**: the first timed run of `make quick-reproduce` failed at its
+own last step -- `reproducibility_report.py`'s `_mutation_run()`
+called `mutation_check.run()` unconditionally, which reads `mutants/
+mutmut-cicd-stats.json` with no existence check. `make quick-
+reproduce` deliberately skips `make mutate`, the only thing that
+creates that file, so a fresh checkout with no prior mutation run --
+exactly the situation `make quick-reproduce` exists for -- crashed
+with `FileNotFoundError`, confirmed directly (`make quick-reproduce`
+exit code 2) before being fixed: check `mutation_check.STATS_PATH.
+exists()` first and return `None` when absent, the same
+never-generated-yet pattern `reproduction_timing`/`quick_reproduce_
+timing` already used for their own sidecar files. `make release-check`
+itself was never at risk -- it always runs `make mutate` first, so the
+stats file is always present by the time `reproducibility_report.py`
+runs on that path. Fixed and pushed (`d522862`), then re-timed for
+real.
+
+**The real figures, both bare-clone, both genuine, neither massaged
+toward the original ~35-minute figure or toward the assumption below:**
+
+- `make release-check` (Step 6, unchanged): clone 1.1s + bootstrap
+  263.9s + release-check 1,856.7s (mutation included) = **2,121.8s,
+  ~35.4 minutes**.
+- `make quick-reproduce` (this amendment): clone 1.3s + bootstrap
+  280.9s + quick-reproduce 1,905.0s (mutation skipped) = **2,187.1s,
+  ~36.5 minutes**.
+
+Quick-reproduce's own non-mutation work came out *slightly longer*,
+not shorter, than release-check's full total -- the opposite of what
+the Makefile's own comment on that target had guessed ("mutation
+testing is release-check's own dominant cost, roughly 30 of the 35
+minutes"), written before either path had ever been timed end to end.
+These are two independent runs on shared infrastructure, not a
+controlled paired trial, so mutation's own marginal cost cannot be
+cleanly isolated by subtracting them -- environmental run-to-run
+variance here is at least as large as whatever that marginal cost
+actually is. What the real numbers DO show plainly: the full pytest
+suite, the double `make formal` run, populated-draft regeneration, and
+the lints -- not mutation -- account for the bulk of the wall-clock
+either way. The Makefile's own comment on `quick-reproduce` (and
+`time_reproduction.py`'s docstring) were corrected to say exactly
+this, not left asserting the original, now-falsified guess -- the same
+"report the real number honestly whatever it is" discipline Step 6
+itself registered before ever being run.
+
+`make quick-reproduce` still earns its keep, for a different reason
+than originally assumed: it gives a contributor without `mutmut` set
+up, or who specifically wants release-check's hard gate skipped, a
+real, working path -- not a faster one.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

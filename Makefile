@@ -241,11 +241,24 @@ release-check:
 # enough that keeping them in obvious lockstep by eye is the more
 # robust choice). If release-check's own recipe changes, mirror the
 # change here too, everything except the mutation section. Exists so
-# `time_reproduction.py` can report a genuine "full path minus
-# mutation" timing alongside the ~35-minute full figure -- mutation
-# testing is release-check's own dominant cost (roughly 30 of the 35
-# minutes), so this is the number a contributor doing a fast local
-# check, not a release, actually wants.
+# `time_reproduction.py quick-reproduce` can report a genuine "full
+# path minus mutation" timing alongside the ~35-minute full figure
+# (repair 3, NOVELTY.md's Eleventh amendment).
+#
+# An assumption this comment used to make, corrected by actually
+# measuring it: this used to say mutation testing was release-check's
+# "dominant cost (roughly 30 of the 35 minutes)", written before this
+# target was ever timed end to end. The real bare-clone figures are
+# ~35.4 minutes WITH mutation and ~36.5 minutes WITHOUT it -- two
+# independent runs, not a controlled paired trial, so mutation's own
+# marginal cost cannot be cleanly isolated by subtracting them; the
+# pytest suite + double `make formal` run + populated-draft
+# regeneration + lints dominate the wall-clock either way, in this
+# shared environment, at least as much as mutation does. This target
+# still earns its keep: it gives a contributor without mutmut set up,
+# or who just wants the hard gate skipped rather than the fast(er)
+# path, a real one -- "quick" undersells it; "release-check minus the
+# mutation gate" is the honest description.
 quick-reproduce:
 	@echo "=== quick-reproduce: full test suite ==="
 	mkdir -p out

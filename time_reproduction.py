@@ -45,10 +45,12 @@ needed)**: this script also accepts an optional `make` target argument,
 are measured under identical bare-clone conditions and are genuinely
 comparable side by side, not one with-clone number set against one
 without. `make quick-reproduce` is release-check's own recipe minus the
-mutation-testing gate (see Makefile's comment on that target): mutation
-is release-check's dominant cost, so this reports the number a
-contributor doing a fast local check, not a release, actually wants.
-Writes `out/reproduction_timing_quick.json` in that mode (folded into
+mutation-testing gate (see Makefile's comment on that target -- and its
+own honest correction: the real bare-clone figures show mutation is
+NOT the dominant cost this comment originally assumed, before either
+path was ever timed end to end). This still reports a real number a
+contributor without mutmut set up, or who wants the hard gate skipped,
+actually wants. Writes `out/reproduction_timing_quick.json` in that mode (folded into
 `out/reproducibility-report.json`'s own `quick_reproduce_timing` field,
 alongside `reproduction_timing`). No argument defaults to
 `release-check`, preserving the original Step 6 invocation and output
