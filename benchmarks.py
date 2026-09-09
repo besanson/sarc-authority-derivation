@@ -29,7 +29,27 @@ through `participation._serialize`, which calls `dataclasses.asdict` --
 requiring an actual dataclass instance, not merely an attribute-bearing
 object (found directly, by this module's own first run raising
 `TypeError: asdict() should be called on dataclass instances`, not
-assumed from reading `_serialize`'s source)."""
+assumed from reading `_serialize`'s source).
+
+**Disposition (prereg/v5.1-discernibility-scaling.md, tag
+`prereg-p5-v5.1`):** Experiment 1 below (`run_scaling_experiment`)
+scales candidate-property count `n` while deliberately holding the
+reachable set fixed at 6 tuples -- a real, valid answer to the question
+it was built for, but not a test of whether the engine scales as the
+REACHABLE SET itself grows, and its planted reduct is unique by
+construction (no test of multiple minimal hitting sets). Labelled
+`exploratory_v5_0` from this tag forward -- kept, not deleted, still
+cited for its own question -- and superseded as the primary scaling
+claim by `discernibility_scaling_benchmark.py`'s own family (reachable
+sets >= 10^3/10^4/10^5 tuples, two planted reducts, all three
+`synthesis.py` backends, plus v2/v4/data-and-communications as real
+measured points), the same disposition `out/results/authority_
+bench.json` already has relative to `authority_bench_v6_1.json`. This
+module itself is not modified by that registration -- unmodified here
+means its own already-committed `out/results/synthesis_benchmarks.json`
+stays exactly as is, not re-run to add a marker key that would cost
+another ~3-minute run for a purely cosmetic change; the disposition is
+recorded here, in NOVELTY.md, and in the Makefile instead."""
 from __future__ import annotations
 
 import json

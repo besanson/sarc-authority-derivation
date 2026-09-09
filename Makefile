@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks authority-bench authority-bench-domains xu-stoller-validation time-reproduction ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction quick-reproduce ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -90,11 +90,30 @@ paper: experiments sweep formal
 # unlike `make formal`'s checkers -- so neither belongs in the mandatory
 # release gate). Re-run explicitly after any change to discernibility.py,
 # synthesis.py, benchmarks.py, or the real domains' declared models.
+# Experiment 1 (planted-reduct scaling) is exploratory_v5_0 as of
+# prereg-p5-v5.1 -- kept, superseded as the primary scaling claim by
+# `discernibility-scaling` below (benchmarks.py itself is unmodified).
 benchmarks:
-	@echo "Synthesis benchmarks (prereg-p5-v5): planted-reduct scaling + cost-aware synthesis + contract_change_delta demo..."
+	@echo "Synthesis benchmarks (prereg-p5-v5): planted-reduct scaling (exploratory_v5_0, see prereg-p5-v5.1) + cost-aware synthesis + contract_change_delta demo..."
 	@echo "(~3 minutes -- see Makefile comment above this target for why.)"
 	mkdir -p out/results
 	python3 benchmarks.py
+
+# Milestone (prereg-p5-v5.1): discernibility scaling on GROWING
+# reachable sets (>=10^3/10^4/10^5 tuples, two planted reducts, not
+# one) -- the successor to Experiment 1 above. All three synthesis.py
+# backends, plus v2/v4/data-and-communications as real measured points.
+# NOT wired into release-check or `paper`, same reasoning as
+# `benchmarks`. Takes several minutes (dominated by the three real
+# domains' own build_discernibility_family cost, paid once per backend
+# per domain -- the synthetic families themselves stay under 3 seconds
+# even at 100,001 tuples, by design: only one tuple carries the True
+# verdict, so their own discernibility-family cost is linear in
+# reachable-set size, not quadratic).
+discernibility-scaling:
+	@echo "Discernibility scaling (prereg-p5-v5.1): growing reachable sets, two planted reducts, three backends, six families..."
+	mkdir -p out/results
+	python3 discernibility_scaling_benchmark.py
 
 # Milestone E, Step 4 (prereg-p5-v6.1): AuthorityBench run all -- all
 # four registered baselines (manual least-privilege, Xu-and-Stoller
@@ -203,6 +222,52 @@ release-check:
 	@echo ""
 	@echo "release-check: ALL CHECKS PASS"
 
+# `release-check`'s own recipe, minus the mutation-testing gate --
+# deliberately duplicated rather than factored out (Make has no clean
+# way to splice a skippable step into the MIDDLE of a target's own
+# recipe without a fragile sub-make chain; both targets are short
+# enough that keeping them in obvious lockstep by eye is the more
+# robust choice). If release-check's own recipe changes, mirror the
+# change here too, everything except the mutation section. Exists so
+# `time_reproduction.py` can report a genuine "full path minus
+# mutation" timing alongside the ~35-minute full figure -- mutation
+# testing is release-check's own dominant cost (roughly 30 of the 35
+# minutes), so this is the number a contributor doing a fast local
+# check, not a release, actually wants.
+quick-reproduce:
+	@echo "=== quick-reproduce: full test suite ==="
+	mkdir -p out
+	python3 -m pytest -v --junit-xml=out/pytest-junit.xml
+	@echo "=== quick-reproduce: formal double-run byte identity ==="
+	rm -rf /tmp/sarc-p5-quick-reproduce-formal-1 /tmp/sarc-p5-quick-reproduce-formal-2
+	mkdir -p /tmp/sarc-p5-quick-reproduce-formal-1 /tmp/sarc-p5-quick-reproduce-formal-2
+	$(MAKE) formal
+	cp out/checkers/*.json /tmp/sarc-p5-quick-reproduce-formal-1/
+	$(MAKE) formal
+	cp out/checkers/*.json /tmp/sarc-p5-quick-reproduce-formal-2/
+	diff -rq /tmp/sarc-p5-quick-reproduce-formal-1 /tmp/sarc-p5-quick-reproduce-formal-2
+	@rm -rf /tmp/sarc-p5-quick-reproduce-formal-1 /tmp/sarc-p5-quick-reproduce-formal-2
+	@echo "formal double-run byte-identical: OK"
+	@echo "=== quick-reproduce: mutation testing SKIPPED (see release-check for the hard gate) ==="
+	@echo "=== quick-reproduce: populated-draft freshness ==="
+	cp paper5-authority-derivation-draft-v0.4-populated.md /tmp/sarc-p5-quick-populated-committed.md
+	python3 populate_paper.py
+	diff /tmp/sarc-p5-quick-populated-committed.md paper5-authority-derivation-draft-v0.4-populated.md
+	@rm -f /tmp/sarc-p5-quick-populated-committed.md
+	@echo "populated draft byte-identical to freshly regenerated: OK"
+	@echo "=== quick-reproduce: citation gate ==="
+	python3 citation_check.py paper5-authority-derivation-draft-v0.4.md
+	@echo "=== quick-reproduce: typed-numerals lint ==="
+	python3 -m checkers.typed_numerals_lint
+	@echo "=== quick-reproduce: terminology lint ==="
+	python3 -m checkers.terminology_lint
+	@echo "=== quick-reproduce: PROOF-STATUS lint ==="
+	python3 -m checkers.proof_status_lint
+	@echo "=== quick-reproduce: reproducibility report (out/reproducibility-report.json) ==="
+	python3 reproducibility_report.py
+	@echo ""
+	@echo "quick-reproduce: ALL CHECKS PASS (mutation gate not included -- not a substitute for release-check)"
+
 mutate:
 	@echo "Mutation testing participation.py + derive.py + reduct.py (hard gate, >=0.85; see ADR-003-mutation-testing.md)..."
 	rm -rf mutants .mutmut-cache
@@ -231,8 +296,10 @@ help:
 	@echo "  make sweep          30-seed statistical sweep, CH-A1-CH-A4 means + 95% CIs"
 	@echo "  make paper          Populate the paper draft from committed machine output"
 	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
+	@echo "  make quick-reproduce  release-check's full path MINUS the mutation gate (see Makefile comment); not a substitute for release-check"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
-	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling + cost-aware + contract_change_delta (~3 min, not part of release-check)"
+	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling (exploratory_v5_0) + cost-aware + contract_change_delta (~3 min, not part of release-check)"
+	@echo "  make discernibility-scaling  Discernibility scaling on growing reachable sets (prereg-p5-v5.1): two planted reducts, three backends, six families"
 	@echo "  make authority-bench AuthorityBench run all (prereg-p5-v6.1): four baselines x three domains x six metrics (not part of release-check)"
 	@echo "  make authority-bench-domains  Package the 3 AuthorityBench domains as YAML (prereg-p5-v6.1)"
 	@echo "  make xu-stoller-validation  Xu-and-Stoller mining-baseline validation gate (prereg-p5-v6.1, ~1 sec)"

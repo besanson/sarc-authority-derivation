@@ -578,6 +578,79 @@ cited there for the grant's representation, cited here for the same
 reason their common ancestor is, since neither layer of that lineage
 derives the observed property set this paper does.)
 
+## Ninth amendment (v5.1, tag `prereg-p5-v5.1`, discernibility scaling on growing reachable sets)
+
+The Sixth amendment's Experiment 1 (planted-reduct scaling) scaled
+candidate-property count while deliberately holding the reachable set
+fixed at 6 tuples -- a real, valid answer to the question it was built
+for, not a test of whether the engine scales as the REACHABLE SET
+itself grows, or works correctly with more than one minimal hitting
+set (its own planted reduct is unique by construction).
+`prereg/v5.1-discernibility-scaling.md` registered, before any code
+existed, a family with exactly TWO planted reducts and a reachable set
+scaling to >=10^3, 10^4, 10^5 tuples, plus this artifact's own v2, v4,
+and data-and-communications domains as real measured points, all three
+`synthesis.py` backends (not just cardinality), and a specific
+predicted number for the discernibility family size after superset
+removal (exactly 1, at every synthetic size) -- hand-derived and proved
+in that document before `discernibility_scaling_benchmark.py` was
+written.
+
+**Every registered prediction obtained exactly, measured, not
+assumed:**
+
+- **Synthetic families** (`q = 3, 4, 5`; reachable sets 1,001 / 10,001
+  / 100,001 tuples): `reduct.exact_reducts()` finds exactly the two
+  predicted reducts, `{twin_a}` and `{twin_b}`, at every size --
+  minimum cardinality 1, minimum cost 1.0 (`twin_a`'s own declared
+  cost, cheaper than `twin_b`'s 2.0). The discernibility family after
+  superset removal has exactly 1 set at every size, matching the
+  predicted number precisely. All three backends report `exact: true`
+  at every size: `find_any_sufficient_contract` returns `{twin_a}`;
+  `find_minimum_cardinality_contract` returns `{twin_b}` (the other
+  valid tie, a genuine two-way choice correctly recognized as such, not
+  a discrepancy); `find_minimum_cost_contract` returns `{twin_a}`
+  specifically, at every size, matching the registered cost asymmetry
+  exactly. Wall time for a single backend call stays under 0.2 seconds
+  even at 100,001 tuples (0.002s at `q=3` to 0.19s at `q=5`) -- the
+  registered linear-cost design (only one tuple carries the True
+  verdict, so `build_discernibility_family`'s cost is `O(reachable
+  size)`, not `O(reachable size squared)`) confirmed directly, not
+  merely argued. Exhaustive cross-check ran at every size, including
+  `q=5` (2.58 seconds) -- unlike Experiment 1, where only the smallest
+  size was exhaustible.
+- **Real domains, newly measured per-backend**: v2's discernibility
+  family after superset removal has 9 sets (its own core, CH-A10,
+  restated here as a family SIZE for the first time); all three
+  backends agree exactly on the known 9-property unique reduct. v4's
+  family has 7 sets; all three backends happen to agree on the same one
+  of CH-B1's two known 7-property reducts (the `branch` variant, not
+  `environment` -- a coincidence of solver tie-breaking across three
+  independently-called backends, not a claim that this variant is
+  preferred). Data-and-communications' family has 6 sets; all three
+  backends agree on the known 6-property unique reduct, at cost 4.75 --
+  the identical number Step 4's own `authority_bench_v6_1.json` core
+  row already reports, cross-validating two independently-computed
+  applications of the same declared per-property costs
+  (`domain_datacomms.PROPERTY_OBSERVATION_COSTS_DATACOMMS`). Wall time
+  per backend call: ~22-29 seconds (v2), ~94-96 seconds (v4, the most
+  expensive single family measured in this project to date), ~22
+  seconds (data-and-communications) -- real domains cost real time,
+  reported honestly, not a concern this benchmark's own registered
+  scope needed to solve.
+
+No adjustment to `discernibility.py`/`synthesis.py`/`reduct.py` (D1-D3,
+unmodified) was needed to reach these results; the construction is
+exactly what `prereg/v5.1-discernibility-scaling.md` registered before
+`discernibility_scaling_benchmark.py` existed. Experiment 1's own
+result (`out/results/synthesis_benchmarks.json`) is relabelled
+`exploratory_v5_0` from this amendment forward -- kept, cited, not
+deleted or retroactively edited -- and superseded as the primary
+scaling claim by this amendment's own result
+(`out/results/discernibility_scaling_v5_1.json`), the same disposition
+the Seventh amendment already gave the v6.0 mining comparison relative
+to v6.1.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

@@ -1,0 +1,378 @@
+{
+  "prereg": "prereg/v5.1-discernibility-scaling.md",
+  "real_domains": [
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 29.100343811000016
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 28.79553241699989
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ],
+          "contract_cost": 9.0,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 29.26580844500006
+        }
+      },
+      "candidate_property_count": 10,
+      "discernibility_family_size_after_superset_removal": 9,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 9,
+        "minimum_cost": 9.0,
+        "peak_memory_kb_delta": 0,
+        "reducts": [
+          [
+            "actor_role",
+            "budget_remaining",
+            "consumed_grant_ids",
+            "day",
+            "frozen",
+            "grant_id",
+            "min_order_quantity",
+            "order_value",
+            "resource_class"
+          ]
+        ],
+        "subsets_considered": 1023,
+        "wall_time_seconds": 22.70741822599996
+      },
+      "family": "v2",
+      "reachable_tuple_count": 24624
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "approval_token",
+            "branch",
+            "data_classification",
+            "delegated_role",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 93.69830653700001
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "approval_token",
+            "branch",
+            "data_classification",
+            "delegated_role",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 95.68453461299987
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "approval_token",
+            "branch",
+            "data_classification",
+            "delegated_role",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          "contract_cost": 7.0,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 94.14296610300016
+        }
+      },
+      "candidate_property_count": 10,
+      "discernibility_family_size_after_superset_removal": 7,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 7,
+        "minimum_cost": 7.0,
+        "peak_memory_kb_delta": 0,
+        "reducts": [
+          [
+            "approval_token",
+            "branch",
+            "data_classification",
+            "delegated_role",
+            "operation",
+            "repository",
+            "resource_owner"
+          ],
+          [
+            "approval_token",
+            "data_classification",
+            "delegated_role",
+            "environment",
+            "operation",
+            "repository",
+            "resource_owner"
+          ]
+        ],
+        "subsets_considered": 1014,
+        "wall_time_seconds": 13.371202450000055
+      },
+      "family": "v4",
+      "reachable_tuple_count": 15120
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 22.099511942000163
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 21.903303770999855
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ],
+          "contract_cost": 4.750000000000001,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 21.951167750999957
+        }
+      },
+      "candidate_property_count": 8,
+      "discernibility_family_size_after_superset_removal": 6,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 6,
+        "minimum_cost": 4.750000000000001,
+        "peak_memory_kb_delta": 0,
+        "reducts": [
+          [
+            "channel_encryption",
+            "data_category",
+            "destination_region",
+            "erasure_request_state",
+            "legal_basis",
+            "retention_status"
+          ]
+        ],
+        "subsets_considered": 253,
+        "wall_time_seconds": 1.9778014870000789
+      },
+      "family": "data-and-communications",
+      "reachable_tuple_count": 8640
+    }
+  ],
+  "supersedes": "out/results/synthesis_benchmarks.json's experiment_1_scaling (relabelled exploratory_v5_0, NOVELTY.md) -- kept, frozen, not re-read or re-written by this script",
+  "synthetic_families": [
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "twin_b"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.0018828569999413958
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "twin_a"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 144,
+          "wall_time_seconds": 0.001859239000054913
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "twin_a"
+          ],
+          "contract_cost": 1.0,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.0018513850000090315
+        }
+      },
+      "candidate_property_count": 5,
+      "discernibility_family_size_after_superset_removal": 1,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 1,
+        "minimum_cost": 1.0,
+        "peak_memory_kb_delta": 512,
+        "reducts": [
+          [
+            "twin_a"
+          ],
+          [
+            "twin_b"
+          ]
+        ],
+        "subsets_considered": 10,
+        "wall_time_seconds": 0.007292027999938
+      },
+      "family": "multi_reduct_q3",
+      "reachable_tuple_count": 1001
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "twin_b"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.017425506999984464
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "twin_a"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.01731076300006862
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "twin_a"
+          ],
+          "contract_cost": 1.0,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.018498421000003873
+        }
+      },
+      "candidate_property_count": 6,
+      "discernibility_family_size_after_superset_removal": 1,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 1,
+        "minimum_cost": 1.0,
+        "peak_memory_kb_delta": 2176,
+        "reducts": [
+          [
+            "twin_a"
+          ],
+          [
+            "twin_b"
+          ]
+        ],
+        "subsets_considered": 18,
+        "wall_time_seconds": 0.11730074199999763
+      },
+      "family": "multi_reduct_q4",
+      "reachable_tuple_count": 10001
+    },
+    {
+      "backends": {
+        "cardinality_maxsat": {
+          "contract": [
+            "twin_b"
+          ],
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.19073895700000776
+        },
+        "sat_any_sufficient": {
+          "contract": [
+            "twin_a"
+          ],
+          "is_sufficient": true,
+          "matches_a_known_minimal_reduct": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.18943723500001397
+        },
+        "weighted_maxsat_cost": {
+          "contract": [
+            "twin_a"
+          ],
+          "contract_cost": 1.0,
+          "exact": true,
+          "peak_memory_kb_delta": 0,
+          "wall_time_seconds": 0.19062617899999168
+        }
+      },
+      "candidate_property_count": 7,
+      "discernibility_family_size_after_superset_removal": 1,
+      "exhaustive_cross_check": {
+        "minimum_cardinality": 1,
+        "minimum_cost": 1.0,
+        "peak_memory_kb_delta": 25728,
+        "reducts": [
+          [
+            "twin_a"
+          ],
+          [
+            "twin_b"
+          ]
+        ],
+        "subsets_considered": 34,
+        "wall_time_seconds": 2.577226484999983
+      },
+      "family": "multi_reduct_q5",
+      "reachable_tuple_count": 100001
+    }
+  ]
+}
