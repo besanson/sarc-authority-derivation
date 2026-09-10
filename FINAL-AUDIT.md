@@ -164,21 +164,27 @@ checklist itself names the fourth domain optional.
 
 ## 11. External reproduction
 
-**Met.** `REPRODUCTION.md` (Package D3, commit `f379c8f`): exact
-commands for bootstrap, quick-reproduce, full release-check, wheel
-install, one AuthorityBench domain, and the code/cloud flagship
-example; six real committed-file sha256 hashes; elapsed times measured
-for real via a genuinely bare `git clone` + `bootstrap.sh` + `make
-<target>` in a disposable temp directory (`time_reproduction.py`,
-`out/reproduction_timing.json`/`out/reproduction_timing_quick.json`),
-not carried over from a stale pre-Package-D figure. `.github/
-ISSUE_TEMPLATE/reproduction-report.md`: the issue template for
-reporting an independent attempt. This pipeline recruits no one; the
-mechanism exists for whoever the author recruits.
+**PENDING, infrastructure ready.** `REPRODUCTION.md` (Package D3,
+commit `f379c8f`) and `.github/ISSUE_TEMPLATE/reproduction-report.md`
+give exact commands, expected output hashes, and measured elapsed
+times for an independent reproduction, and a low-friction way to
+report one back -- but infrastructure existing is a different claim
+from the checklist's own "external reproduction" item, and this
+document does not conflate the two. `REPRODUCTION.md`'s own words are
+explicit that this pipeline does not solicit reproduction attempts:
+"the author recruits the reproducer; this pipeline does not." Checked
+directly rather than assumed: zero issues, of any label or state,
+exist on this repository (`mcp__github__list_issues`, both a
+`label:reproduction` query and an unfiltered open-issues query return
+`totalCount: 0`) -- no reproduction-report has been filed, and
+therefore no independent person has yet run this pipeline in an
+environment not used for its own development and reported back.
+Recorded honestly as **not yet met**, not glossed over as
+infrastructure-equals-outcome.
 
 ## 12. Claims never exceed evidence
 
-**Met, with the one gap already stated in item 5.** Specific checks
+**Met, with the two gaps stated in items 5 and 11.** Specific checks
 performed, not assumed:
 
 - README's "Cost-aware synthesis" section names only the v7/CH-B2
@@ -196,21 +202,37 @@ performed, not assumed:
   (`checkers/ch_c1_check.py`'s own output field names, `NOVELTY.md`,
   this document) -- never rounded up to "5" or "several" without the
   qualifier.
-- The one honest gap: the live paper's prose has not yet been updated
-  to include Packages C's and D's own results (item 5) -- so a reader
-  of the paper alone, as opposed to this repository's own README/
-  NOVELTY.md/commit history, would not yet see the full picture. This
-  is a completeness gap, not a claims-exceed-evidence violation (the
-  paper does not claim anything false; it is simply not yet current).
+- `REPRODUCTION.md` and the issue template claim only that the
+  infrastructure for an independent reproduction exists and that the
+  author recruits the reproducer; neither they, nor README, nor
+  NOVELTY.md, claim that an independent reproduction has actually
+  happened -- item 11's own PENDING status (checked directly against
+  the issue tracker, not assumed) is not contradicted anywhere else in
+  this repository.
+- The gap in item 5: the live paper's prose has not yet been updated
+  to include Packages C's and D's own results -- so a reader of the
+  paper alone, as opposed to this repository's own README/NOVELTY.md/
+  commit history, would not yet see the full picture. This is a
+  completeness gap, not a claims-exceed-evidence violation (the paper
+  does not claim anything false; it is simply not yet current).
+- The gap in item 11: external reproduction itself has not happened
+  yet, only the infrastructure for it -- named plainly in item 11
+  rather than counting readiness as the outcome.
 
 ## Summary
 
-12 of 12 items met with direct evidence, confirmed against GitHub's own
-Actions API rather than assumed. Two disclosed caveats, neither hidden
-behind prose: item 1 carries an inherent, unavoidable limitation shared
-by any such document (this commit's own CI run cannot be confirmed
-before the commit exists -- true of every commit including every prior
-package's own final commit, not specific to a gap in this one); item
-5/12 carry one disclosed, honest completeness gap (the live paper's
-prose predates Packages C and D). No item is falsely claimed met. No
-frozen prior result was altered to produce this audit.
+11 of 12 items met with direct evidence, confirmed against the GitHub
+Actions API and the GitHub issue tracker rather than assumed. Item 11
+(external reproduction) is honestly **PENDING**: the infrastructure is
+built, registered, and committed, but no independent person has yet
+run it in an environment not used for this project's own development
+and filed a reproduction-report issue, and no document in this
+repository claims otherwise. Two further disclosed caveats on the
+eleven items met, neither hidden behind prose: item 1 carries an
+inherent, unavoidable limitation shared by any such document (this
+commit's own CI run cannot be confirmed before the commit exists --
+true of every commit including every prior package's own final commit,
+not specific to a gap in this one); item 5 carries one disclosed,
+honest completeness gap (the live paper's prose predates Packages C
+and D). No item is falsely claimed met. No frozen prior result was
+altered to produce this audit.
