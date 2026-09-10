@@ -14,7 +14,7 @@
   "coverage_list": [
     "workflow"
   ],
-  "generated_at_head_sha": "48ae6740f96a1b10cafb9bba74de9e7c9e2ad182",
+  "generated_at_head_sha": "f379c8fa7a8a3d3ed77c8e2804f26faa59cb4fc4",
   "grid_sha256": "4c52933d02beb76879c3efa7a780d7998e2f34af98c14bc88e4217b1543b3f16",
   "grid_size_reachable": 24624,
   "loss_model_sha256": "d97d13495117dc7d2bff0924cd57ad262bb2ddc1699b0ea49fa544275e6a2af3",
