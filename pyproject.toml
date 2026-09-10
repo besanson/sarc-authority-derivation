@@ -141,10 +141,15 @@ markers = [
 # prereg/v6-authority-bench.md, tag prereg-p5-v6); domain_datacomms.py/
 # losses_datacomms.py added Milestone E Step 2 (the independently-built
 # data-and-communications domain, prereg/v6.1-authoritybench-
-# amendment.md, tag prereg-p5-v6.1) -- ADR-003 is being extended, not
-# superseded, by any of these additions.
-source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py"]
+# amendment.md, tag prereg-p5-v6.1); costs_v7.py added Package C
+# (prereg/v7-cost-sensitive-contracts.md, tag prereg-p5-v7: CH-B2's own
+# registered cost formula and per-property values -- the one piece of
+# Package C with genuine correctness semantics; checkers/ch_b2_check.py
+# itself is the verification layer, not mutated, exactly how every
+# other CH-checker is already excluded here) -- ADR-003 is being
+# extended, not superseded, by any of these additions.
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -165,4 +170,5 @@ pytest_add_cli_args_test_selection = [
     "test_authority_compiler.py",
     "test_domain_datacomms.py",
     "test_losses_datacomms.py",
+    "test_costs_v7.py",
 ]

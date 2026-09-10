@@ -1,0 +1,142 @@
+{
+  "all_alternatives_safety_equivalent": true,
+  "candidate_properties": [
+    "actor_identity",
+    "delegated_role",
+    "repository",
+    "branch",
+    "environment",
+    "resource_owner",
+    "operation",
+    "approval_token",
+    "deployment_window",
+    "data_classification"
+  ],
+  "cost_model": {
+    "alpha": 1.0,
+    "beta": 2.0,
+    "delta": 3.0,
+    "gamma": 1.5,
+    "latency_normalization_ms": 250.0,
+    "observation_costs": {
+      "actor_identity": 0.32500000000000007,
+      "approval_token": 2.225,
+      "branch": 0.225,
+      "data_classification": 1.34,
+      "delegated_role": 0.32500000000000007,
+      "deployment_window": 1.4300000000000002,
+      "environment": 1.455,
+      "operation": 0.044,
+      "repository": 0.225,
+      "resource_owner": 1.74
+    }
+  },
+  "minimum_cardinality": 7,
+  "minimum_cardinality_reduct_costs": {
+    "minimum_cardinality_reduct_1": 6.124,
+    "minimum_cardinality_reduct_2": 7.354
+  },
+  "minimum_cardinality_reducts": [
+    [
+      "approval_token",
+      "branch",
+      "data_classification",
+      "delegated_role",
+      "operation",
+      "repository",
+      "resource_owner"
+    ],
+    [
+      "approval_token",
+      "data_classification",
+      "delegated_role",
+      "environment",
+      "operation",
+      "repository",
+      "resource_owner"
+    ]
+  ],
+  "minimum_cardinality_single_model_cross_check": {
+    "is_a_minimum_cardinality_reduct": true,
+    "members": [
+      "approval_token",
+      "branch",
+      "data_classification",
+      "delegated_role",
+      "operation",
+      "repository",
+      "resource_owner"
+    ]
+  },
+  "minimum_cost_contract": [
+    "approval_token",
+    "branch",
+    "data_classification",
+    "delegated_role",
+    "operation",
+    "repository",
+    "resource_owner"
+  ],
+  "minimum_cost_contract_is_a_minimum_cardinality_reduct": true,
+  "minimum_cost_contract_total_cost": 6.124,
+  "outcome_subcase": "positive_strict_cost_separation",
+  "reachable_tuples_swept": 15120,
+  "safety_equivalence_certificates": {
+    "minimum_cardinality_reduct_1": {
+      "counterexample": null,
+      "is_sufficient": true,
+      "members": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "sufficiency_certificate": {
+        "partition_cell_count": 1890,
+        "uniform_verdict_within_every_cell": true
+      }
+    },
+    "minimum_cardinality_reduct_2": {
+      "counterexample": null,
+      "is_sufficient": true,
+      "members": [
+        "approval_token",
+        "data_classification",
+        "delegated_role",
+        "environment",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "sufficiency_certificate": {
+        "partition_cell_count": 1890,
+        "uniform_verdict_within_every_cell": true
+      }
+    },
+    "minimum_cost_contract": {
+      "counterexample": null,
+      "is_sufficient": true,
+      "members": [
+        "approval_token",
+        "branch",
+        "data_classification",
+        "delegated_role",
+        "operation",
+        "repository",
+        "resource_owner"
+      ],
+      "sufficiency_certificate": {
+        "partition_cell_count": 1890,
+        "uniform_verdict_within_every_cell": true
+      }
+    }
+  },
+  "strictly_cheaper_than": [
+    "minimum_cardinality_reduct_2"
+  ],
+  "subsets_considered": 1014,
+  "supported": true
+}

@@ -853,6 +853,41 @@ toy-scale instantiation, run through this repository's own real
 of the registered pipeline or its results) is exactly why the real run
 matched every prediction on the first attempt.
 
+## Thirteenth amendment (v7, tag `prereg-p5-v7`, cost-sensitive contracts on the code/cloud domain)
+
+CH-B1 (Fifth amendment) established that the code/cloud domain's core
+is not sufficient and that exactly two seven-property reducts close the
+gap -- core+`branch` or core+`environment` -- but never asked which an
+operator should prefer. `prereg/v7-cost-sensitive-contracts.md`
+registered a four-component, source-grounded observation-cost model
+(normalized latency, privacy exposure, staleness risk, lookup-failure
+probability; weights `1.0/2.0/1.5/3.0`) over all ten candidate
+properties, and a hand-computed predicted outcome, before any v7 code
+existed.
+
+**CH-B2** (does a registered cost model select a strictly cheaper
+contract than at least one minimum-cardinality reduct?): **SUPPORTED**
+(`checkers/ch_b2_check.py`) -- `synthesis.find_minimum_cost_contract`
+(unmodified, Milestone D) selects core+`branch` at registered cost
+**6.124**, strictly below core+`environment` at **7.354**; both
+confirmed exactly sufficient (`reduct.sufficiency`, the safety-
+equivalence certificate), differing only in cost, not in whether either
+one actually closes the loss-discrimination gap. Every number matches
+the prereg's own hand-computed prediction exactly -- not a coincidence:
+the prereg also registered a structural argument (every declared cost
+is strictly positive, sufficiency is monotone under adding properties,
+and CH-B1's own exhaustive `exact_reducts()` search already found only
+these two inclusion-minimal sufficient sets in this domain) showing any
+strictly-positive cost assignment here could only ever select one of
+these same two reducts -- this amendment's registered weights and
+values decided *which* one and by how much, not *whether* the answer
+could fall outside that already-known pair. No cost value was adjusted
+after this package's own real solver run; the tie rule (the minimum-
+cardinality set means *all* minimum-cardinality reducts, from
+`exact_reducts()`, not one arbitrary solver model) and the negative-
+outcome contingencies (an exact tie, or a single reduct) were registered
+in advance and did not obtain here.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

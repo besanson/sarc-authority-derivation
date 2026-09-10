@@ -21,7 +21,8 @@ test:
 # v3 additions (tag prereg-p5-v3: Proposition 1'/N + CH-A8/CH-A9/CH-A10), and
 # v4's independent domain (tag prereg-p5-v4: CH-B1) run alongside v1's own
 # gate below, never in place of it -- CH-B1 needs no `derive`/`derive_v2`
-# prerequisite (domain_v4.py is entirely self-contained).
+# prerequisite (domain_v4.py is entirely self-contained). v7's cost model
+# (tag prereg-p5-v7: CH-B2) reuses domain_v4 unmodified, same reasoning.
 formal: derive derive_v2
 	@echo "V2 gate: exhaustive checkers (reachability measurement, participation soundness+minimality, pair-test recovery, grant single-use) + proof lint..."
 	python3 -m checkers.reachability_check
@@ -37,6 +38,7 @@ formal: derive derive_v2
 	python3 -m checkers.reduct_check
 	python3 -m checkers.core_insufficiency_counterexample
 	python3 -m checkers.ch_b1_check
+	python3 -m checkers.ch_b2_check
 	python3 -m checkers.ch_datacomms_check
 	python3 -m checkers.discernibility_check
 	python3 -m checkers.synthesis_exactness_check
