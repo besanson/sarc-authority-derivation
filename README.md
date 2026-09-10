@@ -94,6 +94,12 @@ against a realistic domain (`prereg/v7-cost-sensitive-contracts.md`).
 [`paper5-authority-derivation-draft-v0.5.md`](paper5-authority-derivation-draft-v0.5.md)
 ([populated](paper5-authority-derivation-draft-v0.5-populated.md)).
 
+## Reproduction
+
+[`REPRODUCTION.md`](REPRODUCTION.md): exact commands, expected output
+hashes, and measured elapsed times, from a bare clone -- and an issue
+template for reporting an independent reproduction attempt.
+
 ---
 
 ## History: the v1-v0.4 procurement-domain result (below the fold)
