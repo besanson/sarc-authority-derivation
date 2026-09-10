@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce package-smoke-test ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling v8-exhaustive-attempt authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce package-smoke-test ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -39,6 +39,8 @@ formal: derive derive_v2
 	python3 -m checkers.core_insufficiency_counterexample
 	python3 -m checkers.ch_b1_check
 	python3 -m checkers.ch_b2_check
+	python3 -m checkers.ch_c1_check
+	python3 -m checkers.ch_c2_check
 	python3 -m checkers.ch_datacomms_check
 	python3 -m checkers.discernibility_check
 	python3 -m checkers.synthesis_exactness_check
@@ -141,6 +143,16 @@ discernibility-hardness-scaling:
 	@echo "Discernibility scaling (prereg-p5-v5.3, the primary scaling table): large attribute universes, diverse discernibility structure, three backends, three families..."
 	mkdir -p out/results
 	python3 discernibility_scaling_benchmark.py v5.3
+
+# Package D (prereg-p5-v8): a pure complexity data point on the REAL
+# 35-property domain, deliberately NOT part of `formal`/`release-check`
+# (registered budget is 300s on its own, on top of ch_c1_check's/
+# ch_c2_check's own multi-minute discernibility-family construction) --
+# run on demand, exactly like discernibility-scaling/-hardness-scaling.
+v8-exhaustive-attempt:
+	@echo "v8 exhaustive reduct attempt (prereg-p5-v8): 300s budget, C(35,7) = 6,724,520 size-7 subsets alone..."
+	mkdir -p out/results
+	python3 v8_exhaustive_attempt.py
 
 # Milestone E, Step 4 (prereg-p5-v6.1): AuthorityBench run all -- all
 # four registered baselines (manual least-privilege, Xu-and-Stoller

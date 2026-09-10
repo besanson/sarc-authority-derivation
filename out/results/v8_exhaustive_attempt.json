@@ -1,0 +1,9 @@
+{
+  "budget_seconds": 300,
+  "candidate_property_count": 35,
+  "domain": "v8-large-realistic-domain",
+  "feasible": false,
+  "reachable_tuples_swept": 27000,
+  "size_7_subset_count_for_reference": 6724520,
+  "wall_time_seconds": 300.0786104210001
+}

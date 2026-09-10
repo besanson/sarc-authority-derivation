@@ -135,6 +135,70 @@ def find_minimum_cardinality_contract(
     return _included_from_model(model, var)
 
 
+def find_up_to_k_minimum_cardinality_contracts(
+    candidate_properties: Tuple[str, ...],
+    reachable: List[Any],
+    registry: Dict[str, Callable[[Any], bool]],
+    k: int = 5,
+) -> List[FrozenSet[str]]:
+    """Package D (`prereg/v8-large-realistic-domain.md`, tag
+    `prereg-p5-v8`): a solver-based, non-exhaustive way to detect
+    minimum-cardinality-reduct MULTIPLICITY at a scale where
+    `reduct.exact_reducts()`'s own `2^n` enumeration is no longer an
+    option (registered "Multiplicity, without exhaustive enumeration").
+
+    Repeatedly re-solves the SAME cardinality-minimizing objective
+    `find_minimum_cardinality_contract` already uses, adding one hard
+    "blocking clause" per iteration that excludes exactly the previous
+    solver model (standard MaxSAT solution-enumeration technique: for a
+    found model M, the clause "some included property is now excluded,
+    OR some excluded property is now included" forbids the solver from
+    returning M again, without ruling out any other assignment). Blocking
+    clauses only ever REMOVE previously-found solutions from
+    consideration -- they cannot make a smaller contract newly feasible
+    -- so the first iteration's cardinality is provably the domain's true
+    minimum, and every later iteration's optimal cardinality can only
+    stay equal to it or increase. Stops as soon as an iteration's own
+    optimum exceeds the first (that contract is NOT of the minimum
+    cardinality and is excluded from the return value), or after `k`
+    iterations, whichever comes first.
+
+    Returns a list of between 1 and `k` contracts, all independently
+    confirmed minimum-cardinality reducts by construction -- a genuine
+    LOWER BOUND on how many minimum-cardinality reducts this domain has,
+    never claimed exhaustive (the prereg's own "never use prose to
+    compensate for a missing test or certificate" discipline: callers
+    must report `len(result) == k` as "at least k, possibly more", not
+    as a total count)."""
+    clauses, var = _hard_clauses(candidate_properties, reachable, registry)
+    found: List[FrozenSet[str]] = []
+    minimum_cardinality: Optional[int] = None
+    blocking_clauses: List[List[int]] = []
+
+    for _ in range(k):
+        wcnf = WCNF()
+        for clause in clauses:
+            wcnf.append(clause)
+        for blocking_clause in blocking_clauses:
+            wcnf.append(blocking_clause)
+        for p in candidate_properties:
+            wcnf.append([-var[p]], weight=1)
+        with RC2(wcnf) as rc2:
+            model = rc2.compute()
+        contract = _included_from_model(model, var)
+
+        if minimum_cardinality is None:
+            minimum_cardinality = len(contract)
+        elif len(contract) > minimum_cardinality:
+            break
+
+        found.append(contract)
+        blocking_clauses.append(
+            [-var[p] for p in contract] + [var[p] for p in candidate_properties if p not in contract]
+        )
+    return found
+
+
 def find_minimum_cost_contract(
     candidate_properties: Tuple[str, ...],
     reachable: List[Any],

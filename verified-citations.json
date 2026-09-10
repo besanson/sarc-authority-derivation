@@ -378,6 +378,37 @@
       "year": 1966,
       "venue": "Communications of the ACM 9(3), pp. 143-155",
       "verified_via": "Direct WebFetch of https://www.princeton.edu/~rblee/ELE572Papers/Fall04Readings/ProgramSemantics_DennisvanHorn.pdf, 2026-09-08, read via page-image rendering (text extraction failed, image rendering succeeded): title 'Programming Semantics for Multiprogrammed Computations', authors 'Jack B. Dennis and Earl C. Van Horn, Massachusetts Institute of Technology', and the exact venue line 'Volume 9 / Number 3 / March, 1966 -- Communications of the ACM', page 143, all visible directly on the rendered page. Cited in NOVELTY.md's Eighth amendment as the foundational capability-systems citation: the original C-list/capability primitive for representing and propagating authority once granted, not a derivation of which conditions must be checked before granting it -- the common ancestor of this project's own already-cited macaroons-ndss-2014/ucan-specification/biscuit-specification (cited elsewhere for the execution grant's own representation, not for this distinction)."
+    },
+    {
+      "id": "nist-sp-800-53-ac3",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+      "title": "Security and Privacy Controls for Information Systems and Organizations (SP 800-53 Rev. 5) -- control AC-3, Access Enforcement",
+      "entry_type": "misc",
+      "authors": ["National Institute of Standards and Technology"],
+      "first_author": "National Institute of Standards and Technology",
+      "year": 2020,
+      "verified_via": "Two independently-worded WebSearch queries (2026-09-10) both returning the identical control ID/title/family (Access Control) and definition across independent mirrors (csf.tools, UpGuard, STIG Viewer, GRC Academy) that publish NIST's own OSCAL/JSON catalog verbatim -- 'AC-3 requires organizations to enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies', explicitly distinguished from AC-2 (who gets access) and AC-6 (how much access). Same parent document as the already-verified nist-sp-800-53-cm3 entry; NIST's own interactive control browser is a JS single-page app not directly text-fetchable, so the control text itself rests on the third-party mirrors, matching that entry's own flagged caveat. Cited (prereg/v8-large-realistic-domain.md, losses_v8.unauthorized_mutation) alongside RBAC96 as the access-mediation source a mutating operation must be checked against."
+    },
+    {
+      "id": "nist-sp-800-53-ac6",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+      "title": "Security and Privacy Controls for Information Systems and Organizations (SP 800-53 Rev. 5) -- control AC-6, Least Privilege",
+      "entry_type": "misc",
+      "authors": ["National Institute of Standards and Technology"],
+      "first_author": "National Institute of Standards and Technology",
+      "year": 2020,
+      "verified_via": "Two independently-worded WebSearch queries (2026-09-10) both returning the identical control ID/title/family (Access Control) and definition across independent mirrors (UpGuard, CSF Tools, GRC Academy) -- 'requiring organizations to grant users and processes only the minimum access necessary to perform assigned tasks... applies to all system identities, including human users, automated processes, and service accounts', both searches explicitly confirming the automated-process scope. Same parent document as the already-verified nist-sp-800-53-cm3/nist-sp-800-53-ac3 entries, same third-party-mirror caveat. Cited (prereg/v8-large-realistic-domain.md, losses_v8.automated_actor_manual_only_operation) as the least-privilege source for why a fully-automated principal performing a role grant is flagged regardless of its own declared operation ceiling."
+    },
+    {
+      "id": "nist-sp-800-207-zero-trust",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "title": "Zero Trust Architecture (NIST Special Publication 800-207)",
+      "entry_type": "misc",
+      "authors": ["Scott Rose", "Oliver Borchert", "Stu Mitchell", "Sean Connelly"],
+      "first_author": "Scott Rose",
+      "year": 2020,
+      "venue": "NIST Special Publication 800-207, National Institute of Standards and Technology, August 2020",
+      "verified_via": "Direct WebFetch of https://csrc.nist.gov/pubs/sp/800/207/final, 2026-09-10: title 'Zero Trust Architecture', publication number SP 800-207, authors Scott Rose (NIST)/Oliver Borchert (NIST)/Stu Mitchell (Stu2Labs)/Sean Connelly (DHS), publication date August 2020, all confirmed directly from the official NIST publication page -- which also confirms the exact claim this citation backs, quoting the document's own abstract: zero trust 'assumes there is no implicit trust granted to assets or user accounts based solely on their physical or network location (i.e., local area networks versus the internet)', and 'the network location is no longer seen as the prime component to the security posture of the resource'. Cross-checked against a separate WebSearch query returning the same title/authors/date from NIST's own news release. Cited (prereg/v8-large-realistic-domain.md, losses_v8.external_network_zone_for_sensitive_data) as the source for network location never itself being a trust signal."
     }
   ]
 }

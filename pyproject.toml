@@ -146,10 +146,14 @@ markers = [
 # registered cost formula and per-property values -- the one piece of
 # Package C with genuine correctness semantics; checkers/ch_b2_check.py
 # itself is the verification layer, not mutated, exactly how every
-# other CH-checker is already excluded here) -- ADR-003 is being
+# other CH-checker is already excluded here); domain_v8.py/losses_v8.py/
+# costs_v8.py added Package D (prereg/v8-large-realistic-domain.md, tag
+# prereg-p5-v8: the large non-planted domain's own reachability,
+# losses, and cost model; checkers/ch_c1_check.py/ch_c2_check.py are
+# again the verification layer, not mutated) -- ADR-003 is being
 # extended, not superseded, by any of these additions.
-source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py"]
-only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py"]
+source_paths = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py", "domain_v8.py", "losses_v8.py", "costs_v8.py"]
+only_mutate = ["participation.py", "derive.py", "reduct.py", "domain_v4.py", "losses_v4.py", "discernibility.py", "synthesis.py", "src/authority_compiler/api.py", "domain_datacomms.py", "losses_datacomms.py", "costs_v7.py", "domain_v8.py", "losses_v8.py", "costs_v8.py"]
 also_copy = [
     "domain.py",
     "losses.py",
@@ -170,5 +174,8 @@ pytest_add_cli_args_test_selection = [
     "test_authority_compiler.py",
     "test_domain_datacomms.py",
     "test_losses_datacomms.py",
+    "test_domain_v8.py",
+    "test_losses_v8.py",
+    "test_costs_v8.py",
     "test_costs_v7.py",
 ]

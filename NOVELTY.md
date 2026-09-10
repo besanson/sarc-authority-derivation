@@ -888,6 +888,61 @@ cardinality set means *all* minimum-cardinality reducts, from
 outcome contingencies (an exact tie, or a single reduct) were registered
 in advance and did not obtain here.
 
+## Fourteenth amendment (v8, tag `prereg-p5-v8`, core-versus-reduct and cost-sensitivity on a large, non-planted domain)
+
+CH-B1/CH-B2 (Fifth, Thirteenth amendments) tested core-versus-reduct and
+cost differentiation on a 10-candidate-property domain. This package
+asks whether both distinctions survive at 35 candidate properties --
+close to a real enterprise attribute surface -- where exhaustive reduct
+enumeration is no longer an option at all.
+`prereg/v8-large-realistic-domain.md` registered the domain, nine loss
+predicates, a registered blocking-clause multiplicity method (capped at
+5, a genuine lower bound, never claimed exhaustive), and a seven-tier
+cost model, before any v8 code existed.
+
+**CH-C1** (does the core fail to be sufficient?): **SUPPORTED**
+(`checkers/ch_c1_check.py`) -- over the domain's 27,000-tuple reachable
+set, the 4-property core (`approval_token`, `delegated_role`,
+`resource_environment`, `workflow_stage`) is **not sufficient**: a
+concrete counterexample pair agrees on all four core properties (same
+role, environment, approval state, workflow stage) yet differs in
+verdict, driven by `operation` (`read` vs. `deploy`) and its downstream
+`rollback_plan_declared`. The minimum cardinality is **9** -- larger
+than v4's 7 -- and the blocking-clause method found **5** distinct
+minimum-cardinality reducts before hitting its own registered cap: a
+genuine lower bound, honestly reported as "at least 5, possibly more,"
+not as an exhaustive count (exhaustive enumeration was separately
+attempted and confirmed infeasible within the registered 300-second
+budget, `make v8-exhaustive-attempt`, `out/results/v8_exhaustive_
+attempt.json` -- a complexity data point only, not a prerequisite for
+either hypothesis). 30 of the 35 candidates are redundant given the
+core -- a much higher redundancy fraction than v4's, consistent with
+this domain's own design (most of its 35 properties are declared as
+deterministic functions of a handful of true drivers, deliberately
+realistic, not a weakness of the result).
+
+**CH-C2** (does a registered cost model select a strictly cheaper
+contract?): **NOT SUPPORTED, and registered as a fully valid, fully
+retained result** (`checkers/ch_c2_check.py`) -- a genuine tie: all 5
+of CH-C1's minimum-cardinality contracts cost exactly **9.153**, and
+`synthesis.find_minimum_cost_contract` returns one of those same 5, not
+a different, cheaper contract outside that set. This is not a checker
+defect: every one of the three property-slots that varies across the 5
+reducts (`destination_endpoint_class`/`resource_criticality_tier`, both
+`local-resource-metadata`; `evidence_retention_class`/
+`data_classification`, both `remote-iam-cmdb-lookup`;
+`network_zone`/`device_posture`, both `remote-deployment-control-
+lookup`) draws its two alternatives from the SAME registered cost tier
+-- so whichever one a given reduct happens to include, that slot
+contributes the identical cost, and the totals tie exactly (hand-
+verified: `5.733` shared backbone + `0.225 + 1.74 + 1.455 = 3.42` per
+reduct = `9.153`, independent of which tier-mate fills each slot). An
+honest finding about tier-based (rather than fully bespoke per-
+property) cost modeling: it cannot discriminate between alternatives
+that happen to share a declared source class, even when cardinality-
+based search finds several such alternatives. No cost value was
+adjusted after this package's own real solver run.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

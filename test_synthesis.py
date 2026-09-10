@@ -27,6 +27,7 @@ from synthesis import (
     find_any_sufficient_contract,
     find_minimum_cardinality_contract,
     find_minimum_cost_contract,
+    find_up_to_k_minimum_cardinality_contracts,
 )
 
 
@@ -59,6 +60,49 @@ def test_find_minimum_cardinality_contract_is_a_singleton_reduct():
     assert contract in ({"x"}, {"y"})
     is_suff, _ = sufficiency(tuple(sorted(contract)), TWO_STATE, two_state_registry())
     assert is_suff is True
+
+
+def test_find_up_to_k_minimum_cardinality_contracts_default_cap_is_five():
+    """prereg/v8-large-realistic-domain.md's own registered cap. Checked
+    directly against the function's own declared default, not inferred
+    from a fixture with more than 5 tied reducts (none is needed to
+    pin the literal registered value)."""
+    import inspect
+    default_k = inspect.signature(find_up_to_k_minimum_cardinality_contracts).parameters["k"].default
+    assert default_k == 5
+
+
+def test_find_up_to_k_minimum_cardinality_contracts_finds_both_tied_reducts():
+    """TWO_STATE's discernibility family is the single clause {x, y} --
+    exactly two cardinality-1 reducts exist, {x} and {y} (the same fact
+    `test_find_minimum_cardinality_contract_is_a_singleton_reduct`
+    already exercises via a single arbitrary model); capped at k=5, the
+    blocking-clause method must find BOTH and then stop -- there is no
+    third cardinality-1 reduct to find, and the only larger sufficient
+    set ({x, y} together, cardinality 2) must NOT be included."""
+    found = find_up_to_k_minimum_cardinality_contracts(("x", "y"), TWO_STATE, two_state_registry(), k=5)
+    assert len(found) == 2
+    assert set(found) == {frozenset({"x"}), frozenset({"y"})}
+    for contract in found:
+        assert len(contract) == 1
+        is_suff, _ = sufficiency(tuple(sorted(contract)), TWO_STATE, two_state_registry())
+        assert is_suff is True
+
+
+def test_find_up_to_k_minimum_cardinality_contracts_respects_a_lower_cap():
+    found = find_up_to_k_minimum_cardinality_contracts(("x", "y"), TWO_STATE, two_state_registry(), k=1)
+    assert len(found) == 1
+    assert found[0] in ({"x"}, {"y"})
+
+
+def test_find_up_to_k_minimum_cardinality_contracts_unique_reduct_returns_one():
+    """The three-property x/y/z fixture below has a UNIQUE reduct {x} --
+    the blocking-clause method must stop after one iteration, not pad
+    the result with a higher-cardinality contract to reach the cap."""
+    reachable = [Toy(x=1, y=1, z="a"), Toy(x=9, y=1, z="a"), Toy(x=1, y=2, z="b")]
+    registry = {"x_ge_5": lambda t: t.x >= 5}
+    found = find_up_to_k_minimum_cardinality_contracts(("x", "y", "z"), reachable, registry, k=5)
+    assert found == [frozenset({"x"})]
 
 
 def test_find_minimum_cost_contract_picks_the_cheaper_reduct():
