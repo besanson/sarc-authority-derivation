@@ -60,7 +60,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 from reduct import exact_reducts
-from synthesis import contract_change_delta, find_minimum_cardinality_contract, find_minimum_cost_contract
+from synthesis import contract_change_delta, find_minimum_cardinality_contract, find_minimum_cost_contract, total_cost
 
 OUTPUT_PATH = Path("out/results/synthesis_benchmarks.json")
 
@@ -205,7 +205,7 @@ def run_cost_aware_experiment() -> Dict[str, Any]:
         min_card = find_minimum_cardinality_contract(props, reachable, registry)
         min_cost = find_minimum_cost_contract(props, reachable, registry, costs)
         differ = set(min_card) != set(min_cost)
-        cost_of = lambda contract: sum(costs[p] for p in contract)
+        cost_of = lambda contract: total_cost(costs, contract)
         results.append({
             "domain": name,
             "costs": costs,

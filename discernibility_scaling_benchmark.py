@@ -57,7 +57,7 @@ from typing import Any, Callable, Dict, FrozenSet, List, Optional, Tuple
 
 from discernibility import build_discernibility_family, remove_redundant_supersets
 from reduct import exact_reducts, sufficiency
-from synthesis import find_any_sufficient_contract, find_minimum_cardinality_contract, find_minimum_cost_contract
+from synthesis import find_any_sufficient_contract, find_minimum_cardinality_contract, find_minimum_cost_contract, total_cost
 
 OUTPUT_PATH = Path("out/results/discernibility_scaling_v5_1.json")
 NOISE_DOMAIN_SIZE = 10
@@ -139,11 +139,11 @@ def run_family(
         lambda: exact_reducts(candidate_properties, reachable, registry)
     )
     minimum_cardinality = min((len(r) for r in reducts), default=0)
-    reduct_costs = {r: sum(costs[p] for p in r) for r in reducts}
+    reduct_costs = {r: total_cost(costs, r) for r in reducts}
     minimum_cost = min(reduct_costs.values()) if reduct_costs else 0.0
 
     def contract_cost(contract: FrozenSet[str]) -> float:
-        return sum(costs[p] for p in contract)
+        return total_cost(costs, contract)
 
     any_contract, any_elapsed, any_rss = _timed(lambda: find_any_sufficient_contract(candidate_properties, reachable, registry))
     any_is_sufficient, _ = sufficiency(tuple(sorted(any_contract)), reachable, registry)
@@ -357,7 +357,7 @@ def run_hardness_family(
         exhaustive_agrees_with_hand_proof = None
 
     def contract_cost(contract: FrozenSet[str]) -> float:
-        return sum(costs[p] for p in contract)
+        return total_cost(costs, contract)
 
     any_contract, any_elapsed, any_rss = _timed(lambda: find_any_sufficient_contract(candidate_properties, reachable, registry))
     any_is_sufficient, _ = sufficiency(tuple(sorted(any_contract)), reachable, registry)

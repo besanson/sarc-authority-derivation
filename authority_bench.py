@@ -63,6 +63,7 @@ import yaml
 
 from mining_baseline import mine_policy, verify_soundness
 from reduct import compute_core, exact_reducts, sufficiency
+from synthesis import total_cost
 
 OUTPUT_PATH = Path("out/results/authority_bench_v6_1.json")
 VALIDATION_PATH = Path("out/results/xu_stoller_validation.json")
@@ -171,7 +172,7 @@ def _contract_row(attributes: Tuple[str, ...], reachable: List[Any], registry: D
         "attributes": list(attrs_sorted),
         "correctness": is_sufficient,
         "contract_size": len(attrs_sorted),
-        "contract_cost": round(sum(costs[p] for p in attrs_sorted), 6) if attrs_sorted else 0.0,
+        "contract_cost": total_cost(costs, attrs_sorted) if attrs_sorted else 0.0,
         "counterexamples": None if is_sufficient else cert_or_counterexample,
     }
 

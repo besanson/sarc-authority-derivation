@@ -88,7 +88,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install build toolchain (python -m build)
-        run: pip install -q build
+        working-directory: sarc-authority-derivation
+        run: pip install -q -c constraints.txt build
 
       - name: make package-smoke-test
         working-directory: sarc-authority-derivation

@@ -1,0 +1,38 @@
+# Copyright 2026 SARC Suite Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Reproduction repair (`review-secondary/reproductions/2026-09-14-
+# perplexity-computer/`, deviation 6, "'Pinned toolchain' is
+# incomplete"): every version below is the exact version already
+# installed and exercised by this repository's own CI (`.github/
+# workflows/ci.yml`) and this environment at the time this file was
+# written -- not a new, untested version chosen for this repair. A `pip
+# install -c constraints.txt <names>` (this file's only intended use,
+# from `bootstrap.sh` and `ci.yml`'s `package` job) pins each of these
+# packages if and only if that install already wants to install one of
+# them -- it never forces an unrelated transitive dependency to a
+# version it would not otherwise resolve to (a plain `requirements.txt`
+# would, if used as `-r` instead of `-c`; that is the whole reason this
+# is a constraints file, not a requirements file). Update the pinned
+# version here deliberately, after re-verifying `make release-check`
+# against the new version, never as a side effect of an unrelated
+# change.
+pytest==9.1.1
+hypothesis==6.167.1
+mutmut==3.7.0
+jsonschema==4.26.0
+scipy==1.17.1
+python-sat==1.9.dev15
+PyYAML==6.0.1
+build==1.6.0

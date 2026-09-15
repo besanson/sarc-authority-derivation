@@ -16,6 +16,8 @@ models, independent of the real models checkers/synthesis_exactness_
 check.py exhaustively cross-checks."""
 from __future__ import annotations
 
+import json
+import random
 from dataclasses import dataclass, replace
 from typing import Any
 
@@ -28,6 +30,7 @@ from synthesis import (
     find_minimum_cardinality_contract,
     find_minimum_cost_contract,
     find_up_to_k_minimum_cardinality_contracts,
+    total_cost,
 )
 
 
@@ -237,3 +240,35 @@ def test_contract_change_delta_picks_a_minimum_cardinality_extension_on_a_genuin
 
     delta = contract_change_delta(base_contract, _DELTA_CANDIDATES, reachable, new_tuples, registry)
     assert delta["updated_contract"] == ["x", "z"]
+
+
+def test_total_cost_shuffled_order_serializes_identically():
+    """Reproduction repair (`review-secondary/reproductions/2026-09-14-
+    perplexity-computer/`): these are CH-B2's own real registered costs
+    (`costs_v7.py`/`out/checkers/ch_b2_check.json`) for its own minimum-
+    cost contract, the exact values a same-commit hash mismatch was
+    found on. A solver-returned model is a set with no guaranteed
+    iteration order, so every real call site (`checkers/ch_b2_check.py`,
+    `checkers/ch_c2_check.py`, `authority_bench.py`, `benchmarks.py`,
+    `discernibility_scaling_benchmark.py`) hands `total_cost` properties
+    in whatever order that container yields them -- this shuffles that
+    order directly (a seeded RNG, not full permutation enumeration: 20
+    shuffles of 7 properties already samples orders `sum()` alone
+    disagreed with itself on across Python versions, at a fraction of
+    7!'s own cost) and asserts the JSON-serialized total (what
+    `release-check`'s own formal-double-run and cross-environment
+    reproduction hash actually compare) is byte-identical every time,
+    at the declared precision -- not merely float-`==`, which would
+    already have passed on a bare `sum()` too and missed this bug."""
+    costs = {
+        "approval_token": 2.225, "branch": 0.225, "data_classification": 1.34,
+        "delegated_role": 0.32500000000000007, "operation": 0.044,
+        "repository": 0.225, "resource_owner": 1.74,
+    }
+    properties = list(costs)
+    rng = random.Random(0)
+    serialized = set()
+    for _ in range(20):
+        rng.shuffle(properties)
+        serialized.add(json.dumps(total_cost(costs, properties)))
+    assert serialized == {"6.124"}

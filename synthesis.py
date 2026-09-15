@@ -49,7 +49,8 @@ input-validation nicety.
 """
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, FrozenSet, List, Optional, Tuple
+import math
+from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Tuple
 
 from pysat.examples.rc2 import RC2
 from pysat.formula import CNF, WCNF
@@ -57,6 +58,40 @@ from pysat.solvers import Glucose3
 
 from discernibility import build_discernibility_family, remove_redundant_supersets
 from reduct import sufficiency
+
+# Reproduction repair (`review-secondary/reproductions/2026-09-14-
+# perplexity-computer/`): the declared serialization precision for any
+# aggregated (multi-property) observation cost -- see `total_cost`.
+COST_SERIALIZATION_DECIMALS = 6
+
+
+def total_cost(costs: Dict[str, float], properties: Iterable[str]) -> float:
+    """The deterministic, cross-environment-stable total observation
+    cost of a set of properties -- every call site in this repository
+    that sums more than one property's declared cost into a total
+    should go through this function rather than a bare `sum()`.
+
+    Two things confirmed directly, not assumed, against the exact
+    values `checkers/ch_b2_check.py`/`ch_c2_check.py` compute, run side
+    by side on python3.11/3.12/3.13: (1) sorting first (already this
+    codebase's own prior convention, `ch_b2_check.py`'s own comment)
+    is not sufficient by itself -- CPython's built-in `sum()` returns a
+    different last-bit float for the IDENTICAL sorted sequence of
+    values on Python 3.11 (`6.124`) versus 3.12/3.13 (`6.1240000000000006`),
+    so a hash committed from a run on one interpreter version does not
+    reproduce on another, exactly the mismatch the 2026-09-14
+    commissioned reproduction (Python 3.12.13) hit against this
+    repository's Python-3.11-generated committed values
+    (`out/checkers/ch_b2_check.json`, `out/checkers/ch_c2_check.json`).
+    (2) `math.fsum` (Shewchuk's algorithm, a `math`-module C function
+    this interpreter change does not touch) returns the identical
+    result on all three tested interpreters. Rounding that result to a
+    declared precision is an additional, independent safety margin
+    against any other source of sub-ULP drift (a different libm, a
+    different FPU rounding mode) -- not evidence that `fsum` alone was
+    still disagreeing; no rounding was needed to make the three tested
+    interpreters agree."""
+    return round(math.fsum(sorted(costs[p] for p in properties)), COST_SERIALIZATION_DECIMALS)
 
 
 def _property_variables(candidate_properties: Tuple[str, ...]) -> Dict[str, int]:

@@ -37,7 +37,7 @@ from costs_v8 import observation_costs_v8
 from domain_v8 import CANDIDATE_PROPERTIES_V8, executable_reachable_tuples_v8
 from losses_v8 import load_loss_registry_v8
 from reduct import sufficiency
-from synthesis import find_minimum_cost_contract
+from synthesis import find_minimum_cost_contract, total_cost
 
 OUTPUT_PATH = Path("out/checkers/ch_c2_check.json")
 CH_C1_OUTPUT_PATH = Path("out/checkers/ch_c1_check.json")
@@ -59,11 +59,16 @@ def run() -> Dict[str, Any]:
 
     min_cost_contract = find_minimum_cost_contract(CANDIDATE_PROPERTIES_V8, reachable, registry, costs)
     is_min_cost_sufficient, min_cost_cert = sufficiency(tuple(sorted(min_cost_contract)), reachable, registry)
-    min_cost_total = sum(costs[p] for p in sorted(min_cost_contract))
+    # `synthesis.total_cost`: sorted-input `math.fsum`, rounded to a
+    # declared precision -- a bare `sum()` was found to return a
+    # different last-bit float across Python versions alone, the exact
+    # mismatch the 2026-09-14 commissioned reproduction hit
+    # (`review-secondary/reproductions/2026-09-14-perplexity-computer/`).
+    min_cost_total = total_cost(costs, min_cost_contract)
 
     minimum_cardinality_costs: Dict[str, float] = {}
     for i, members in enumerate(minimum_cardinality_contracts, start=1):
-        minimum_cardinality_costs[f"minimum_cardinality_contract_{i}"] = sum(costs[p] for p in sorted(members))
+        minimum_cardinality_costs[f"minimum_cardinality_contract_{i}"] = total_cost(costs, members)
 
     strictly_cheaper_than = [
         key for key, c in minimum_cardinality_costs.items() if min_cost_total < c - COST_TIE_EPSILON

@@ -40,7 +40,7 @@ from costs_v7 import ALPHA, BETA, GAMMA, DELTA, LATENCY_NORMALIZATION_MS, observ
 from domain_v4 import CANDIDATE_PROPERTIES_V4, executable_reachable_tuples_v4
 from losses_v4 import load_loss_registry_v4
 from reduct import exact_reducts, sufficiency
-from synthesis import find_minimum_cardinality_contract, find_minimum_cost_contract
+from synthesis import find_minimum_cardinality_contract, find_minimum_cost_contract, total_cost
 
 OUTPUT_PATH = Path("out/checkers/ch_b2_check.json")
 
@@ -90,17 +90,18 @@ def run() -> Dict[str, Any]:
     for i, r in enumerate(minimum_cardinality_reducts, start=1):
         key = f"minimum_cardinality_reduct_{i}"
         certificates[key] = _certify(key, frozenset(r), reachable, registry)
-        reduct_costs[key] = sum(costs[p] for p in r)
+        reduct_costs[key] = total_cost(costs, r)
 
-    # Summed over `sorted(...)`, not the frozenset directly: floating-
-    # point addition is not associative, and frozenset iteration order
-    # depends on Python's per-process string-hash randomization -- an
-    # unsorted sum here produced a different last-bit float (6.124 vs.
-    # 6.123999999999999 vs. 6.1240000000000006, confirmed by direct
-    # test) across separate processes, breaking release-check's own
-    # formal-double-run byte-identity gate. A fixed iteration order
-    # makes the summation, and so this float, reproducible.
-    min_cost_total = sum(costs[p] for p in sorted(min_cost_contract))
+    # `synthesis.total_cost`: sorted-input `math.fsum`, rounded to a
+    # declared precision (`synthesis.COST_SERIALIZATION_DECIMALS`) --
+    # a bare `sum()`, even over already-sorted input, was found to
+    # return a different last-bit float across Python versions alone
+    # (6.124 on 3.11 vs. 6.1240000000000006 on 3.12/3.13, confirmed by
+    # direct cross-interpreter test; this is what the 2026-09-14
+    # commissioned reproduction actually hit, `review-secondary/
+    # reproductions/2026-09-14-perplexity-computer/`), not merely a
+    # same-process frozenset-iteration-order issue as first diagnosed.
+    min_cost_total = total_cost(costs, min_cost_contract)
     all_safety_equivalent = all(c["is_sufficient"] for c in certificates.values())
 
     strictly_cheaper_than = [k for k, rc in reduct_costs.items() if min_cost_total < rc - COST_TIE_EPSILON]

@@ -273,7 +273,7 @@ release-check:
 	@echo "=== release-check: LaTeX release kit (build + G1/G7/G8/G9) ==="
 	$(MAKE) arxiv
 	@echo "=== release-check: reproducibility report (out/reproducibility-report.json) ==="
-	python3 reproducibility_report.py
+	SARC_MAKE_TARGET=release-check python3 reproducibility_report.py
 	@echo ""
 	@echo "release-check: ALL CHECKS PASS"
 
@@ -334,7 +334,7 @@ quick-reproduce:
 	@echo "=== quick-reproduce: LaTeX release kit (build + G1/G7/G8/G9) ==="
 	$(MAKE) arxiv
 	@echo "=== quick-reproduce: reproducibility report (out/reproducibility-report.json) ==="
-	python3 reproducibility_report.py
+	SARC_MAKE_TARGET=quick-reproduce python3 reproducibility_report.py
 	@echo ""
 	@echo "quick-reproduce: ALL CHECKS PASS (mutation gate not included -- not a substitute for release-check)"
 

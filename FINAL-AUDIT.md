@@ -182,6 +182,32 @@ environment not used for its own development and reported back.
 Recorded honestly as **not yet met**, not glossed over as
 infrastructure-equals-outcome.
 
+**Update (2026-09-14, commissioned automated reproduction).** The author
+commissioned a Perplexity Computer session to run this pipeline end to
+end at commit `4a9676966aecb3d18cec6411decd5b9cfa8a7320`; its own report
+and evidence bundle are committed unedited at
+`review-secondary/reproductions/2026-09-14-perplexity-computer/`
+(`reproduction-report.md`, sha256
+`43dfe39ff0f33e252e89ac6ef89c5705f92b8af5c1697cbf4bc9598d5219e514`;
+`sarc-reproduction-evidence-4a96769.zip`, sha256
+`0c7fea9227762df324ea938ed470ff851f686f1ac7a948a0c41ff3ac99ffe3f1`).
+This is an **automated reproduction commissioned by the author, not an
+independent human reproduction** -- the report's own words: "Not an
+independent human reproducer... this report must not, by itself, be
+counted as satisfying REPRODUCTION.md's independent-person requirement
+or closing FINAL-AUDIT item 11." It found bootstrap, `quick-reproduce`,
+CH-B1, and CH-C1 all passing, one recoverable missing prerequisite
+(`build`, not installed by `bootstrap.sh`), and a same-commit hash
+mismatch on CH-B2/CH-C2's own serialized costs traced to non-
+deterministic float summation across Python versions -- both now fixed
+by this commit's own repairs (`synthesis.py`'s deterministic
+`total_cost`, `bootstrap.sh`'s added `build` dependency), recorded in
+this repository's own Corrections note (`REPRODUCTION.md`). Item 11
+remains **PENDING**: this run was not by an independent person, machine-
+history independence could not be certified, and it was not filed as a
+GitHub issue -- exactly as the commissioned report's own "Disposition"
+states, not reinterpreted here as more than it claims.
+
 ## 12. Claims never exceed evidence
 
 **Met, with the two gaps stated in items 5 and 11.** Specific checks
