@@ -75,6 +75,7 @@
       "first_author": "William Young",
       "year": 2014,
       "venue": "Communications of the ACM 57(2), pp. 31-35",
+      "journal": "Communications of the ACM",
       "verified_via": "WebSearch, 2026-08-31: title/authors/venue/year/DOI corroborated across cacm.acm.org, Semantic Scholar, and dblp-indexed snippets; this CACM piece is the canonical citation for STPA-Sec, distinct from the earlier informal 2013 workshop write-up."
     },
     {
@@ -120,6 +121,7 @@
       "first_author": "Zhongyuan Xu",
       "year": 2015,
       "venue": "IEEE Transactions on Dependable and Secure Computing 12(5), pp. 533-545",
+      "journal": "IEEE Transactions on Dependable and Secure Computing",
       "verified_via": "WebSearch, 2026-08-31: title/authors/venue/volume/issue/pages/DOI corroborated across the authors' own Stony Brook policy-mining page (www3.cs.stonybrook.edu/~stoller/policy-mining/) and independent bibliographic indexes; distinguished from the authors' earlier 2013/2014 conference-track pieces (CEWIT 2013, DBSec 2014) on the same problem, per the task brief's '2014-2015' framing. UPDATE 2026-09-08 (prereg/v6-authority-bench.md, Milestone E2): WebFetch of https://arxiv.org/abs/1306.2401, the freely-available preprint of this same work (per the Stony Brook page's own listing: 'June 2013, updated August 2014' -- the earlier-venue draft of the eventual TDSC 2015 journal form already verified above, not a different paper), returned the full abstract, quoted directly in prereg/v6-authority-bench.md: 'Our algorithm iterates over tuples in the given user-permission relation, uses selected tuples as seeds for constructing candidate rules, and attempts to generalize each candidate rule to cover additional tuples in the user-permission relation by replacing conjuncts in attribute expressions with constraints. Our algorithm attempts to improve the policy by merging and simplifying candidate rules, and then it selects the highest-quality candidate rules for inclusion in the generated policy.' This is the only textual claim about the algorithm's own mechanics this project relies on; prereg/v6-authority-bench.md's own reimplementation is registered as explicitly scoped to what this quoted abstract describes, not to the paper's full method."
     },
     {
@@ -154,6 +156,7 @@
       "first_author": "Jason Crampton",
       "year": 2012,
       "venue": "POST 2012 (1st International Conference on Principles of Security and Trust), LNCS 7215, pp. 390-409",
+      "booktitle": "POST 2012 (1st International Conference on Principles of Security and Trust)",
       "verified_via": "WebSearch, 2026-08-31: title/authors/venue/DOI corroborated across Royal Holloway's PURE research portal, Semantic Scholar, and Springer's own chapter page."
     },
     {
@@ -166,6 +169,7 @@
       "first_author": "Jason Crampton",
       "year": 2016,
       "venue": "SACMAT 2016 (21st ACM Symposium on Access Control Models and Technologies), pp. 149-160",
+      "booktitle": "SACMAT 2016 (21st ACM Symposium on Access Control Models and Technologies)",
       "verified_via": "WebFetch of https://pure.royalholloway.ac.uk/en/publications/on-completeness-in-languages-for-attribute-based-access-control, 2026-08-31: confirmed exact title, authors, venue, and year directly from Royal Holloway's research portal record."
     },
     {
@@ -178,6 +182,7 @@
       "first_author": "Joseph A. Goguen",
       "year": 1982,
       "venue": "3rd IEEE Symposium on Security and Privacy, pp. 11-20",
+      "booktitle": "3rd IEEE Symposium on Security and Privacy",
       "verified_via": "WebFetch of https://dblp.org/db/conf/sp/sp1982.html, 2026-08-31: confirmed exact title, author order, venue, year, pages, and DOI directly from the dblp proceedings listing."
     },
     {
@@ -189,6 +194,7 @@
       "first_author": "Matt J. Kusner",
       "year": 2017,
       "venue": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
+      "booktitle": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
       "verified_via": "WebFetch of https://proceedings.neurips.cc/paper_files/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html, 2026-08-31: confirmed exact title, full author order, and year directly from the NeurIPS proceedings page."
     },
     {
@@ -201,6 +207,7 @@
       "first_author": "Zdzisław Pawlak",
       "year": 1982,
       "venue": "International Journal of Computer and Information Sciences 11(5), pp. 341-356",
+      "journal": "International Journal of Computer and Information Sciences",
       "verified_via": "Direct Read of the paper's own PDF first page (fetched via a WebSearch-located mirror, sci2s.ugr.es/keel/dataset/includes/catImbFiles/1982 - Pawlak.pdf, 2026-09-06): title 'Rough Sets', author 'Zdzisław Pawlak', header line 'International Journal of Computer and Information Sciences, Vol. 11, No. 5, 1982', and page number 341 all visible directly on the rendered title page, not merely an indexed snippet. DOI cross-confirmed via WebSearch (scirp.org's reference listing; Springer's own article page at link.springer.com/article/10.1007/BF01001956). Cited (prereg/v3-core-reduct-correction.md; paper5 draft v0.3) as the foundational source for the core/reduct distinction Proposition 1' corrects to."
     },
     {
@@ -212,6 +219,7 @@
       "first_author": "Andrzej Skowron",
       "year": 1992,
       "venue": "in R. Słowiński (ed.), Intelligent Decision Support: Handbook of Applications and Advances of the Rough Sets Theory, Theory and Decision Library, Springer/Kluwer, Dordrecht, pp. 331-362",
+      "booktitle": "Intelligent Decision Support: Handbook of Applications and Advances of the Rough Sets Theory",
       "verified_via": "WebSearch, 2026-09-06, two independently-worded queries both corroborating the exact title, both authors, venue (Intelligent Decision Support, ed. Słowiński, Springer/Kluwer Dordrecht), year 1992, and page range 331-362, across Springer's own chapter listing and Semantic Scholar's indexed record. Cited (prereg/v3-core-reduct-correction.md) as the discernibility-matrix source reduct.py's exact reduct enumeration is positioned against."
     },
     {
@@ -223,6 +231,7 @@
       "first_author": "Arnar Birgisson",
       "year": 2014,
       "venue": "NDSS Symposium 2014, San Diego, CA",
+      "booktitle": "NDSS Symposium 2014",
       "verified_via": "WebSearch AND a direct WebFetch of the NDSS Symposium's own official programme page (ndss-symposium.org), 2026-09-06: both independently confirm the exact title, the full six-author order, and the NDSS 2014 venue. Cited (paper5 draft v0.3, Section 6) as capability-system prior art for the execution grant, repositioning grant binding as engineering informed by established patterns rather than a novelty claim, per the external research review's own comparison (review-secondary/external-research-review-2026-09-06.pdf, question 26)."
     },
     {
@@ -255,6 +264,7 @@
       "first_author": "Ravi S. Sandhu",
       "year": 1996,
       "venue": "IEEE Computer 29(2), pp. 38-47",
+      "journal": "IEEE Computer",
       "verified_via": "Two independently-worded WebSearch queries (2026-09-07/08), both returning the identical venue/volume/issue/pages/authors, one also returning ADS bibcode 1996Compr..29b..38S corroborating year/vol/issue/page/author-initial; direct WebFetch of the NIST-hosted author PDF mirror (csrc.nist.gov/csrc/media/projects/role-based-access-control/documents/sandhu96.pdf) confirmed the exact title and full four-author list; the DOI resolves live to IEEE Xplore. Cited (prereg/v4-realistic-domain.md, losses_v4.unauthorised_mutation) as the RBAC source a mutating operation must be mediated against the acting role's own declared authority."
     },
     {
@@ -317,6 +327,7 @@
       "first_author": "Roderick Bloem",
       "year": 2015,
       "venue": "TACAS 2015 (21st International Conference on Tools and Algorithms for the Construction and Analysis of Systems), LNCS 9035, pp. 533-548",
+      "booktitle": "TACAS 2015 (21st International Conference on Tools and Algorithms for the Construction and Analysis of Systems)",
       "verified_via": "Direct WebFetch of https://tugraz.elsevierpure.com/en/publications/shield-synthesis-runtime-enforcement-for-reactive-systems, 2026-09-08 (after the original graz.elsevierpure.com URL 301-redirected there): confirmed exact title, full four-author order, TACAS 2015, LNCS volume 9035, page range 533-548, and DOI directly from the TU Graz research portal record. Cited in NOVELTY.md's Eighth amendment (prereg/v6.1-authoritybench-amendment.md, Step 5) as the shield-synthesis literature cluster: constructs a corrective law over an already-fixed signal interface, not a derivation of the interface itself."
     },
     {
@@ -329,6 +340,7 @@
       "first_author": "Fred B. Schneider",
       "year": 2000,
       "venue": "ACM Transactions on Information and System Security (TISSEC) 3(1), pp. 30-50",
+      "journal": "ACM Transactions on Information and System Security (TISSEC)",
       "verified_via": "Direct WebFetch of https://www.cs.cornell.edu/fbs/publications/EnfSecPols.pdf, 2026-09-08, read via page-image rendering (text extraction failed, image rendering succeeded): title 'Enforceable Security Policies', author 'FRED B. SCHNEIDER, Cornell University', and the exact venue line 'ACM Transactions on Information and System Security, Vol. 3, No. 1, February 2000, Pages 30-50' all visible directly on the rendered first page, along with the paper's own abstract stating it gives 'a precise characterization... for the class of security policies enforceable with mechanisms that work by monitoring system execution' (Execution Monitoring, EM). Cited in NOVELTY.md's Eighth amendment as the foundational runtime-enforcement/EM citation: characterizes what a monitor can enforce over an already-fixed action alphabet, not which properties belong in that alphabet."
     },
     {
@@ -341,6 +353,7 @@
       "first_author": "Jay Ligatti",
       "year": 2005,
       "venue": "International Journal of Information Security 4(1-2), pp. 2-16",
+      "journal": "International Journal of Information Security",
       "verified_via": "Direct WebFetch of https://collaborate.princeton.edu/en/publications/edit-automata-enforcement-mechanisms-for-run-time-security-polici/, 2026-09-08: confirmed exact title, full three-author order, journal name, volume/issue (4(1-2)), page range (2-16), February 2005, and DOI directly from Princeton's own research-portal record (the Springer chapter page itself 303-redirected to an access-gated IdP login and could not be fetched directly). Cited in NOVELTY.md's Eighth amendment alongside Schneider 2000 as the edit-automata half of the runtime-enforcement cluster: extends the monitor's corrective repertoire (insert/suppress, not just truncate) over the same already-fixed action alphabet Schneider fixes, without deriving that alphabet."
     },
     {
@@ -353,6 +366,7 @@
       "first_author": "P. J. Ramadge",
       "year": 1987,
       "venue": "SIAM Journal on Control and Optimization 25(1), pp. 206-230",
+      "journal": "SIAM Journal on Control and Optimization",
       "verified_via": "Direct WebFetch of https://collaborate.princeton.edu/en/publications/supervisory-control-of-a-class-of-discrete-event-processes/, 2026-09-08: confirmed exact title, both authors, journal name, volume/issue/pages (25(1), 206-230), 1987, and DOI directly from Princeton's own research-portal record (the ACM DL page itself returned 403 Forbidden). Cited in NOVELTY.md's Eighth amendment as the discrete-event/supervisory-control half of the controller-synthesis cluster: synthesizes a maximally permissive supervisor over an already-fixed plant event alphabet, not a derivation of the alphabet itself."
     },
     {
@@ -365,6 +379,7 @@
       "first_author": "Amir Pnueli",
       "year": 1989,
       "venue": "POPL 1989 (16th ACM Symposium on Principles of Programming Languages), pp. 179-190",
+      "booktitle": "POPL 1989 (16th ACM Symposium on Principles of Programming Languages)",
       "verified_via": "Two independently-worded WebSearch queries (2026-09-08) both returning the identical title, both authors, POPL 1989 venue, page range 179-190, and DOI 10.1145/75277.75293 (the ACM DL page itself returned 403 Forbidden to a direct WebFetch); both searches also independently distinguished this paper from the authors' related but distinct 'On the synthesis of an asynchronous reactive module' (ICALP 1989), confirming no conflation between the two. Cited in NOVELTY.md's Eighth amendment as the temporal-logic/reactive-synthesis half of the controller-synthesis cluster: constructs a winning strategy over already-declared input/output signals, not a derivation of which signals must be declared."
     },
     {
@@ -377,6 +392,7 @@
       "first_author": "Jack B. Dennis",
       "year": 1966,
       "venue": "Communications of the ACM 9(3), pp. 143-155",
+      "journal": "Communications of the ACM",
       "verified_via": "Direct WebFetch of https://www.princeton.edu/~rblee/ELE572Papers/Fall04Readings/ProgramSemantics_DennisvanHorn.pdf, 2026-09-08, read via page-image rendering (text extraction failed, image rendering succeeded): title 'Programming Semantics for Multiprogrammed Computations', authors 'Jack B. Dennis and Earl C. Van Horn, Massachusetts Institute of Technology', and the exact venue line 'Volume 9 / Number 3 / March, 1966 -- Communications of the ACM', page 143, all visible directly on the rendered page. Cited in NOVELTY.md's Eighth amendment as the foundational capability-systems citation: the original C-list/capability primitive for representing and propagating authority once granted, not a derivation of which conditions must be checked before granting it -- the common ancestor of this project's own already-cited macaroons-ndss-2014/ucan-specification/biscuit-specification (cited elsewhere for the execution grant's own representation, not for this distinction)."
     },
     {

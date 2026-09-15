@@ -1,4 +1,4 @@
-.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling v8-exhaustive-attempt authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce package-smoke-test ci-local clean help
+.PHONY: bootstrap test formal derive derive_v2 experiments sweep paper release-check mutate benchmarks discernibility-scaling discernibility-hardness-scaling v8-exhaustive-attempt authority-bench authority-bench-domains xu-stoller-validation time-reproduction time-quick-reproduce quick-reproduce package-smoke-test arxiv ci-local clean help
 
 # Paper 5: Deriving Authority (sarc-authority-derivation)
 # Apache License 2.0
@@ -70,11 +70,13 @@ sweep:
 	python3 sweep.py
 
 # Phase 5: populate the paper draft from committed machine output only.
-# v0.5 is the live draft (Package B, review-secondary/final-gap-plan-9.5-
-# 2026-09-09.pdf: reorganized around governance-context synthesis;
+# v0.6 is the live draft, the consolidated manuscript (review-secondary/
+# final-gap-plan-9.5-2026-09-09.pdf's own broadened contribution, folded
+# in as one document rather than a v0.5-plus-Part-II pair);
 # paper5-authority-derivation-draft-v0.1.md/-populated.md are frozen at
 # commit 37a2e7f, v0.2's at commit 7112031, v0.3's at commit 382be13,
-# and v0.4's at the commit this version-split makes -- see README.md's
+# v0.4's at the commit Package B's own version-split makes, and v0.5's
+# at the commit this version-split makes -- see README.md's
 # version-split note -- none touched by this pipeline).
 paper: experiments sweep formal
 	@echo "v0.4 isolation-hypothesis delta (prereg-p5-v3.1: isolated ArmState vs. v0.3's frozen shared-state result)..."
@@ -255,19 +257,21 @@ release-check:
 	@echo " seconds; committed as of the v0.4 commit, re-run explicitly via"
 	@echo " 'make paper' or 'python3 -m checkers.isolation_delta_check' after any"
 	@echo " change to experiments.py, prereg/seeds.json, or the declared loss model.)"
-	cp paper5-authority-derivation-draft-v0.5-populated.md /tmp/sarc-p5-populated-committed.md
+	cp paper5-authority-derivation-draft-v0.6-populated.md /tmp/sarc-p5-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.5-populated.md
+	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.6-populated.md
 	@rm -f /tmp/sarc-p5-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== release-check: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.5.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.6.md
 	@echo "=== release-check: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== release-check: terminology lint ==="
 	python3 -m checkers.terminology_lint
 	@echo "=== release-check: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
+	@echo "=== release-check: LaTeX release kit (build + G1/G7/G8/G9) ==="
+	$(MAKE) arxiv
 	@echo "=== release-check: reproducibility report (out/reproducibility-report.json) ==="
 	python3 reproducibility_report.py
 	@echo ""
@@ -314,19 +318,21 @@ quick-reproduce:
 	@echo "formal double-run byte-identical: OK"
 	@echo "=== quick-reproduce: mutation testing SKIPPED (see release-check for the hard gate) ==="
 	@echo "=== quick-reproduce: populated-draft freshness ==="
-	cp paper5-authority-derivation-draft-v0.5-populated.md /tmp/sarc-p5-quick-populated-committed.md
+	cp paper5-authority-derivation-draft-v0.6-populated.md /tmp/sarc-p5-quick-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-quick-populated-committed.md paper5-authority-derivation-draft-v0.5-populated.md
+	diff /tmp/sarc-p5-quick-populated-committed.md paper5-authority-derivation-draft-v0.6-populated.md
 	@rm -f /tmp/sarc-p5-quick-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== quick-reproduce: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.5.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.6.md
 	@echo "=== quick-reproduce: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== quick-reproduce: terminology lint ==="
 	python3 -m checkers.terminology_lint
 	@echo "=== quick-reproduce: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
+	@echo "=== quick-reproduce: LaTeX release kit (build + G1/G7/G8/G9) ==="
+	$(MAKE) arxiv
 	@echo "=== quick-reproduce: reproducibility report (out/reproducibility-report.json) ==="
 	python3 reproducibility_report.py
 	@echo ""
@@ -365,10 +371,36 @@ package-smoke-test:
 	rm -rf /tmp/sarc-p5-ac-smoke dist build sarc_authority_derivation.egg-info
 	@echo "package-smoke-test: PASS"
 
+# LaTeX release kit (task brief: "port whatever is not yet present from
+# the paper-4 kit"): regenerates paper-tex/refs.bib from verified-
+# citations.json (never hand-edited, so it can never drift -- see
+# paper-tex/generate_refs_bib.py), then runs the four ported gates
+# (paper-tex/gates/run_gates.py's own docstring names which of the
+# sibling's G1-G9 this repo ports and why): G1 build (byte-identical
+# double build under a content-stable epoch), G7 arXiv sidecar sync, G8
+# citation completeness, G9 bibliography quality.
+#
+# Same latexmk-then-Tectonic pattern as the sibling's own `arxiv` target
+# (ADR-001-foundation.md): if latexmk is present, verify the build+gates
+# ALSO pass under it first (a real second-toolchain check); always build
+# and gate under Tectonic last, so the main.pdf/parity-report.json this
+# target leaves on disk are always the canonical-toolchain build.
+arxiv:
+	@echo "Regenerating paper-tex/refs.bib from verified-citations.json..."
+	cd paper-tex && python3 generate_refs_bib.py
+	@if command -v latexmk >/dev/null 2>&1; then \
+		echo "latexmk found -- verifying build + gates under the supported-alternative toolchain..." ; \
+		( cd paper-tex && SARC_LATEX_COMPILER=latexmk python3 gates/run_gates.py ) || exit 1 ; \
+	else \
+		echo "latexmk not found -- skipping the supported-alternative toolchain check (Tectonic, canonical, is checked next regardless)." ; \
+	fi
+	@echo "Building main.tex + running gates G1/G7/G8/G9 under Tectonic (canonical toolchain)..."
+	cd paper-tex && SARC_LATEX_COMPILER=tectonic python3 gates/run_gates.py
+
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
-	rm -f paper5-authority-derivation-draft-v0.5-populated.md
+	rm -f paper5-authority-derivation-draft-v0.6-populated.md
 	rm -rf .pytest_cache .hypothesis
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
@@ -384,7 +416,7 @@ help:
 	@echo "  make experiments    Run the Phase 3 experiment scenarios"
 	@echo "  make sweep          30-seed statistical sweep, CH-A1-CH-A4 means + 95% CIs"
 	@echo "  make paper          Populate the paper draft from committed machine output"
-	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + reproducibility report"
+	@echo "  make release-check  MANDATORY before any release: tests + formal double-run identity + mutation gate + citation gate + lint + LaTeX release kit + reproducibility report"
 	@echo "  make quick-reproduce  release-check's full path MINUS the mutation gate (see Makefile comment); not a substitute for release-check"
 	@echo "  make mutate         Mutation testing (V5-equivalent gate, target >=0.85)"
 	@echo "  make benchmarks     Synthesis benchmarks (prereg-p5-v5): scaling (exploratory_v5_0) + cost-aware + contract_change_delta (~3 min, not part of release-check)"
@@ -396,6 +428,7 @@ help:
 	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
 	@echo "  make time-quick-reproduce  Same harness, timing make quick-reproduce instead (repair 3): comparable bare-clone figure minus mutation"
 	@echo "  make package-smoke-test  Package A: build sdist+wheel, install into a fresh venv, black-box import+derive+CLI check -- no repo root, pythonpath, editable install, or siblings"
+	@echo "  make arxiv          LaTeX release kit: regenerate refs.bib, build main.tex under Tectonic, run gates G1/G7/G8/G9 (part of release-check/quick-reproduce)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

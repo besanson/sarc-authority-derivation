@@ -1,0 +1,42 @@
+arXiv submission metadata
+==========================
+
+Title (verbatim from the paper)
+--------------------------------
+Minimal Sufficient Governance Context: Compiling Loss Models and Reachable Execution Semantics into Cost-Aware Runtime Authority Contracts for Autonomous Agents
+
+Author line
+-----------
+Gaston Besanson (Universidad Torcuato Di Tella)
+
+Category suggestion
+--------------------
+Primary: cs.AI (Artificial Intelligence)
+  Rationale: the paper's central contribution is a machine-checked
+  derivation and synthesis procedure -- from a declared loss model and an
+  executable-reachable action set, compile the minimal, cost-aware
+  runtime observation sets sufficient to make every modeled safety
+  distinction, with certificates and counterexamples a downstream system
+  consumes directly. This is squarely an AI-systems formal-methods
+  contribution to autonomous-agent authority derivation.
+
+Cross-list: cs.LO (Logic in Computer Science)
+  Rationale: the derivation is built on discernibility sets (Skowron and
+  Rauszer 1992) restated as a hitting-set/CNF problem, solved via SAT and
+  MaxSAT encodings, with machine-checked soundness, minimality, and
+  sufficiency certificates.
+
+Cross-list: cs.CR (Cryptography and Security)
+  Rationale: the paper's subject is authority/access-control gate design
+  for autonomous systems -- minimal sufficient observation sets for a
+  pre-action authority gate, contrasted against declared-only manual
+  policies, ABAC mining, and essential-variable analysis baselines.
+
+License
+-------
+CC BY 4.0
+
+Linked artifacts
+-----------------
+GitHub repository: https://github.com/besanson/sarc-authority-derivation
+Companion imported baseline: sarc-suite-one-pass (arXiv 2608.18360)

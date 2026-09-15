@@ -24,3 +24,21 @@ out/*
 !out/quality.json
 !out/results/
 !out/checkers/
+
+# Small LaTeX build byproducts (paper-tex/), same policy as
+# sarc-suite-one-pass's own .gitignore: regenerable by `make arxiv`
+# (Tectonic) from main.tex + refs.bib, no standalone value of their own.
+# main.pdf, main.bbl, arxiv.tar.gz, parity-report.json, and refs.bib
+# are NOT ignored -- each has standalone value (the built PDF, the
+# generated bibliography, the packaged arXiv submission, the gate
+# report, and the citation source respectively) and are committed.
+paper-tex/main.aux
+paper-tex/main.blg
+paper-tex/main.fdb_latexmk
+paper-tex/main.fls
+paper-tex/main.log
+paper-tex/main.out
+paper-tex/main.synctex.gz
+paper-tex/main.toc
+paper-tex/texput.log
+paper-tex/gates/__pycache__/

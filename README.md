@@ -1,10 +1,11 @@
 # sarc-authority-derivation
 
 **This paper's own thesis** (Definition 4 defines sufficiency, Definition 5
-minimality, `paper5-authority-derivation-draft-v0.5.md`, never asserted
-loosely): **Minimal Sufficient Governance Context** -- compile declared
-losses and reachable execution semantics into exact, cost-aware runtime
-authority contracts for autonomous systems.
+minimality, `paper5-authority-derivation-draft-v0.6.md`, never asserted
+loosely): **Minimal Sufficient Governance Context** -- given a declared
+loss model and the states an autonomous system can reach, derive and
+certify the minimal, cost-aware sets of runtime observations sufficient
+to make every modeled safe-versus-unsafe authority distinction.
 
 Author: Gaston Besanson. Drafting, engineering, formal derivation, and
 citation verification were AI-assisted (Claude); the author is solely
@@ -86,13 +87,20 @@ while every synthesis backend still solves in well under a second
 Weighted MaxSAT selects a sufficient (Definition 5) contract by
 declared observation cost, not cardinality alone -- proved on a small
 hand-derived domain first (`benchmarks.py`'s XOR-bijection construction),
-then registered
-against a realistic domain (`prereg/v7-cost-sensitive-contracts.md`).
+then measured on two realistic domains: on the code/cloud flagship
+above, declared cost strictly separates its two reducts
+(CH-B2, `prereg/v7-cost-sensitive-contracts.md`,
+`out/checkers/ch_b2_check.json`); on a second, larger, thirty-five
+property domain (CH-C1/CH-C2, `prereg/v8-large-realistic-domain.md`),
+the core is again not a reduct, but the declared cost model does not
+separate the resulting alternatives -- a genuine tie, reported as
+found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.5.md`](paper5-authority-derivation-draft-v0.5.md)
-([populated](paper5-authority-derivation-draft-v0.5-populated.md)).
+[`paper5-authority-derivation-draft-v0.6.md`](paper5-authority-derivation-draft-v0.6.md)
+([populated](paper5-authority-derivation-draft-v0.6-populated.md)) --
+the consolidated manuscript.
 
 ## Reproduction
 
@@ -102,17 +110,21 @@ template for reporting an independent reproduction attempt.
 
 ---
 
-## History: the v1-v0.4 procurement-domain result (below the fold)
+## History: the v1-v0.5 procurement-domain result and earlier drafts (below the fold)
 
 This artifact's own originating result -- a formal participation
 criterion and a machine-checkable derivation from a declared loss model
 to the core observation set a pre-action authority gate must check, on
-a registered retail-procurement domain -- is unchanged and is Part II
-of the live paper above, in full. Prereg tags `prereg-p5-v1`,
-`prereg-p5-v2`, `prereg-p5-v3`, `prereg-p5-v3.1`, `prereg-p5-v4`,
-`prereg-p5-v5`, `prereg-p5-v5.1`, `prereg-p5-v5.3`, and `prereg-p5-v6`/
-`prereg-p5-v6.1` were each created via the GitHub web interface after
-their commits; commit order establishes precedence.
+a registered retail-procurement domain -- is unchanged; it is folded
+into the live paper above as its own worked introduction (Sections 2-3)
+rather than re-embedded there in full. The complete original
+Introduction, related work, empirical section (CH-A1 through CH-A10),
+and Conclusion are preserved, unedited, in the frozen versions below.
+Prereg tags `prereg-p5-v1`, `prereg-p5-v2`, `prereg-p5-v3`,
+`prereg-p5-v3.1`, `prereg-p5-v4`, `prereg-p5-v5`, `prereg-p5-v5.1`,
+`prereg-p5-v5.2`, `prereg-p5-v5.3`, `prereg-p5-v6`/`prereg-p5-v6.1`,
+`prereg-p5-v7`, and `prereg-p5-v8` were each created via the GitHub web
+interface after their commits; commit order establishes precedence.
 
 Earlier paper versions are frozen and no longer regenerated or edited:
 v0.1 as of commit `37a2e7f` ([source](paper5-authority-derivation-draft-v0.1.md),
@@ -126,4 +138,10 @@ as of the commit Package B's version-split makes
 [populated](paper5-authority-derivation-draft-v0.4-populated.md)) --
 v0.4's own 60-second example (the v2 procurement model: a 9-property
 core that is sufficient and the unique reduct, CH-A8/CH-A10) is
-preserved there, unedited.
+preserved there, unedited -- and v0.5 as of the commit this version-split
+makes ([source](paper5-authority-derivation-draft-v0.5.md),
+[populated](paper5-authority-derivation-draft-v0.5-populated.md)), whose
+own Part II is the entire v0.1-through-v0.4 paper, unedited, and whose
+own Part I is this artifact's broadened contribution as first
+reorganized around governance-context synthesis (Package B) -- both
+now consolidated into the live paper above.

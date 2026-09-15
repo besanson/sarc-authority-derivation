@@ -61,6 +61,12 @@ def build_slots(
     discernibility_scaling_v5_1_path: str = "out/results/discernibility_scaling_v5_1.json",
     discernibility_scaling_v5_3_path: str = "out/results/discernibility_scaling_v5_3.json",
     authority_bench_v6_1_path: str = "out/results/authority_bench_v6_1.json",
+    ch_b2_check_path: str = "out/checkers/ch_b2_check.json",
+    ch_c1_check_path: str = "out/checkers/ch_c1_check.json",
+    ch_c2_check_path: str = "out/checkers/ch_c2_check.json",
+    v8_exhaustive_attempt_path: str = "out/results/v8_exhaustive_attempt.json",
+    budget_binding_scenario_summary_path: str = "out/results/budget_binding_scenario_summary.json",
+    synthesis_benchmarks_path: str = "out/results/synthesis_benchmarks.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -82,6 +88,12 @@ def build_slots(
     v5_1 = json.loads(Path(discernibility_scaling_v5_1_path).read_text())
     v5_3 = json.loads(Path(discernibility_scaling_v5_3_path).read_text())
     ab = json.loads(Path(authority_bench_v6_1_path).read_text())
+    ch_b2 = json.loads(Path(ch_b2_check_path).read_text())
+    ch_c1 = json.loads(Path(ch_c1_check_path).read_text())
+    ch_c2 = json.loads(Path(ch_c2_check_path).read_text())
+    v8_exhaustive = json.loads(Path(v8_exhaustive_attempt_path).read_text())
+    v52 = json.loads(Path(budget_binding_scenario_summary_path).read_text())
+    v50 = json.loads(Path(synthesis_benchmarks_path).read_text())
     proof_status = _lint_proof_status()
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
@@ -206,6 +218,24 @@ def build_slots(
         "v4_budget_predicate_n_cells": str(isolation_delta["budget_predicate_fire_diagnostic"]["n_cells"]),
     }
     slots.update(_v05_slots(ch_b1, v5_1, v5_3, ab))
+    slots.update(_v06_slots(ch_b2, ch_c1, ch_c2, v8_exhaustive, v52, v50))
+
+    # v0.6's own consolidated results sentence (task architecture item 12):
+    # every registered hypothesis this paper reports, concatenated from
+    # already-computed booleans -- NOT SUPPORTED printed wherever a
+    # decision rule did not hold, extending v1's own abstract_results_
+    # sentence (CH-A1-CH-A4 above) rather than recomputing it.
+    slots["results_sentence_v06"] = (
+        f"{slots['abstract_results_sentence'][:-1]}, "
+        f"the v0.4 isolation hypothesis ({_supported(bool(isolation_delta['isolation_hypothesis_supported']))}), "
+        f"the v5.2 budget-binding scenario ({slots['v52_status']}), "
+        f"CH-B1's core sufficiency ({_supported(bool(ch_b1['is_core_sufficient']))}), "
+        f"CH-B2 cost separation ({slots['ch_b2_status']}), "
+        f"CH-C1 core insufficiency ({slots['ch_c1_status']}), "
+        f"CH-C2 cost separation ({slots['ch_c2_status']}), and "
+        f"a meaningful MaxSAT cardinality advantage on the v5.3 families "
+        f"({_supported(any(f['maxsat_advantage']['meaningful_cardinality_advantage'] for f in v5_3['families']))})."
+    )
     return slots
 
 
@@ -299,6 +329,111 @@ def _v05_slots(ch_b1: Dict[str, Any], v5_1: Dict[str, Any], v5_3: Dict[str, Any]
         "ab_xu_stoller_mining_validated": _supported(ab["xu_stoller_mining_validated"]),
     }
     return slots
+
+
+def _v06_slots(
+    ch_b2: Dict[str, Any],
+    ch_c1: Dict[str, Any],
+    ch_c2: Dict[str, Any],
+    v8_exhaustive: Dict[str, Any],
+    v52: Dict[str, Any],
+    v50: Dict[str, Any],
+) -> Dict[str, str]:
+    """v0.6 (the consolidated manuscript): slots for CH-B2 (cost-sensitive
+    v4, v7), CH-C1/CH-C2 (large non-planted v8 domain), the v8 exhaustive-
+    attempt complexity data point, the budget-binding scenario (v5.2), and
+    the v5.0 exploratory synthesis benchmark -- sourced solely from their
+    own already-committed JSON, same discipline as every slot above."""
+    b2_cost_values = sorted(ch_b2["minimum_cardinality_reduct_costs"].values())
+    b2_cheaper, b2_pricier = b2_cost_values[0], b2_cost_values[1]
+
+    v50_runs = sorted(v50["experiment_1_scaling"]["runs"], key=lambda r: r["n"])
+    v50_wall_times = [r["wall_time_seconds"] for r in v50_runs]
+    v50_n_list = [str(r["n"]) for r in v50_runs]
+    xor = next(d for d in v50["experiment_2_cost_aware"]["domains"] if d["domain"] == "xor_bijection")
+    real_domain_deltas = [
+        d["cost_delta"] for d in v50["experiment_2_cost_aware"]["domains"] if d["domain"] != "xor_bijection"
+    ]
+    ccd = v50["contract_change_delta_demo"]
+
+    return {
+        # CH-B2 (prereg/v7-cost-sensitive-contracts.md, tag prereg-p5-v7):
+        # cost-sensitive contracts on the code/cloud domain's own two
+        # CH-B1 reducts, sourced solely from out/checkers/ch_b2_check.json.
+        "ch_b2_status": _supported(bool(ch_b2["supported"])),
+        "ch_b2_outcome_subcase": ch_b2["outcome_subcase"],
+        "ch_b2_min_cardinality": str(ch_b2["minimum_cardinality"]),
+        "ch_b2_min_cost_contract_list": ", ".join(sorted(ch_b2["minimum_cost_contract"])),
+        "ch_b2_min_cost_contract_total_cost": f"{ch_b2['minimum_cost_contract_total_cost']:.3f}",
+        "ch_b2_other_reduct_cost": f"{b2_pricier:.3f}",
+        "ch_b2_cost_delta": f"{(b2_pricier - b2_cheaper):.3f}",
+        "ch_b2_all_safety_equivalent": str(bool(ch_b2["all_alternatives_safety_equivalent"])),
+        "ch_b2_subsets_considered": f"{ch_b2['subsets_considered']:,}",
+        "ch_b2_reachable_swept": f"{ch_b2['reachable_tuples_swept']:,}",
+
+        # CH-C1/CH-C2 (prereg/v8-large-realistic-domain.md, tag
+        # prereg-p5-v8): core-versus-reduct and cost-sensitivity on the
+        # large, non-planted 35-property domain, sourced solely from
+        # out/checkers/ch_c1_check.json / ch_c2_check.json.
+        "ch_c1_status": _supported(bool(ch_c1["supported"])),
+        "ch_c1_candidate_property_count": str(len(ch_c1["candidate_properties"])),
+        "ch_c1_core_cardinality": str(ch_c1["core_cardinality"]),
+        "ch_c1_core_list": ", ".join(sorted(ch_c1["core_attributes"])),
+        "ch_c1_core_sufficient_status": _supported(bool(ch_c1["is_core_sufficient"])),
+        "ch_c1_min_cardinality": str(ch_c1["minimum_cardinality"]),
+        "ch_c1_contracts_found_count": str(ch_c1["minimum_cardinality_contracts_found_count"]),
+        "ch_c1_multiplicity_cap": str(ch_c1["multiplicity_cap"]),
+        "ch_c1_reachable_swept": f"{ch_c1['reachable_tuples_swept']:,}",
+
+        "ch_c2_status": _supported(bool(ch_c2["supported"])),
+        "ch_c2_outcome_subcase": ch_c2["outcome_subcase"],
+        "ch_c2_min_cost_contract_total_cost": f"{ch_c2['minimum_cost_contract_total_cost']:.3f}",
+        "ch_c2_num_tied_contracts": str(len(ch_c2["minimum_cardinality_contracts_costs"])),
+        "ch_c2_reachable_swept": f"{ch_c2['reachable_tuples_swept']:,}",
+
+        # v8 exhaustive attempt (same prereg/tag): the registered
+        # 300-second complexity data point, out/results/v8_exhaustive_attempt.json.
+        "v8_exhaustive_budget_seconds": str(v8_exhaustive["budget_seconds"]),
+        "v8_exhaustive_wall_time_seconds": f"{v8_exhaustive['wall_time_seconds']:.2f}",
+        "v8_exhaustive_size7_subset_count": f"{v8_exhaustive['size_7_subset_count_for_reference']:,}",
+        "v8_exhaustive_feasible": str(bool(v8_exhaustive["feasible"])),
+
+        # v5.2 (prereg/v5.2-budget-binding-scenario.md, tag
+        # prereg-p5-v5.2): a procurement scenario where the budget loss
+        # binds, sourced solely from out/results/budget_binding_scenario_summary.json.
+        "v52_status": v52["decision"].split(":")[0].strip(),
+        "v52_total_fire_count": f"{v52['total_budget_loss_fire_count']:,}",
+        "v52_cells_with_fire": str(v52["cells_with_at_least_one_fire"]),
+        "v52_n_cells": str(v52["n_cells"]),
+        "v52_baseline_missed_ci": _fmt_ci(v52["ch_a1_baseline_missed_ci"]),
+        "v52_derived_missed_ci": _fmt_ci(v52["ch_a1_derived_missed_ci"]),
+
+        # v5.0 (exploratory_v5_0 from the Ninth amendment forward, tag
+        # prereg-p5-v5): the original planted-reduct scaling and XOR-
+        # bijection cost-aware benchmarks, superseded as the primary
+        # scaling/cost-aware claims by v5.1/v5.3 and CH-B2 respectively
+        # but kept, cited, its degeneracy (fixed 6-tuple reachable set)
+        # disclosed rather than deleted -- out/results/synthesis_benchmarks.json.
+        "v50_planted_reduct_size": str(v50["experiment_1_scaling"]["planted_reduct_size"]),
+        "v50_reachable_tuple_count": str(v50_runs[0]["reachable_tuple_count"]),
+        "v50_n_values": ", ".join(v50_n_list[:-1]) + f", and {v50_n_list[-1]}",
+        "v50_wall_time_min": f"{min(v50_wall_times):.4f}",
+        "v50_wall_time_max": f"{max(v50_wall_times):.4f}",
+        "v50_all_exact": str(bool(v50["experiment_1_scaling"]["all_exact"])),
+        "v50_xor_min_card_contract": ", ".join(sorted(xor["minimum_cardinality_contract"])),
+        "v50_xor_min_card_cost": f"{xor['minimum_cardinality_contract_cost']:.2f}",
+        "v50_xor_min_cost_contract": ", ".join(sorted(xor["minimum_cost_contract"])),
+        "v50_xor_min_cost_cost": f"{xor['minimum_cost_contract_cost']:.2f}",
+        "v50_xor_cost_delta": f"{xor['cost_delta']:.2f}",
+        "v50_real_domains_cost_delta_uniform": str(all(d == 0.0 for d in real_domain_deltas)),
+
+        # contract_change_delta demonstration (D5, same tag): not a
+        # registered pass/fail experiment, a worked illustration.
+        "ccd_base_contract": ", ".join(ccd["base_contract"]),
+        "ccd_updated_contract": ", ".join(ccd["updated_contract"]),
+        "ccd_was_still_sufficient": str(bool(ccd["was_still_sufficient"])),
+        "ccd_full_recomputation_cardinality_gap": str(ccd["full_recomputation_cardinality_gap"]),
+    }
 
 
 if __name__ == "__main__":
