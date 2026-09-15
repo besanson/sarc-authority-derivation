@@ -3,32 +3,34 @@
   "files": [
     {
       "classification_counts": {
-        "core": 0,
-        "general-theorem": 26,
-        "historical": 7,
-        "instance-certified": 31,
-        "reduct": 0,
+        "core": 1,
+        "general-theorem": 23,
+        "historical": 12,
+        "instance-certified": 35,
+        "reduct": 8,
         "unclassified": 0
       },
       "clean": true,
-      "occurrence_count": 64,
-      "path": "paper5-authority-derivation-draft-v0.6.md",
+      "occurrence_count": 79,
+      "path": "paper5-authority-derivation-draft-v0.6.1.md",
+      "term_pair_violations": [],
       "violations": []
     },
     {
       "classification_counts": {
         "core": 1,
-        "general-theorem": 2,
+        "general-theorem": 7,
         "historical": 1,
         "instance-certified": 0,
-        "reduct": 6,
+        "reduct": 0,
         "unclassified": 0
       },
       "clean": true,
-      "occurrence_count": 10,
+      "occurrence_count": 9,
       "path": "README.md",
+      "term_pair_violations": [],
       "violations": []
     }
   ],
-  "total_occurrences": 74
+  "total_occurrences": 88
 }

@@ -67,6 +67,8 @@ def build_slots(
     v8_exhaustive_attempt_path: str = "out/results/v8_exhaustive_attempt.json",
     budget_binding_scenario_summary_path: str = "out/results/budget_binding_scenario_summary.json",
     synthesis_benchmarks_path: str = "out/results/synthesis_benchmarks.json",
+    discernibility_check_path: str = "out/checkers/discernibility_check.json",
+    synthesis_exactness_check_path: str = "out/checkers/synthesis_exactness_check.json",
 ) -> Dict[str, str]:
     derivation = json.loads(Path(derivation_path).read_text())
     pcheck = json.loads(Path(participation_check_path).read_text())
@@ -94,6 +96,8 @@ def build_slots(
     v8_exhaustive = json.loads(Path(v8_exhaustive_attempt_path).read_text())
     v52 = json.loads(Path(budget_binding_scenario_summary_path).read_text())
     v50 = json.loads(Path(synthesis_benchmarks_path).read_text())
+    disc_check = json.loads(Path(discernibility_check_path).read_text())
+    exactness_check = json.loads(Path(synthesis_exactness_check_path).read_text())
     proof_status = _lint_proof_status()
     pending_human_review_tag_count = sum(
         1 for f in proof_status["files"] for t in f["tags"] if t == "pending-human-review"
@@ -199,6 +203,20 @@ def build_slots(
         # src/authority_compiler entry point agree with CH-A10's own,
         # separately-verified core/reduct result -- confirmed, not assumed.
         "authority_compiler_confirms_ch_a10": str(ac_check["clean"]),
+
+        # v0.6.1 (review-secondary/paper-revision-outline-2026-09-15.md,
+        # C1/C3's own evidence anchors): does the discernibility
+        # restatement of Definition 4 agree with the direct partition
+        # test, and does every synthesis backend agree with
+        # reduct.exact_reducts()'s own from-first-principles answer,
+        # everywhere exhaustion is affordable -- both checked directly
+        # against out/checkers/discernibility_check.json and
+        # out/checkers/synthesis_exactness_check.json, not assumed from
+        # the backends' own construction.
+        "discernibility_check_model_count": str(len(disc_check["models"])),
+        "discernibility_check_all_agree": str(bool(disc_check["all_models_agree"])),
+        "synthesis_exactness_model_count": str(len(exactness_check["models"])),
+        "synthesis_exactness_all_exact": str(bool(exactness_check["exact_on_every_feasible_model"])),
 
         "neg_prop_n_status": _supported(neg_prop_n_case["supported"]),
         "neg_prop_n_matches_fixture": str(neg_prop_n_case["matches_registered_fixture_expectation"]),

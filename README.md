@@ -1,11 +1,13 @@
 # sarc-authority-derivation
 
-**This paper's own thesis** (Definition 4 defines sufficiency, Definition 5
-minimality, `paper5-authority-derivation-draft-v0.6.md`, never asserted
-loosely): **Minimal Sufficient Governance Context** -- given a declared
-loss model and the states an autonomous system can reach, derive and
-certify the minimal, cost-aware sets of runtime observations sufficient
-to make every modeled safe-versus-unsafe authority distinction.
+**This paper's own thesis** (**Definition 1** defines observation
+contract, **Definition 4** sufficiency,
+`paper5-authority-derivation-draft-v0.6.1.md`, never asserted loosely):
+given a declared loss model and the states an
+autonomous system can reach, derive and certify the **minimal sufficient
+governance context** -- the minimal, cost-aware sets of runtime
+observations sufficient to make every modeled safe-versus-unsafe
+authority distinction.
 
 Author: Gaston Besanson. Drafting, engineering, formal derivation, and
 citation verification were AI-assisted (Claude); the author is solely
@@ -57,7 +59,7 @@ contract = derive_authority_contract(loss_model, reachable_semantics, candidate_
 contract.core_attributes            # Definition 6
 contract.minimum_cardinality_reduct # Definition 5, cardinality-MaxSAT
 contract.minimum_cost_reduct        # Definition 5, weighted MaxSAT (if observation_costs given)
-contract.sufficiency_certificate    # the partition itself, not a bare boolean
+contract.sufficiency_certificate    # a partition-cell count + uniformity flag (a check summary), not a portable certificate
 ```
 
 Installable: `pip install .` (or a built wheel, `python -m build`) gives
@@ -98,9 +100,11 @@ found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.6.md`](paper5-authority-derivation-draft-v0.6.md)
-([populated](paper5-authority-derivation-draft-v0.6-populated.md)) --
-the consolidated manuscript.
+[`paper5-authority-derivation-draft-v0.6.1.md`](paper5-authority-derivation-draft-v0.6.1.md)
+([populated](paper5-authority-derivation-draft-v0.6.1-populated.md)) --
+a claim-led revision of v0.6 per a commissioned revision outline
+(`review-secondary/paper-revision-outline-2026-09-15.md`, adjudicated
+in the draft's own Section 8 and Section 13, not applied directly).
 
 ## Reproduction
 
@@ -110,17 +114,18 @@ template for reporting an independent reproduction attempt.
 
 ---
 
-## History: the v1-v0.5 procurement-domain result and earlier drafts (below the fold)
+## History: the v1-v0.6 procurement-domain result and earlier drafts (below the fold)
 
 This artifact's own originating result -- a formal participation
 criterion and a machine-checkable derivation from a declared loss model
 to the core observation set a pre-action authority gate must check, on
-a registered retail-procurement domain -- is unchanged; it is folded
-into the live paper above as its own worked introduction (Sections 2-3)
-rather than re-embedded there in full. The complete original
-Introduction, related work, empirical section (CH-A1 through CH-A10),
-and Conclusion are preserved, unedited, in the frozen versions below.
-Prereg tags `prereg-p5-v1`, `prereg-p5-v2`, `prereg-p5-v3`,
+a registered retail-procurement domain -- is unchanged; the live paper
+above cites it briefly (the v2 procurement instance, Section 2) and
+points to the frozen versions below and its own supplementary material
+for the full worked instance, rather than re-embedding it. The complete
+original Introduction, related work, empirical section (CH-A1 through
+CH-A10), and Conclusion are preserved, unedited, in the frozen versions
+below. Prereg tags `prereg-p5-v1`, `prereg-p5-v2`, `prereg-p5-v3`,
 `prereg-p5-v3.1`, `prereg-p5-v4`, `prereg-p5-v5`, `prereg-p5-v5.1`,
 `prereg-p5-v5.2`, `prereg-p5-v5.3`, `prereg-p5-v6`/`prereg-p5-v6.1`,
 `prereg-p5-v7`, and `prereg-p5-v8` were each created via the GitHub web
@@ -138,10 +143,17 @@ as of the commit Package B's version-split makes
 [populated](paper5-authority-derivation-draft-v0.4-populated.md)) --
 v0.4's own 60-second example (the v2 procurement model: a 9-property
 core that is sufficient and the unique reduct, CH-A8/CH-A10) is
-preserved there, unedited -- and v0.5 as of the commit this version-split
+preserved there, unedited -- v0.5 as of the commit that version-split
 makes ([source](paper5-authority-derivation-draft-v0.5.md),
 [populated](paper5-authority-derivation-draft-v0.5-populated.md)), whose
 own Part II is the entire v0.1-through-v0.4 paper, unedited, and whose
 own Part I is this artifact's broadened contribution as first
-reorganized around governance-context synthesis (Package B) -- both
-now consolidated into the live paper above.
+reorganized around governance-context synthesis (Package B) -- and v0.6
+as of the commit this version-split makes
+([source](paper5-authority-derivation-draft-v0.6.md),
+[populated](paper5-authority-derivation-draft-v0.6-populated.md)), the
+consolidated, append-only-structured manuscript v0.6.1 restructures
+around a claim-led evidence table rather than a development chronology
+(`review-secondary/paper-revision-outline-2026-09-15.md`) -- none of
+v0.6's own content is retracted; the live paper's own Section 13
+(Corrections) and Section 14 (Supplementary Material) point back to it.

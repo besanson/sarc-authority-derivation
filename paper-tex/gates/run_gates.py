@@ -317,7 +317,7 @@ def gate_g1_build() -> dict:
 # same discipline the sibling's own G7 enforces for its paper.
 
 ARXIV_ABSTRACT_MAX_CHARS = 1900
-ARXIV_ABSTRACT_REQUIRED_PHRASE = "minimal, cost-aware sets of runtime observations"
+ARXIV_ABSTRACT_REQUIRED_PHRASE = "minimal sufficient governance context"
 ARXIV_METADATA_REQUIRED_AUTHOR_LINE = "Gaston Besanson (Universidad Torcuato Di Tella)"
 
 

@@ -1,12 +1,13 @@
-% LaTeX rendering of paper5-authority-derivation-draft-v0.6-populated.md
-% (the consolidated manuscript). Hand-typeset, modeled on sarc-suite-one-pass's
-% own paper-tex/main.tex conventions (commit 782261e, ADR-001-foundation.md) --
-% same document class, packages, and theorem-environment setup, content
-% written fresh for this paper. This repo ports only G1 (build, byte-
-% identical double build under a content-stable epoch), G7 (arXiv sidecar
-% sync), G8 (citation completeness), and G9 (bibliography quality) from the
-% sibling's own G1-G9 gate suite -- not G2-G6 (the sibling's own tex-vs-
-% markdown token/number/prose/structure parity gates), so this file is a
+% LaTeX rendering of paper5-authority-derivation-draft-v0.6.1-populated.md
+% (the claim-led revision of v0.6). Hand-typeset, modeled on
+% sarc-suite-one-pass's own paper-tex/main.tex conventions (commit
+% 782261e, ADR-001-foundation.md) -- same document class, packages, and
+% theorem-environment setup, content written fresh for this revision.
+% This repo ports only G1 (build, byte-identical double build under a
+% content-stable epoch), G7 (arXiv sidecar sync), G8 (citation
+% completeness), and G9 (bibliography quality) from the sibling's own
+% G1-G9 gate suite -- not G2-G6 (the sibling's own tex-vs-markdown
+% token/number/prose/structure parity gates), so this file is a
 % faithful rendering of the same real, already-verified figures, not a
 % mechanically parity-checked transliteration.
 %
@@ -26,10 +27,9 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{microtype}
-% Unlike the sibling's own main.tex, this file has no G4 word-for-word
-% prose-parity gate to preserve (task brief: only G1/G7/G8/G9 are
-% ported), so ordinary dictionary hyphenation is left enabled -- it is
-% what actually resolves an overfull \hbox on a long unbreakable
+% No G4 word-for-word prose-parity gate to preserve (only G1/G7/G8/G9
+% are ported), so ordinary dictionary hyphenation is left enabled -- it
+% is what actually resolves an overfull \hbox on a long unbreakable
 % identifier or URL, rather than working around one with extra stretch.
 \usepackage[margin=1in]{geometry}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
@@ -39,9 +39,8 @@
 \newtheorem{definition}{Definition}
 
 \newcommand{\proofstatus}[1]{[\textsc{PROOF-STATUS}: \textsc{#1}]}
-\newcommand{\pstar}{P\textsuperscript{*}}
 
-\title{Minimal Sufficient Governance Context: Compiling Loss Models and Reachable Execution Semantics into Cost-Aware Runtime Authority Contracts for Autonomous Agents}
+\title{Compiling Sufficient Governance Context from Declared Losses and Reachable States\\[0.3em]\large Exact Observation-Contract Synthesis with Cardinality and Cost Objectives}
 \author{Gaston Besanson\thanks{Universidad Torcuato Di Tella}}
 \date{}
 
@@ -51,184 +50,238 @@
 \noindent Companion artifact: \texttt{sarc-authority-derivation}. Paper 5 of the SARC series, built on the pinned \texttt{sarc-suite-one-pass} artifact (arXiv 2608.18360, commit \texttt{782261e}) as a read-only imported baseline.
 
 \begin{abstract}
-Given a declared loss model and the states an autonomous system can reach, we derive and certify the minimal, cost-aware sets of runtime observations sufficient to make every modeled safe-versus-unsafe authority distinction. We do not declare an observation set and hope it is complete: we \emph{synthesize} every minimal sufficient contract (a reduct, encoding this artifact's own discernibility sets -- Skowron and Rauszer, 1992 -- as CNF for SAT/MaxSAT solvers), certify each one with a machine-checkable partition certificate, and select among them by declared observation cost, not cardinality alone. On a real code/cloud authority domain (not planted for this purpose), the individually-indispensable core is \textbf{not sufficient} as a runtime contract (six of ten candidates) and two distinct seven-attribute reducts exist; a preregistered cost model separates them exactly (CH-B2: \textbf{supported}, the cheaper contract costs 6.124 against 7.354 for the alternative, both independently certified safety-equivalent). On a second, larger, non-planted domain built independently of this question (thirty-five candidate properties), the same core-is-not-a-reduct distinction recurs (CH-C1: \textbf{supported}, a four-property core, minimum reduct cardinality nine, at least five distinct minimum-cardinality contracts) -- but the same domain's own cost model does \emph{not} separate them: CH-C2 is \textbf{not supported}, a genuine, fully explained cost tie across every known minimum-cardinality contract at 9.153, reported as found, not reframed. We register and measure discernibility-family scaling on candidate-attribute universes up to one hundred properties, where exhaustive reduct enumeration is expected and confirmed infeasible within a registered three-hundred-second budget, while SAT/MaxSAT synthesis solves in well under a second; MaxSAT showed no measured cardinality advantage over plain SAT on these specific registered families, a two-sided registered question, not a claim tuned toward the outcome we expected. AuthorityBench compares four baselines -- a declared-only manual policy, ABAC-mining reimplemented from Xu and Stoller (2015), essential-variable analysis, and exhaustive reduct enumeration -- across three domains; the declared-only baseline is not exactly sufficient on any of them. Every synthesized contract is compiled with a sufficiency certificate and, where the reachable set is enumerable, a counterexample when it is not -- a runtime gate is meant to consume the certificate, not a claim.
+We call the object this paper derives and certifies a \textbf{minimal sufficient governance context}: given a finite reachable-state model, a deterministic declared verdict, and a set of candidate observable attributes, we compute sufficient observation sets, distinguish attributes that are individually indispensable from contracts that are jointly sufficient, and select among sufficient contracts under a cardinality or a declared observation-cost objective. An \textbf{observation contract} is a set of candidate attributes whose values determine the declared verdict on every reachable state; an \textbf{authority contract} is an observation contract selected under one of those objectives and bound to a gate schema. We do not declare an observation contract and hope it is complete: we \emph{synthesize} every inclusion-minimal sufficient contract where exhaustive enumeration is affordable, and a minimum-cardinality or minimum-cost sufficient contract by SAT/MaxSAT encoding otherwise, checking each one's sufficiency directly rather than assuming it from construction. On a real code/cloud authority domain (not planted for this purpose), the individually-indispensable core is \textbf{not sufficient} as an observation contract (six of ten candidates) and two distinct seven-attribute reducts exist; a preregistered declared-cost model separates them exactly (CH-B2: \textbf{supported}, the cheaper contract costs 6.124 against 7.354 for the alternative, both independently checked sufficient before cost is consulted). On a second, larger, constructed domain built independently of this question (thirty-five candidate properties), the same core-insufficiency pattern recurs (CH-C1: \textbf{supported}, a four-property core, minimum contract cardinality nine, at least five distinct minimum-cardinality contracts) -- but the same domain's own cost model does not separate them: CH-C2 is \textbf{not supported}, a fully explained cost tie across every known minimum-cardinality contract at 9.153, reported as found. We measure discernibility-family scaling on candidate-attribute universes up to one hundred properties, where exhaustive enumeration is expected and confirmed infeasible within a registered three-hundred-second timeout under this project's own measured setup, while SAT/MaxSAT synthesis solves in well under a second on the same instances; MaxSAT showed no measured cardinality advantage over plain SAT on these specific families. AuthorityBench compares four baselines -- a declared-only manual policy, ABAC-mining reimplemented from Xu and Stoller (2015), essential-variable analysis, and exhaustive reduct enumeration -- across three domains; the declared-only baseline is not exactly sufficient on any of them. Every selected contract is checked for sufficiency, with a concrete counterexample returned on failure and a check summary (a partition-cell count and a uniformity flag, not a portable certificate) on success; this is the compiler-focused scope of the two-scope table in Section~\ref{sec:conclusion} -- a separately coded, independently specified end-to-end case study is registered follow-up work, not claimed here.
 \end{abstract}
 
-\section{Problem}
+\section{Introduction}
+\label{sec:intro}
 
-A pre-action authority gate is exactly as complete as whoever declared its observation set thought to be. \texttt{sarc-suite-one-pass}'s own imported baseline (\texttt{specs/authority.yaml}) observes two things: whether the acting role is on an allow-list, and whether an order value exceeds a single scenario-wide cap -- and, on the real code/cloud domain below, a \textbf{declared-only policy of this same shape is not exactly sufficient} (a stronger, machine-checked version of the same finding this artifact's own v2 baseline comparison already made, and a finding that also holds on AuthorityBench's other two registered domains, Section~\ref{sec:authoritybench}). This paper's claim: given one declared loss model and one executable-reachable action set, \emph{compile} -- do not hand-author -- the exact, minimal, cost-aware runtime context a gate must observe, with alternative contracts, certificates, and counterexamples a downstream system can consume directly, not merely a number a human reads once.
+\noindent\textbf{The decision problem.} A pre-action authority gate is exactly as complete as whoever declared its observation set thought to be. This artifact's own imported baseline (\texttt{specs/authority.yaml}) observes two things: whether the acting role is on an allow-list, and whether a declared order value exceeds a single scenario-wide cap. Acquiring every candidate field instead of choosing is not free either: latency, privacy exposure, and availability each carry a cost a gate pays on every decision. Between ``declare an observation set by hand and hope it is complete'' and ``observe everything,'' this paper compiles the third option: derive, from a declared loss model and a declared reachable-state model, the exact observation contracts sufficient to reproduce that model's verdict, and select among them by an explicit objective.
 
-\section{Formal Objects}
+\noindent\textbf{Running example.} Section~\ref{sec:results}'s own CH-B1 result gives the concrete shape of the problem before any formalism: on a real code/cloud execution-agent domain, the core (Section~\ref{sec:formal}) is \textbf{not sufficient} as an observation contract on its own, and there are exactly two operationally different ways to close the remaining gap -- the core plus \texttt{branch}, or the core plus \texttt{environment}, each independently checked sufficient. Neither is more ``correct'' than the other on cardinality alone; Section~\ref{sec:results} shows a declared cost model can break the tie.
+
+\noindent\textbf{Contribution statement.} This paper separates three things, and claims no more for any of them than its own evidence supports: first, a formulation of governance-context compilation as sufficient-set synthesis over a declared loss model and a declared reachable-state model (Section~\ref{sec:formal}); second, an implemented pipeline -- discernibility construction, SAT/MaxSAT synthesis, sufficiency checking -- exposed through one packaged entry point (Sections~\ref{sec:method}--\ref{sec:implementation}); and third, a bounded evaluation across constructed domains, measuring semantic correctness, contract multiplicity, cost separation, and solver scaling (Sections~\ref{sec:evaluation}--\ref{sec:computational}). Test counts, correction history, and engineering-gate counts are not scientific contributions and are not presented as such.
+
+\noindent\textbf{Guarantee boundary, stated once here and held to throughout.} Correctness in this paper is relative to a declared loss model, a declared candidate-attribute representation, and a declared reachable-state set -- never a general safety guarantee independent of those three declarations.
+
+\noindent\textbf{Scope.} This is the compiler-focused paper of the two legitimate scopes Section~\ref{sec:conclusion} distinguishes: formulation, implementation, and a bounded evaluation against declared, constructed models, not an end-to-end operational validation. A case study with domain-owner-specified losses, an equal-information baseline comparison, and a separately coded reference executor is registered future work (Section~\ref{sec:supplementary}), not performed and not claimed here.
+
+\section{Problem Formulation and Guarantee Boundary}
 \label{sec:formal}
 
-Let a \textbf{reachable state} be one executable-reachable tuple over a declared set of candidate properties. Let a \textbf{loss model} $M$ be a finite set of boolean predicates over a reachable tuple, each declaring one way an action can be unsafe. Two reachable tuples are a \textbf{cross-verdict pair} if $M$'s verdict differs between them.
+\noindent\textbf{Inputs.} A finite reachable set $R$ of executable-reachable state tuples over a declared set of candidate attributes $A$; a deterministic declared verdict $v_M$, a boolean function of one reachable tuple; and, optionally, a strictly positive additive declared observation cost $c(a)$ per candidate attribute.
+
+\noindent\textbf{Representation assumption.} The full candidate-attribute projection of a reachable tuple must determine $v_M$'s verdict on it -- a consistency requirement on the declared model, not an assertion that observing every candidate attribute suffices for an arbitrary malformed or incomplete input.
+
+\begin{definition}[Observation contract]
+An observation contract is a set $S$ of candidate attributes. $S$ is \textbf{sufficient} for $v_M$ on $R$ (Definition~4) iff any two reachable tuples agreeing on every attribute in $S$ also agree on their $v_M$ verdict. A sufficient observation contract selected under an explicit objective (minimum cardinality or minimum declared cost) and bound to a gate schema is an \textbf{authority contract}.
+\end{definition}
 
 \begin{definition}[Participation, the one-flip criterion]
-Property $p$ is authority-bearing for $M$ iff there exist executable-reachable tuples $a, a'$ differing only in $p$ -- a single flip, holding every other candidate property fixed -- whose $M$-verdicts differ.
+Attribute $a$ is authority-bearing for $v_M$ iff there exist reachable tuples $t, t'$ differing only in $a$ -- a single flip, holding every other candidate attribute fixed -- whose $v_M$ verdicts differ.
 \end{definition}
 
-\begin{definition}[The core \pstar]
-\pstar\ is the set of every property participating by Definition~1.
+\begin{definition}[The core]
+The set of every attribute participating by Definition~2.
 \end{definition}
 
-\begin{definition}[The derived coverage list]
-The candidate properties not in \pstar.
-\end{definition}
-
-\begin{definition}[Sufficiency]
-A property set $S$ is sufficient for $M$ iff any two reachable tuples agreeing on every property in $S$ also agree on their $M$-verdict. Equivalently (Skowron and Rauszer's discernibility-matrix device, 1992): for every cross-verdict pair, its \emph{difference set} is the candidate properties on which the pair disagrees, and $S$ is sufficient iff $S$ hits every difference set.
+\begin{definition}[Sufficiency, restated via discernibility]
+$S$ is sufficient for $v_M$ on $R$ iff, for every pair of reachable tuples whose verdicts differ (a cross-verdict pair), $S$ intersects that pair's \emph{difference set} (the candidate attributes on which the pair disagrees) -- machine-checked equivalent to the direct partition test above (three declared models checked, all agreeing; Skowron and Rauszer's discernibility-matrix device, 1992).
 \end{definition}
 
 \begin{definition}[A reduct]
-A minimal sufficient set: sufficient, and no proper subset is.
+An inclusion-minimal sufficient observation contract: sufficient, and no proper subset is.
 \end{definition}
 
 \begin{definition}[The core, restated as an intersection]
-The intersection of every reduct.
+The intersection of every reduct -- machine-checked equal to Definition~3's own witness-search answer wherever both are computed.
 \end{definition}
 
-This discernibility restatement is what makes reduct synthesis tractable past exhaustive enumeration (Section~\ref{sec:scale}): a difference set that is a proper superset of another already in the family adds no separate hitting-set constraint, and the pruned family becomes one CNF clause per surviving difference set and one boolean variable per candidate property -- a SAT or MaxSAT solver's own input, not the $2^n$ subset enumeration every backend is still cross-checked against everywhere exhaustion stays affordable.
+\noindent\textbf{Core versus reduct, stated once, without chronology.} Definition~3's core (individual indispensability) and Definition~5's reduct (joint sufficiency, Definition~4) are different properties in general: the core is always a subset of every reduct, but need not itself be sufficient. The registered two-state counterexample makes this precisely (candidate attributes $x, y \in \{0,1\}$, reachable set $\{(x{=}0,y{=}0), (x{=}1,y{=}1)\}$, verdict $v_M(x,y) = x$): the core is \emph{empty} (no reachable pair differs in exactly $x$ or exactly $y$ alone), trivially not sufficient, while $\{x\}$ and $\{y\}$ are each an independent singleton reduct. \emph{If} the core happens to be sufficient, \emph{then} it is the unique reduct -- an antecedent never assumed, always decided per instance by a sufficiency check or a concrete counterexample (Proposition~1$'$, claims one through three; Section~\ref{sec:corrections} records how this was established).
 
-\section{Core versus Reduct}
-\label{sec:core-vs-reduct}
+\noindent\textbf{Cost boundary.} Where a declared observation cost is used (Section~\ref{sec:results}), it is a declared additive score with strictly positive per-attribute weights -- not necessarily a monetary cost or a measured end-to-end acquisition latency. Strict positivity is what makes a minimum-cost sufficient contract a reduct, not merely sufficient.
 
-Definition~2's \pstar\ (individual indispensability, a singleton-perturbation witness) and Definition~5's reduct (joint sufficiency, Definition~4) are different properties.
+\section{Method: From Discernibility to Selected Contracts}
+\label{sec:method}
 
-\noindent\textbf{Proposition 1$'$ (replacing the original, corrected Proposition~1).} Claim one, Definition~1's witness search computes exactly the core, Definition~6; claim two, the core is a subset of every reduct; claim three, \emph{if} the core is sufficient, \emph{then} the core is the unique reduct -- claim three's antecedent never assumed, always decided per instance by a sufficiency certificate or a concrete counterexample.
+One algorithm, three families of instantiation. Given $R$, $A$, $v_M$, and optionally $c$: (1) materialize or receive the reachable tuple set and evaluate $v_M$ on every tuple; (2) construct the difference set for every cross-verdict pair; (3) remove any difference set that is a proper superset of another already in the family; (4) encode the pruned family as CNF, one boolean variable per candidate attribute, one hard clause per surviving difference set; (5) select a satisfying assignment -- any one (plain SAT), a minimum-cardinality one (cardinality MaxSAT), or a minimum-cost one (weighted MaxSAT, each attribute's declared cost as its own soft-clause weight); (6) check the returned observation contract's sufficiency directly -- a check summary (a partition-cell count and a uniformity flag, \texttt{reduct.sufficiency}'s own success return, not the serialized partition) on success, a concrete counterexample pair on failure; (7) where exhaustive enumeration over $2^{|A|}$ subsets is affordable, enumerate every reduct; otherwise a repeated-resolve blocking-clause method finds a capped, explicitly labeled lower bound on minimum-cardinality-contract multiplicity, never presented as an exhaustive count.
 
-\noindent\textbf{Negative Proposition N (the core need not be sufficient, in general).} The registered two-state counterexample (candidate properties $x, y \in \{0,1\}$, reachable set $\{(x{=}0,y{=}0), (x{=}1,y{=}1)\}$, verdict $M(x,y) = x$) has an \emph{empty} core -- no reachable pair differs in exactly $x$ or exactly $y$, since the set's only two members differ in both at once -- that is trivially \emph{not sufficient} ($M(0,0) \neq M(1,1)$, yet the empty set determines nothing), with $\{x\}$ and $\{y\}$ each an independent singleton reduct, neither equal to the core. This is the sharpest possible instance: a core that is not merely non-maximal but \emph{empty}, directly falsifying the general claim the original Proposition~1 made (Section~\ref{sec:corrections} records the correction itself as a finding, not smoothed over).
+\noindent\textbf{Three separate evidence objects, never substituted for one another.} A sufficiency check establishes that one specific observation contract determines $v_M$'s verdict. An inclusion-minimality or cardinality/cost-optimality result establishes that the same contract cannot be made smaller, or cheaper, without losing sufficiency. A provenance record establishes that a given number in this paper traces to a specific, reproducible run. None of these three is evidence for either of the others.
 
-\noindent\textbf{The worked introduction: this artifact's own v2 procurement instance, where claim three's antecedent holds.} This artifact's registered retail-procurement domain -- nine original candidate properties plus \texttt{min\_order\_quantity}, a declared cross-field reachability filter, and two characterized remediation mechanisms -- is not a counterexample to Proposition~1$'$: it is the case where the antecedent fires. CH-A8 certifies the v2 core sufficient over the full reachable set; CH-A10 (exhaustive enumeration of every candidate subset) confirms the core -- nine properties -- is the \textbf{unique reduct}, of minimum cardinality nine. This is this paper's simplest instance, worked first because it is the one case in this whole artifact where core and reduct coincide -- every domain in Section~\ref{sec:evidence} is chosen to test whether that coincidence holds again, and mostly does not.
+\noindent\textbf{Correctness of the encoding, checked, not assumed.} Every backend above is held to exhaustive reduct enumeration's own from-first-principles answer everywhere exhaustion is affordable (three declared models checked, all exact) -- a real encoding regression would be caught by this comparison, not assumed away by trusting the solver.
 
-\section{Realistic Evidence: The Empirical Centre}
-\label{sec:evidence}
+\section{Implementation and Verification Interface}
+\label{sec:implementation}
 
-Section~\ref{sec:core-vs-reduct}'s abstract distinction and its one worked coincidence (v2) leave open whether either shape is typical on a domain not designed around the question. Four hypotheses, on two independently-built domains neither planted to exhibit core-versus-reduct or cost separation, are this paper's own empirical centre.
+\noindent\textbf{Package.} \texttt{src/authority\_compiler} (installable: \texttt{pip install .} or a built wheel, verified in a fresh virtual environment with no repository root, pythonpath, editable install, or sibling directory present) packages this paper's own machinery behind one call, \texttt{derive\_authority\_contract}, returning a compiled \texttt{AuthorityContract}.
 
-\noindent\textbf{CH-B1 (a software-and-cloud execution-agent domain).} \proofstatus{machine-checked} (\texttt{checkers/ch\_b1\_check.py}, all candidate subsets of ten candidates considered, subset-pruned). The core (six properties: \texttt{approval\_token, data\_classification, delegated\_role, operation, repository, resource\_owner}) is \textbf{not sufficient} as a contract -- individually indispensable, not jointly enough -- and two distinct minimum reducts exist, both of cardinality seven, each the core plus exactly one more property: the core plus \texttt{branch}, or the core plus \texttt{environment} -- two operationally different, equally sufficient ways to close the same coverage gap.
+\noindent\textbf{Returned fields, and what each one currently is.} The core attributes; every reduct where exhaustion is affordable (\texttt{None} with a stated reason otherwise); the minimum-cardinality and minimum-cost reducts; the non-core attributes; a \texttt{sufficiency\_certificate} field that is, currently, the same check-summary shape Section~\ref{sec:method} describes -- computed for the \textbf{core attributes specifically}, not automatically for whichever contract a caller ultimately selects; \texttt{counterexamples}, populated when the core is not sufficient; a \texttt{reachability\_dependencies} field naming candidate attributes whose observed value set is a strict subset of their declared domain -- a genuine but narrow signal, not full cross-attribute dependency inference; and a bound \texttt{contract\_change\_delta} callable (Section~\ref{sec:computational}).
 
-\noindent\textbf{CH-B2 (does a preregistered observation-cost model separate CH-B1's own two reducts?)} \proofstatus{machine-checked} (\texttt{checkers/ch\_b2\_check.py}). \textbf{Supported}, positive strict cost separation: the minimum-cost contract (core plus \texttt{branch}, cost 6.124) is strictly cheaper than the other minimum-cardinality reduct (cost 7.354, delta 1.230) -- both independently certified safety-equivalent before cost is consulted at all, so cost breaks a tie between two contracts already known interchangeable for safety, not a shortcut around safety.
+\noindent\textbf{Verification boundary, stated plainly.} The current implementation is executable checking: a caller can re-run the sufficiency check on any returned contract and get the same check summary or counterexample this paper reports. It is not yet a portable, proof-carrying runtime artifact: nothing in \texttt{sufficiency\_certificate}'s current shape lets a separate consumer verify a contract's sufficiency without re-running this artifact's own code. Describing it as a portable certificate a downstream gate consumes without recomputation would exceed what the inspected interface establishes.
 
-\noindent\textbf{CH-C1 (does core-versus-reduct recur on a second, independently-built, much larger domain?)} A thirty-five-property enterprise access-governance domain -- seven properties from each of five families, six reachability drivers, twenty-nine derivation rules -- whose reachability and derivation structure were fixed for organisational plausibility \emph{before} any core, reduct, or cost outcome was computed. \proofstatus{machine-checked} (\texttt{checkers/ch\_c1\_check.py}, 27{,}000 reachable tuples swept). \textbf{Supported}: the core (four properties: \texttt{approval\_token, delegated\_role, resource\_environment, workflow\_stage}) is \textbf{not sufficient}, minimum contract cardinality is nine, and at least five distinct minimum-cardinality contracts exist -- a genuine lower bound, via blocking-clause enumeration capped at five, never claimed exhaustive. Exhaustive enumeration was separately attempted, registered budget three hundred seconds, and confirmed infeasible (wall time 300.08s, against 6{,}724{,}520 size-seven subsets alone).
+\section{Evaluation Design}
+\label{sec:evaluation}
 
-\noindent\textbf{CH-C2 (does a preregistered cost model separate CH-C1's own minimum-cardinality contracts?)} \proofstatus{machine-checked} (\texttt{checkers/ch\_c2\_check.py}, same domain as CH-C1). \textbf{Not supported}, a negative tie: every one of the five known minimum-cardinality contracts costs exactly 9.153 under this domain's own seven-tier cost model -- a genuine, fully explained tie, retained and reported, not reframed. The tied contracts substitute properties from the \emph{same} declared cost tier for one another, so a cost model built at this granularity cannot discriminate between them -- weighted optimisation over declared cost is \textbf{conditional} on the cost model actually separating the substitute properties in play; CH-B2 shows a domain where it does, CH-C2 shows one where, at the granularity actually declared, it does not.
+Five questions organize the evidence: does a selected contract preserve the declared verdict (RQ1); does the core fail to suffice, and do alternatives exist (RQ2); does a declared cost objective distinguish alternatives (RQ3); where is compilation practical (RQ4); and, not attempted here, does synthesis improve on a competent manual or conservative alternative in an independently specified operational workflow (RQ5).
 
-\section{Synthesis: SAT, MaxSAT, and Weighted Contracts}
-\label{sec:synthesis}
+\noindent\textbf{Domain provenance, kept separate.} Every domain this paper reports on is a declared, \textbf{constructed} executable model, never a live deployment or live production system. ``Non-planted,'' ``organisationally plausible,'' and ``independently specified'' are three separate properties; none of this paper's domains claims the third.
 
-\texttt{synthesis.py} encodes Section~\ref{sec:formal}'s discernibility family as CNF and exposes three backends: plain SAT (any sufficient contract, not necessarily minimal), cardinality MaxSAT (a soft unit clause per property, weight one), and weighted MaxSAT (the same construction with each property's declared observation cost as its own soft-clause weight); a blocking-clause multiplicity method (added for CH-C1) repeatedly re-solves the same objective, excluding each prior model with one added hard clause, stopping as soon as an iteration's optimum exceeds the first -- a genuine lower bound on multiplicity, never $2^n$ enumeration. Every backend is held to exhaustive reduct enumeration's own from-first-principles answer everywhere exhaustion is affordable -- a real regression would be caught by comparison, not assumed away by trusting a solver.
+\noindent\textbf{AuthorityBench.} Four baselines -- manual least-privilege, ABAC policy mining (reimplemented from Xu and Stoller, TDSC 2015, independently validated against the published ``Health Care Sample Policy'' case study), essential-variable analysis, and exhaustive reduct enumeration -- across three constructed domains (procurement, code/cloud, data-and-communications), six metrics each.
 
-Cost-aware synthesis' mechanism was proved first on a small, hand-derived domain before it was asked of a realistic one: a boolean \texttt{a} and a bijected pair \texttt{b1, b2} where minimum cardinality (\texttt{\{a\}}, cost 4.00) and minimum declared cost (\texttt{\{b1, b2\}}, cost 1.00, delta 3.00) disagree by construction -- proof the mechanism \emph{can} select a strictly cheaper sufficient contract over a smaller one, not yet evidence a realistic domain does the same. This artifact's own v1/v2/v4 domains showed no divergence at the time (uniform declared cost floor, every one of their own cost deltas exactly zero) -- the operational-value question this left open is exactly what CH-B2 and CH-C2 above now answer, on two realistic domains, in both directions.
+\noindent\textbf{What was rerun for this revision, and what was not.} This revision changes no result: it reruns no benchmark, no scaling family, and no AuthorityBench domain. \texttt{make formal}'s own checkers run on every \texttt{make release-check}/\texttt{make quick-reproduce} invocation, including the one gating this commit; the scaling and AuthorityBench results are read from their own already-committed outputs.
 
-\section{Scale: Symbolic Synthesis Beyond Exhaustive Search}
-\label{sec:scale}
-
-Three registered scaling results, kept as three separate, still-valid questions, none superseding another.
-
-\noindent\textbf{Exploratory (v5.0, kept, degeneracy disclosed).} The original planted-reduct scaling experiment grew the candidate-property count alone ($n = 10, 30, 50, 100$) while deliberately holding the reachable set fixed at six tuples. All exact at every size, wall time between 0.0004s and 0.0005s with no distinguishable growth trend -- a real, valid answer to the question it was built for, but a \textbf{degenerate} one for scale in general: the noise properties never appear in any discernibility-family clause, costing the solver nothing beyond one extra boolean variable each. Relabelled \texttt{exploratory\_v5\_0} and superseded as the primary scaling claim by the two results below, not deleted.
-
-\noindent\textbf{The tuple-scaling result (v5.1, kept).} Holding the candidate-property count small enough to stay exhaustible, a planted two-reduct family grows the reachable set itself to $100{,}001$ tuples: the discernibility family still reduces, after superset removal, to exactly one set, and both planted reducts are recovered exactly by every backend.
-
-\noindent\textbf{The primary scaling table (v5.3): combinatorial hardness.} Three families pair a planted minimum-reduct size with a large candidate-attribute universe, far past exhaustive-enumeration tractability, and a diverse discernibility structure:
+\section{Results: Semantic Correctness, Alternatives, and Cost}
+\label{sec:results}
 
 \begin{center}
-\begin{tabular}{lcccc}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccccc}
 \toprule
-Family & $n$ & $k$ & Discern.\ family (pruned) & Exhaustive enumeration \\
+Domain/result & Candidates & Reachable & Core & Min.\ contract & Cost finding \\
 \midrule
-A & 30 & 5 & 125 sets & infeasible, 300s budget \\
-B & 60 & 10 & 250 sets & infeasible, 300s budget \\
-C & 100 & 15 & 375 sets & infeasible, 300s budget \\
+Code/cloud (CH-B1/B2) & 10 & 15{,}120 & 6; not suff.\ & 7 attrs, 2 reducts & 6.124 vs 7.354 \\
+Large constructed (CH-C1/C2) & 35 & 27{,}000 & 4; not suff.\ & 9 attrs, $\geq$5 & tie at 9.153 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Cardinality- and cost-MaxSAT both found the exact, hand-proved minimum reduct at every family regardless, in well under a second per family -- families that are hard for exhaustive enumeration are not automatically hard for the solvers synthesizing over their own discernibility family (Section~\ref{sec:limitations}). \textbf{Two-sided, reported as measured}: MaxSAT showed no meaningful cardinality advantage over plain SAT on any of these three families -- this registration pre-committed to accept and report a uniformly-absent advantage as a legitimate outcome, not a benchmark failure.
+\noindent\textbf{RQ1/RQ2: semantic correctness and alternatives.} CH-B1 (all candidate subsets of ten candidates considered, subset-pruned) and CH-C1 each instantiate a core that is \textbf{not sufficient} as an observation contract on its own, with genuinely alternative minimum-cardinality contracts: CH-B1's own two (core plus \texttt{branch}, or core plus \texttt{environment}), each independently checked sufficient; CH-C1's own at least five, a genuine lower bound via the blocking-clause method, never rounded up to an exact count.
 
-\section{AuthorityBench}
-\label{sec:authoritybench}
+\noindent\textbf{RQ3: cost separation, in one domain and not in the other.} CH-B2 (fifteen thousand one hundred twenty reachable tuples swept, one thousand fourteen subsets considered) is \textbf{supported}, positive strict cost separation: the minimum-cost contract (core plus \texttt{branch}, cost 6.124) is strictly cheaper than the other minimum-cardinality reduct (cost 7.354, delta 1.230), both independently checked sufficient before cost is consulted. This is narrower than ``cost separates alternatives in general'': CH-B2 selects between two contracts of the \emph{same} minimum cardinality. CH-C2 (twenty-seven thousand reachable tuples, same domain as CH-C1) is the retained negative counterpart: \textbf{not supported}, a negative tie -- every one of the five known minimum-cardinality contracts costs exactly 9.153 under this domain's own seven-tier declared cost model. The tied contracts substitute attributes from the \emph{same} declared cost tier for one another, so a cost model built at this granularity cannot discriminate between them.
 
-AuthorityBench runs four baselines -- manual least-privilege (the declared-only shape), ABAC policy mining (reimplemented from Xu and Stoller, TDSC 2015, independently validated against the published ``Health Care Sample Policy'' case study before being trusted here), essential-variable analysis, and exhaustive reduct enumeration -- across three domains this artifact independently registered (procurement, code/cloud, data-and-communications), six metrics each. The declared-only manual baseline is not exactly sufficient on any of the three -- Section~1's opening claim, measured across every registered domain this artifact has, not asserted from one. Mining agrees with the packaged \texttt{derive\_authority\_contract}'s own minimum-cardinality answer on the procurement and code/cloud-core instances and lands on the \emph{other} known minimum reduct (the \texttt{environment} variant of CH-B1's own two) on the code/cloud domain -- both genuine, independently-verified minimum reducts of the identical model, a tie-break divergence between two independently-computed global minima, not a disagreement about which properties matter. Decision: \textbf{inconclusive} by the registered rule applied honestly to what was measured -- a registered non-result for whether mining tends to be avoidably non-minimal, reported as such rather than reframed as a win.
+\noindent\textbf{AuthorityBench: the declared-only baseline.} The manual least-privilege baseline is not exactly sufficient (Definition~4) on any of AuthorityBench's three domains -- measured across every registered domain this artifact has, not asserted from one. Mining agrees with the packaged minimum-cardinality answer on the procurement and code/cloud-core instances, and lands on the \emph{other} known minimum-cardinality contract on the code/cloud domain -- both independently verified minimum-cardinality contracts of the identical model, a tie-break divergence, not a disagreement about which attributes matter. By the registered decision rule, this comparison is \textbf{inconclusive}, reported as such rather than reframed as a win.
 
-Two further registered results share this domain portfolio. \textbf{The budget-binding scenario (v5.2)}: a procurement scenario constructed so the budget loss predicate actually fires -- it did, in every one of sixty of sixty cells (137{,}711 firings total) -- and CH-A1's own derived-zero-miss guarantee held on every one of them. \textbf{The isolated-arm re-measurement (v0.4)}: direct code inspection found the baseline, derived, and over-inclusive experiment arms sharing one budget and one grant ledger, a real internal-validity threat registered before any fix was written. The isolation hypothesis itself was \textbf{not supported}: all thirty registered seeds across both workflows, re-run under the corrected, isolated design, reproduce the prior shared-state result's own means, confidence intervals, and booleans byte-for-byte -- a direct diagnostic confirmed the one loss predicate the bug could have corrupted fired zero times in any cell. The corrected design is kept regardless of the null result.
+\noindent\textbf{Two further registered results.} The budget-binding scenario (v5.2) constructs a procurement scenario where the budget loss predicate actually fires -- in sixty of sixty cells (one hundred thirty-seven thousand seven hundred eleven firings total) -- and the derived-zero-miss guarantee held on every one. The isolated-arm re-measurement (v3.1) found a real internal-validity defect by this project's own code inspection, registered before any fix was written; the isolation hypothesis itself was \textbf{not supported} -- all thirty registered seeds, re-run under an isolated design, reproduce the prior shared-state result exactly, a direct diagnostic confirming the one loss predicate the defect could have corrupted never fired under this declared parameter set.
 
-\section{Runtime Implication}
+\section{Computational Behaviour and Change Analysis}
+\label{sec:computational}
 
-\texttt{src/authority\_compiler} packages this paper's own machinery behind one call, \texttt{derive\_authority\_contract}, returning a compiled \texttt{AuthorityContract}: the core, every reduct where exhaustion is affordable, the minimum-cardinality and minimum-cost reducts, the redundant-attribute list, a sufficiency certificate (the partition itself, not a bare boolean), counterexamples when the core is not sufficient, and a bound \texttt{contract\_change\_delta} callable reporting whether a newly reachable set of tuples still leaves a prior contract sufficient before resynthesizing anything. A runtime pre-action gate is meant to consume this compiled contract and its certificate directly -- gate schema and enforcement code are downstream engineering this paper does not implement.
+\noindent\textbf{What is, and is not, separately measured.} None of the registered scaling results, and none of CH-B1/CH-C1/CH-B2/CH-C2's own checkers, separately records tuple-construction time, verdict-evaluation time, and discernibility-family-construction time as distinct numbers from solving time -- checked directly against their own committed JSON, not assumed present. Where a number below is a per-backend wall-clock time, it is the backend's own total call.
 
-\section{Related Work and the Novelty Fence}
+\noindent\textbf{The exploratory result (v5.0, kept, degeneracy disclosed).} Scaling candidate-attribute count alone ($n = 10, 30, 50, 100$) while holding the reachable set fixed at six tuples produced exact answers at every size with no distinguishable growth trend -- a \textbf{degenerate} result for scaling in general: the added attributes never appear in any discernibility-family clause.
 
-Nine neighbouring literature clusters, each fetch-verified: what each established, and what this paper adds.
+\noindent\textbf{Tuple scaling (v5.1, kept).} A planted two-reduct family grows the reachable set itself to one hundred thousand one tuples: the discernibility family still reduces, after pruning, to exactly one set, and both planted reducts are recovered exactly.
 
-\textbf{STPA and its descendants} \cite{stpa-handbook,stpa-sec,phase-rismani-2024,mylius-2025,deepstpa} establish a structured but human-driven analyst process: an engineer enumerates losses and hazards and writes safety constraints by hand, checked by expert review. None derive, in general, a machine-checked minimal property set for a runtime gate, or formalize soundness or minimality as machine-checkable claims over an enumerated model. This paper's derivation is inspired by STPA's loss-to-constraint direction of travel but replaces the analyst step with a deterministic, exhaustively-verified derivation.
+\noindent\textbf{The primary scaling table (v5.3): combinatorial hardness.}
 
-\textbf{ABAC policy mining} \cite{xu-stoller-abac-mining,abac-mining-survey-2022} starts from an existing lower-level policy plus attribute data and reconstructs which attributes already participate. This paper runs the derivation in the opposite direction, from a declared loss model forward to the minimal property set a new gate must observe, with a machine-checked soundness and minimality guarantee that mining, in general, has no ground-truth policy to verify against and so cannot provide.
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Family & $n$ & Reduct size ($k$) & Discern.\ family (pruned) & Exhaustive enumeration \\
+\midrule
+A & 30 & 5 & 125 sets & timed out, 300s \\
+B & 60 & 10 & 250 sets & timed out, 300s \\
+C & 100 & 15 & 375 sets & timed out, 300s \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\textbf{Policy-language completeness} \cite{ptacl,sacmat16-completeness} establishes what a policy combination language can express once the participating attributes and base decisions are already fixed; neither asks which attributes must be observed in the first place. This paper contributes exactly the question both assume already answered.
+The three-hundred-second figure is a measured timeout under this project's own recorded hardware and setup, not a complexity lower bound. Cardinality- and cost-MaxSAT both found the hand-proved minimum-cardinality reduct at every family regardless, each backend's own solve call completing in well under a second -- a comparison of two different workloads (find every reduct versus find one reduct under an objective), not one workload measured twice. MaxSAT showed no meaningful cardinality advantage over plain SAT on any of the three families.
 
-\textbf{Non-interference} \cite{goguen-meseguer-1982} is a semantic criterion for whether one party's actions can affect what another observes -- a check of dependence between two fixed parties, in general neither a derivation procedure nor a minimality guarantee. Definition~1 borrows the underlying comparison but turns it into a derivation swept over every candidate property against every loss predicate, with soundness and minimality verified exhaustively.
+\noindent\textbf{The large domain (CH-C1/CH-C2).} Exhaustive reduct enumeration was separately attempted, registered budget three hundred seconds, and confirmed infeasible (wall time 300.08s, against six million seven hundred twenty-four thousand five hundred twenty size-seven subsets alone).
 
-\textbf{Counterfactual fairness} \cite{counterfactual-fairness} is structurally the same comparison Definition~1 uses, applied once, to a single pre-chosen sensitive attribute. This paper generalizes the comparison to every candidate property against a declared loss model and adds an exhaustive, machine-checked minimality result that, in general, the counterfactual-fairness literature neither claims nor checks.
+\noindent\textbf{Change analysis: monotone extension only.} \texttt{contract\_change\_delta} handles exactly one class of change: additional tuples reachable under the SAME declared candidate schema and the SAME declared loss registry -- a base contract already known sufficient, checked directly against the combined set, and, if no longer sufficient, extended by the fewest additional attributes needed while every attribute the base contract already relied on stays pinned. A change to the loss registry itself, a change to the candidate schema, or a removed reachable tuple are each a different kind of change this function does not handle and this paper does not claim it handles.
 
-\textbf{Shield synthesis} \cite{bloem-shield-synthesis-2015} synthesizes a runtime monitor correcting violating outputs over a system's already-declared interface signals. This paper solves the strictly prior problem, in general, with a machine-checked minimality guarantee, upstream of the corrective strategy shield synthesis solves for.
+\section{Claim-by-Claim Evidence}
+\label{sec:claims}
 
-\textbf{Runtime enforcement and edit automata} \cite{schneider-enforceable-security-policies-2000,ligatti-bauer-walker-edit-automata-2005} characterize and extend what a monitor may do to an already-fixed target-action alphabet, never which properties must be part of that alphabet in the first place -- the antecedent question this paper answers in general, with a minimality guarantee neither work needs for its own narrower question.
+Every headline claim in this paper maps to one of ten claims a commissioned revision outline registered, adjudicated against this artifact's own current committed state rather than copied from the outline's own point-in-time observations. \textbf{Supported} means bounded evidence exists on checked finite instances; \textbf{Partial} means an implementation and some evidence exist but a stronger wording is not yet licensed.
 
-\textbf{Controller synthesis} \cite{ramadge-wonham-supervisory-control-1987,pnueli-rosner-reactive-synthesis-1989} presupposes the plant's or module's own observable/controllable alphabet and synthesizes a control law within it. In general, the classical minimality result here is about the supervisor's behaviour given that alphabet, not the alphabet itself; this paper derives the alphabet a controller must observe, before any supervisor or reactive module is synthesized over it.
+\begin{center}
+\begin{longtable}{p{0.06\textwidth}p{0.48\textwidth}p{0.38\textwidth}}
+\toprule
+\# & Permitted claim & Status \\
+\midrule
+\endhead
+C1 & The selected observation contract preserves $v_M$'s verdict over the supplied reachable set. & Supported on checked finite instances. \\
+C2 & CH-B1 and CH-C1 instantiate core insufficiency; CH-B1 has exactly two reducts, CH-C1 exposes at least five minimum-cardinality contracts. & Supported; both checkers ran as part of this commit's own \texttt{make formal}. \\
+C3 & The implementation selects minimum-cardinality or minimum-cost sufficient contracts using distinct objectives. & Supported by implementation and bounded exactness checks. \\
+C4 & CH-B2 selects the cheaper of two equal-cardinality sufficient contracts; CH-C2's returned alternatives tie. & Supported; a same-commit float-serialization non-determinism the commissioned reproduction found is fixed as of this lineage's own reproduction-repair commit. \\
+C5 & The implementation executes a sufficiency check and returns a check summary on success or a concrete counterexample on failure. & Partial by design: \texttt{sufficiency\_certificate} is a check summary, not a portable certificate. \\
+C6 & The built wheel supports the documented black-box example from a fresh environment. & Supported; the missing \texttt{build} prerequisite is now installed directly by \texttt{bootstrap.sh}. \\
+C7 & For additional reachable tuples under the same schema and registry, the implementation checks prior sufficiency and can extend a contract. & Implemented with supporting tests; a dedicated operational change study is registered future work. \\
+C8 & Measured computational behaviour is reported for the specific families and domains tested. & Partial: retained from registered runs, not rerun for this revision. \\
+C9 & This paper's formulation or interface differs from the closest prior work in a specific, source-supported way. & Partial: compared against already fetch-verified sources; no fresh re-verification performed. \\
+C10 & This artifact's reproduction claims state exactly which checks were completed and their scope. & Supported with qualifications; the external-reproduction item remains PENDING. \\
+\bottomrule
+\end{longtable}
+\end{center}
 
-\textbf{Capability systems} \cite{dennis-van-horn-capabilities-1966} establish the capability as an unforgeable reference carrying authority -- \emph{how} authority, once granted, is represented and delegated, not which conditions must be checked before it is minted. This artifact's own execution-grant mechanism is engineering informed by this lineage's modern descendants \cite{macaroons-ndss-2014,ucan-specification,biscuit-specification}, not a novelty claim in its own right.
+\section{Related Work and Contribution Boundary}
+\label{sec:relatedwork}
 
-\noindent\textbf{The fence, stated once.} In general, none of the nine clusters above derive, from a declared loss model, a machine-checked minimal property set for a runtime authority gate, with soundness and minimality verified exhaustively over an enumerated model and certificates a downstream system consumes directly. This paper's contribution sits upstream of all nine, answering a question each of them assumes already settled.
+Nine neighbouring literature clusters, each fetch-verified, compared on input, output, objective, guarantee, and verification interface.
+
+\textbf{STPA and its descendants} \cite{stpa-handbook,stpa-sec,phase-rismani-2024,mylius-2025,deepstpa} establish a structured but human-driven analyst process; none derive, in general, a machine-checked minimal property set for a runtime gate. This paper's derivation replaces the analyst step with a deterministic, exhaustively-verified derivation.
+
+\textbf{ABAC policy mining} \cite{xu-stoller-abac-mining,abac-mining-survey-2022} reconstructs which attributes already participate in an existing policy. This paper runs in the opposite direction, from a declared loss model forward to the observation contract a new gate must observe.
+
+\textbf{Policy-language completeness} \cite{ptacl,sacmat16-completeness} establishes what a combination language can express once participating attributes are already fixed; this paper contributes exactly the antecedent question.
+
+\textbf{Non-interference} \cite{goguen-meseguer-1982} is a semantic check of dependence between two fixed parties; Definition~2 sweeps the same comparison over every candidate attribute against every loss predicate, checked exhaustively.
+
+\textbf{Counterfactual fairness} \cite{counterfactual-fairness} applies the same comparison once, to one pre-chosen attribute; this paper applies it to every candidate attribute and adds a checked minimality result (Definition~5).
+
+\textbf{Shield synthesis} \cite{bloem-shield-synthesis-2015} synthesizes a runtime monitor over an already-declared interface; this paper solves the strictly prior problem of which attributes must be observed at all, with a checked minimality guarantee (Definition~5).
+
+\textbf{Runtime enforcement and edit automata} \cite{schneider-enforceable-security-policies-2000,ligatti-bauer-walker-edit-automata-2005} characterize a monitor's corrective repertoire over an already-fixed alphabet; this paper answers the antecedent question of which attributes belong in that alphabet, with a minimality guarantee (Definition~5) neither work needs.
+
+\textbf{Controller synthesis} \cite{ramadge-wonham-supervisory-control-1987,pnueli-rosner-reactive-synthesis-1989} presupposes an already-fixed observable alphabet; this paper derives the alphabet a controller must observe.
+
+\textbf{Capability systems} \cite{dennis-van-horn-capabilities-1966} establish how authority, once granted, is represented and delegated, not which conditions must be checked before it is minted. This artifact's own execution-grant mechanism is engineering informed by this lineage's modern descendants \cite{macaroons-ndss-2014,ucan-specification,biscuit-specification}, not a novelty claim in its own right.
+
+\noindent\textbf{Contribution boundary.} Inherited: the discernibility-matrix device (Skowron and Rauszer, 1992) and standard SAT/MaxSAT encoding. Contributed: the formulation of governance-context compilation as sufficient-observation-contract synthesis, distinguishing individual indispensability from joint sufficiency and from cardinality/cost optimality; an implementation with an explicit verification boundary; and a bounded evaluation across constructed domains. This is a combination and an evaluated behaviour, not a claim that no neighbouring field could in principle provide an equivalent guarantee.
 
 \section{Limitations}
 \label{sec:limitations}
 
 \begin{itemize}
-\item \textbf{Declared loss-model completeness} is assumed, not verified: a declared model missing a real hazard still produces a certified core or reduct \emph{for the declared model}, silently uninformative about the missing one.
-\item \textbf{Reachability-model validity}: every result above is exact \emph{given} its own declared reachable set, transcribed from its own registration, not measured from a live deployment.
-\item \textbf{Partial observability} is not modeled: every synthesis backend assumes the candidate properties it is given are the ones a gate \emph{could} observe.
-\item \textbf{Temporal and probabilistic losses} are out of scope: every loss predicate here is a boolean function of one reachable tuple.
-\item \textbf{External validation}: the reproduction packet is this artifact's own attempt to make independent reproduction possible; per its own eight-point standard, it is not itself independent evidence until someone who did not build this artifact runs it and reports back (no reproduction report filed as of this draft).
-\item \textbf{Families hard for exhaustive enumeration are not automatically hard for the solvers} synthesizing over their own discernibility family: Section~\ref{sec:scale}'s own v5.3 families are registered-infeasible to enumerate and solve in well under a second regardless.
-\item \textbf{Reduct multiplicity in the Section~\ref{sec:evidence} large domain (CH-C1) is a lower bound}, not an exhaustive count: blocking-clause enumeration capped at five found five distinct minimum-cardinality contracts; whether more exist above the cap is open.
+\item \textbf{Declared loss-model completeness} is assumed, not verified.
+\item \textbf{Reachability-model validity}: every result is exact \emph{given} its own declared reachable set, not measured from a live deployment.
+\item \textbf{Partial observability} is not modeled.
+\item \textbf{Temporal and probabilistic losses} are out of scope.
+\item \textbf{Declared-cost validity}: not necessarily monetary cost or measured latency; no sensitivity analysis performed.
+\item \textbf{Families hard for exhaustive enumeration are not automatically hard for the solvers} synthesizing over their own discernibility family.
+\item \textbf{Contract multiplicity in the large constructed domain (CH-C1) is a lower bound}, capped at five.
+\item \textbf{External validation}: the reproduction packet is not itself independent evidence until an independent person runs it and reports back (external-reproduction item: PENDING).
 \end{itemize}
 
-\section{Corrections and Historical Foundation}
+\section{Reproducibility}
+\label{sec:reproducibility}
+
+Four distinct properties, kept separate: semantic agreement; within-environment byte identity (this project's own formal-double-run gate); cross-environment byte identity (the property a same-commit hash mismatch exposed as failing between \texttt{python3.11} and \texttt{python3.12}/\texttt{python3.13}, traced to \texttt{sum()}'s own version-dependent float summation and fixed by a declared-precision \texttt{math.fsum}); and independent-person reproduction. A commissioned automated reproduction satisfies the first three at the commit it ran against and exercised the fourth's own infrastructure without itself being one -- the external-reproduction item remains PENDING, not reassessed by this revision.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Given a declared loss model, a declared reachable-state model, and a set of candidate attributes, this paper compiles sufficient observation contracts rather than asking a gate builder to declare one by hand. On two independently constructed domains (CH-B1/CH-C1), the individually-indispensable core is not itself a sufficient contract, and genuinely alternative minimum-cardinality contracts exist; a declared cost model (CH-B2/CH-C2) separates those alternatives on one domain and does not on the other, both reported as found.
+
+This is the compiler-focused paper of two scopes: a formulation, an implementation with a stated verification boundary, and a bounded evaluation against declared, constructed models -- not an end-to-end operational validation. The stronger, operationally validated scope -- an independently specified case, equal-information baselines, and a separately coded reference executor -- is registered as a plan in Section~\ref{sec:supplementary}, not performed and not claimed here.
+
+\section{Corrections}
 \label{sec:corrections}
 
 Append-only: nothing below is retracted or reworded; each correction is recorded alongside its original claim.
 
-\noindent\textbf{The v1 singleton-sufficiency overclaim (corrected v0.3).} The original Proposition~1 asserted that observing exactly \pstar\ lets a gate always compute $M$'s true verdict on any executable-reachable tuple -- conflating individual indispensability with joint sufficiency. A commissioned external, AI-assisted research review identified the mischaracterization; per this project's own discipline the finding was not applied directly -- it was adjudicated against this artifact's own definitions, and Negative Proposition N's counterexample was re-derived from first principles. Proposition~1 is superseded by Proposition~1$'$ (Section~\ref{sec:core-vs-reduct}), not deleted.
+\noindent\textbf{The v1 singleton-sufficiency overclaim (corrected v0.3).} The original Proposition~1 conflated individual indispensability with joint sufficiency. A commissioned external review identified the mischaracterization; the finding was adjudicated against this artifact's own definitions, not applied directly. Proposition~1 is superseded by Proposition~1$'$, not deleted.
 
-\noindent\textbf{The v5.0 degenerate scaling benchmark (disclosed v5.1).} Section~\ref{sec:scale}'s own exploratory benchmark scaled candidate-property count while holding the reachable set fixed at six tuples -- a valid answer to the question it was built for, but one where the added noise properties cost the solver nothing beyond one boolean variable each. Relabelled \texttt{exploratory\_v5\_0} from v5.1 forward, superseded as the primary scaling claim, kept and cited.
+\noindent\textbf{The v5.0 degenerate scaling benchmark (disclosed v5.1).} The exploratory benchmark's own flat wall-time curve cannot be read as evidence of scaling in general. Relabelled \texttt{exploratory\_v5\_0}, superseded as the primary scaling claim, kept and cited.
 
-\noindent\textbf{The entangled v0.3 experiment arms and their null delta (found and corrected v0.4).} Section~\ref{sec:authoritybench}'s own budget/ledger-sharing defect, found by this paper's own code inspection, registered two-sided before any fix was written: isolating the three experiment arms' state produced a result byte-identical to the prior shared-state measurement -- \textbf{not supported}, with the mechanism explaining why rather than left unexplained.
+\noindent\textbf{The entangled v0.3 experiment arms and their null delta (found and corrected v0.4).} A budget/ledger-sharing defect, found by code inspection, registered two-sided before any fix was written -- \textbf{not supported}, with the mechanism explaining why.
 
-\noindent\textbf{The two commissioned external review rounds.} Round one produced the core-versus-reduct correction above. Round two produced the broadened contribution this paper's own front matter names -- the code/cloud flagship promoted to the empirical centre, packaging and CI-smoke-test gates, symbolic scaling and AuthorityBench framing, and the large non-planted domain this draft adds. Neither round's finding was ever applied as a direct patch: every finding this paper's own results reflect was independently re-derived and machine-checked against this artifact's own definitions and data before being accepted.
+\noindent\textbf{Cross-environment float-serialization non-determinism (found 2026-09-14, commissioned automated reproduction).} A same-commit hash mismatch traced directly to \texttt{sum()}'s own version-dependent float summation, fixed by a declared-precision \texttt{math.fsum}; no registered result changed.
 
-\noindent\textbf{Where the full historical procurement paper lives.} Versions 0.1 through 0.5 are each frozen at their own commit, unedited since, and linked from the companion repository's own \texttt{README.md} History section -- the complete v1-through-v4 Introduction, novelty fence, replication, Definitions~1--6, derivation procedure, grant mechanism, pair testing, empirical section, and their own Threats to validity, Limitations, and Conclusion are preserved there in full, not reproduced a second time in this consolidated manuscript.
+\noindent\textbf{This revision (v0.6.1).} A commissioned revision outline identified terminology conflated across minimal/minimum, certificate/summary, constructed/live, and core/non-core, and an append-only structure that had grown chronological rather than claim-led. Every finding was adjudicated against this artifact's own current committed state, not applied as a direct patch.
 
-\section{Threats to Validity, Claims, and Proof Status}
+\noindent\textbf{The two commissioned external review rounds preceding this one.} Round one produced the core-versus-reduct correction above. Round two produced the broadened contribution v0.6's own front matter named. Neither round's finding was ever applied as a direct patch.
 
-\noindent\textbf{Threats to validity, written adversarially.} First, every ``realistic'' domain in Section~\ref{sec:evidence} is still a declared model, not a live deployment -- a domain built by the same author to be plausible is not independent evidence that real deployments share its structure. Second, CH-C1's own multiplicity count is a lower bound capped at five by construction -- a reader could reasonably suspect the true count is far larger, which would weaken, not strengthen, any claim resting on ``few'' alternatives. Third, CH-C2's cost tie could be read as this paper quietly avoiding a more impressive result -- the tie is reported at face value, with the mechanism that produces it stated explicitly. Fourth, AuthorityBench's mining comparison is inconclusive by its own registered rule; it is reported because the registration committed to reporting whatever was measured, not only a clean win.
+\section{Supplementary Material}
+\label{sec:supplementary}
 
-\begin{center}
-\begin{longtable}{p{0.47\textwidth}p{0.47\textwidth}}
-\toprule
-This paper claims & This paper does not claim \\
-\midrule
-\endhead
-On two independently-built, non-planted domains, the core is not always a reduct (CH-B1, CH-C1). & That the core is never a reduct -- v2's own worked instance (Section~\ref{sec:core-vs-reduct}) is a real counterexample to that stronger claim. \\
-On one of those two domains, declared cost strictly separates the minimum-cardinality alternatives (CH-B2). & That declared cost always separates them -- CH-C2, on the other domain, is a genuine tie. \\
-Exhaustive reduct enumeration is registered-infeasible on the Section~\ref{sec:scale} hardness families and the Section~\ref{sec:evidence} large domain, and SAT/MaxSAT synthesis solves them regardless. & That every hard-to-enumerate instance is easy for these solvers, or that this artifact has found the general boundary between the two. \\
-MaxSAT showed no measured cardinality advantage over plain SAT on the specific registered v5.3 families. & That MaxSAT never has a cardinality advantage over SAT in general. \\
-The declared-only manual baseline is not exactly sufficient on any of AuthorityBench's three registered domains. & That no declared-only policy could ever be sufficient -- v2's own core happens to be sufficient (Section~\ref{sec:core-vs-reduct}). \\
-The reproduction infrastructure is complete and checked against an eight-point standard. & That this artifact has been independently reproduced -- that item is pending, checked directly against the issue tracker, not assumed. \\
-\bottomrule
-\end{longtable}
-\end{center}
+Historical manuscripts (v0.1 through v0.6, each frozen at its own commit), extended procurement evidence (the v2 worked instance where core and reduct coincide), proofs and checker detail, and mutation/reproduction records are preserved in the companion repository and its own \texttt{README.md} History section, not repeated here.
 
-\noindent\textbf{Proof status.} Every numbered formal claim carries a \texttt{PROOF-STATUS} tag in the companion repository's own \texttt{appendix-a-proofs.md}: \texttt{machine-checked} (an executable checker module verifies the claim over an explicitly enumerated finite domain), \texttt{checked-scope-only} (the certified scope is narrower than the general prose, stated exactly), or \texttt{pending-human-review} (asserted, not yet machine-verified) -- \texttt{proven} is never written. Every Section~\ref{sec:evidence} hypothesis (CH-B1, CH-B2, CH-C1, CH-C2) carries the same discipline inline, naming its own checker and enumerated domain rather than asserting a bare result.
+\noindent\textbf{Registered follow-up work: the operationally validated scope.} One bounded operational workflow, with domain owners independently specifying or reviewing losses, constraints, and costs before seeing a synthesized answer; equal-information baselines (an expert-authored contract, the loss-predicate syntactic read set, every candidate attribute, and the synthesized contract); a separately coded reference decision procedure; and predeclared decision rules requiring zero verdict disagreement and every baseline reported, including one that ties or beats the synthesized contract. This protocol is registered as a plan, not preregistered as an experiment; no comparative outcome under it currently exists, and none is claimed.
 
 \textbf{Acknowledgements.} Drafting, engineering, formal derivation, and citation verification were AI-assisted (Claude); the author is solely responsible for all claims.
 
