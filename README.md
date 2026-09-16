@@ -2,7 +2,7 @@
 
 **This paper's own thesis** (**Definition 1** defines observation
 contract, **Definition 4** sufficiency,
-`paper5-authority-derivation-draft-v0.6.1.md`, never asserted loosely):
+`paper5-authority-derivation-draft-v0.6.2.md`, never asserted loosely):
 given a declared loss model and the states an
 autonomous system can reach, derive and certify the **minimal sufficient
 governance context** -- the minimal, cost-aware sets of runtime
@@ -100,11 +100,12 @@ found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.6.1.md`](paper5-authority-derivation-draft-v0.6.1.md)
-([populated](paper5-authority-derivation-draft-v0.6.1-populated.md)) --
-a claim-led revision of v0.6 per a commissioned revision outline
-(`review-secondary/paper-revision-outline-2026-09-15.md`, adjudicated
-in the draft's own Section 8 and Section 13, not applied directly).
+[`paper5-authority-derivation-draft-v0.6.2.md`](paper5-authority-derivation-draft-v0.6.2.md)
+([populated](paper5-authority-derivation-draft-v0.6.2-populated.md)) --
+a citation-restoration revision of v0.6.1 (itself a claim-led revision
+of v0.6 per a commissioned revision outline,
+`review-secondary/paper-revision-outline-2026-09-15.md`, adjudicated in
+the draft's own Section 8 and Section 13, not applied directly).
 
 ## Reproduction
 
@@ -148,12 +149,16 @@ makes ([source](paper5-authority-derivation-draft-v0.5.md),
 [populated](paper5-authority-derivation-draft-v0.5-populated.md)), whose
 own Part II is the entire v0.1-through-v0.4 paper, unedited, and whose
 own Part I is this artifact's broadened contribution as first
-reorganized around governance-context synthesis (Package B) -- and v0.6
-as of the commit this version-split makes
+reorganized around governance-context synthesis (Package B) -- v0.6 as
+of the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.md),
 [populated](paper5-authority-derivation-draft-v0.6-populated.md)), the
-consolidated, append-only-structured manuscript v0.6.1 restructures
+consolidated, append-only-structured manuscript v0.6.1 restructured
 around a claim-led evidence table rather than a development chronology
-(`review-secondary/paper-revision-outline-2026-09-15.md`) -- none of
-v0.6's own content is retracted; the live paper's own Section 13
-(Corrections) and Section 14 (Supplementary Material) point back to it.
+(`review-secondary/paper-revision-outline-2026-09-15.md`) -- and v0.6.1
+as of the commit this version-split makes
+([source](paper5-authority-derivation-draft-v0.6.1.md),
+[populated](paper5-authority-derivation-draft-v0.6.1-populated.md)).
+None of v0.6's or v0.6.1's own content is retracted; the live paper's
+own Section 13 (Corrections) and Section 14 (Supplementary Material)
+point back to both.
