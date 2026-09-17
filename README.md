@@ -2,7 +2,7 @@
 
 **This paper's own thesis** (**Definition 1** defines observation
 contract, **Definition 4** sufficiency,
-`paper5-authority-derivation-draft-v0.6.3.md`, never asserted loosely):
+`paper5-authority-derivation-draft-v0.6.4.md`, never asserted loosely):
 given a declared loss model and the states an
 autonomous system can reach, derive and certify the **minimal sufficient
 governance context** -- the minimal, cost-aware sets of runtime
@@ -100,14 +100,15 @@ found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.6.3.md`](paper5-authority-derivation-draft-v0.6.3.md)
-([populated](paper5-authority-derivation-draft-v0.6.3-populated.md)) --
-a wording-and-related-work revision of v0.6.2 per a commissioned
+[`paper5-authority-derivation-draft-v0.6.4.md`](paper5-authority-derivation-draft-v0.6.4.md)
+([populated](paper5-authority-derivation-draft-v0.6.4-populated.md)) --
+a two-residue wording revision of v0.6.3 per the same commissioned
 manuscript audit
-(`review-secondary/manuscript-audit-2026-09-17.md`, committed unedited,
-adjudicated in the draft's own Section 9 and Section 13, not applied
-directly), itself a citation-restoration revision of v0.6.1 (a
-claim-led revision of v0.6 per a commissioned revision outline,
+(`review-secondary/manuscript-audit-2026-09-17.md`, committed unedited
+for v0.6.3, adjudicated in the draft's own Section 13, not applied
+directly), itself a wording-and-related-work revision of v0.6.2, a
+citation-restoration revision of v0.6.1 (a claim-led revision of v0.6
+per a commissioned revision outline,
 `review-secondary/paper-revision-outline-2026-09-15.md`).
 
 ## Reproduction
@@ -162,10 +163,14 @@ around a claim-led evidence table rather than a development chronology
 of the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.1.md),
 [populated](paper5-authority-derivation-draft-v0.6.1-populated.md)),
-whose one restored citation v0.6.2 carries forward unchanged
--- and v0.6.2 as of the commit this version-split makes
+whose one restored citation v0.6.2 carries forward unchanged, v0.6.2 as
+of the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.2.md),
-[populated](paper5-authority-derivation-draft-v0.6.2-populated.md)).
-None of v0.6's, v0.6.1's, or v0.6.2's own content is retracted; the
-live paper's own Section 13 (Corrections) and Section 14 (Supplementary
-Material) point back to all three.
+[populated](paper5-authority-derivation-draft-v0.6.2-populated.md)),
+whose wording and novelty-fence corrections v0.6.3 carries forward
+-- and v0.6.3 as of the commit this version-split makes
+([source](paper5-authority-derivation-draft-v0.6.3.md),
+[populated](paper5-authority-derivation-draft-v0.6.3-populated.md)).
+None of v0.6's, v0.6.1's, v0.6.2's, or v0.6.3's own content is
+retracted; the live paper's own Section 13 (Corrections) and Section 14
+(Supplementary Material) point back to all four.

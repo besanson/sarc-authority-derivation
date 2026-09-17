@@ -18,7 +18,7 @@ Terminology lint (Milestone A4, review-secondary/improvement-plan-9.5-
 never applied as a patch, per this repo's own external-review
 discipline).
 
-Live prose -- the v0.6.3 paper draft and README.md; this repository ships
+Live prose -- the v0.6.4 paper draft and README.md; this repository ships
 no separate RESEARCH-GUIDE.md (the Makefile's own `help` target names
 one that was never created), so "guide" resolves to README.md, the only
 guide-equivalent document actually present -- must never assert that a
@@ -120,8 +120,20 @@ manuscript audit):
                             describing a domain (bare "real domain", or
                             "real" followed by up to three more words
                             before "domain", e.g. "real code/cloud
-                            authority domain") is a VIOLATION unless the
-                            same paragraph also negates it.
+                            authority domain" or "real code/cloud
+                            execution-agent domain") is a VIOLATION
+                            unless a negation appears in the ~40
+                            characters immediately before the match
+                            (added v0.6.4, `review-secondary/manuscript-
+                            audit-2026-09-17.md`'s own residue: a
+                            paragraph-wide negation check, matching
+                            `constructed vs live`'s own, let an unrelated
+                            negation elsewhere in the paragraph -- "a
+                            gate builder ... has no way to know" --
+                            suppress a genuine violation in the
+                            Introduction's Running example; the negation
+                            must now be local to the match, not merely
+                            present somewhere in the same paragraph).
 
 Each check strips fenced AND inline code (`` `identifier` ``) before
 matching, so a code reference or a worked example's own variable names
@@ -139,7 +151,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.6.3.md", "README.md"]
+DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.6.4.md", "README.md"]
 OUTPUT_PATH = Path("out/checkers/terminology_lint.json")
 
 CLAIM_TERMS: Dict[str, re.Pattern] = {
@@ -183,6 +195,7 @@ _LIVE_DOMAIN = re.compile(r"\blive\b\s+(?:deployment|domain|data|process|system)
 _NEGATION_ANYWHERE = re.compile(r"\bnot\b|\bnever\b|\bno\b|n't\b|\bwithout\b", re.IGNORECASE)
 _REDUNDANT_TERM = re.compile(r"\bredundant\b", re.IGNORECASE)
 _REAL_DOMAIN = re.compile(r"\breal\b(?:\s+[\w/-]+){0,3}?\s+domain\b", re.IGNORECASE)
+_NEGATION_LOCAL = re.compile(r"\b(?:not|never|no|n't|without|need not|cannot|no longer)\b[\w\s]{0,20}$", re.IGNORECASE)
 
 
 def _strip_fenced_code(text: str) -> str:
@@ -247,9 +260,10 @@ def check_term_pairs(text: str) -> List[Dict[str, Any]]:
                 "line": _line_of(start + m.start()), "excerpt": " ".join(para.strip().split())[:220],
             })
         for m in _REAL_DOMAIN.finditer(para):
-            if not _NEGATION_ANYWHERE.search(para):
+            window_start = max(0, m.start() - 40)
+            if not _NEGATION_LOCAL.search(para[window_start:m.start()]):
                 violations.append({
-                    "pair": "constructed-vs-real", "issue": "real domain claimed without negation in the same paragraph -- every domain this artifact reports on is constructed",
+                    "pair": "constructed-vs-real", "issue": "real domain claimed without a local negation immediately before it -- every domain this artifact reports on is constructed",
                     "line": _line_of(start + m.start()), "excerpt": " ".join(para.strip().split())[:220],
                 })
     return violations

@@ -19,7 +19,7 @@ hand-typed, except for a declared, narrow allowlist -- so a future
 hand-typed result number (the exact mistake repair 1 fixed for v2's
 CH-A5-CH-A7 counts) is caught automatically rather than relying on
 review to notice it. Scoped to the live draft
-(paper5-authority-derivation-draft-v0.6.3.md) only: v0.1's own source is
+(paper5-authority-derivation-draft-v0.6.4.md) only: v0.1's own source is
 frozen as of commit 37a2e7f, v0.2's at commit 7112031, v0.3's at commit
 382be13, v0.4's at the commit Package B's own version-split makes,
 v0.5's at the commit that version-split makes, v0.6's at the commit
@@ -40,7 +40,7 @@ The declared allowlist, applied to what remains:
 1. Section numbers, broadened to every numbered structural element this
    document itself defines and cross-references by number -- Section,
    Definition(s), Proposition(s), Corollary, Theorem, Lemma, Step(s)
-   (v0.6.3's own numbered method steps, Section 3), and the SARC
+   (v0.6.4's own numbered method steps, Section 3), and the SARC
    series' own "paper N" convention -- plus a markdown heading's own
    leading number ("## 5. Definitions") and a markdown ordered-list
    item's own leading ordinal ("1. Materialize ...", same reasoning:
@@ -75,7 +75,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Pattern
 
-DRAFT_PATH = "paper5-authority-derivation-draft-v0.6.3.md"
+DRAFT_PATH = "paper5-authority-derivation-draft-v0.6.4.md"
 OUTPUT_PATH = Path("out/checkers/typed_numerals_lint.json")
 
 _MONTHS = (
