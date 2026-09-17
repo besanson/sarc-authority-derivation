@@ -11,13 +11,14 @@
             "main.tex"
           ],
           "overfull_hbox_above_10pt": [],
-          "page_count": 17,
+          "page_count": 19,
           "passes_needed": 4,
           "pdf_produced": true,
-          "pdf_sha256": "5de250ec9a9f6005d7ce6119bd1049f3b69ce43acd2fc9b35948794512532247",
+          "pdf_sha256": "45d51d9a0ba113bb3dd174076c803b69511a48e3408283d8d544461f33768988",
           "pdf_unresolved_marker_count": 0,
           "undefined_citations": [
             "moona-intelligence-replication",
+            "pawlak-rough-sets-1982",
             "stpa-handbook",
             "stpa-sec",
             "phase-rismani-2024",
@@ -35,6 +36,7 @@
             "ucan-specification",
             "biscuit-specification",
             "moona-intelligence-replication",
+            "pawlak-rough-sets-1982",
             "stpa-handbook",
             "stpa-sec",
             "phase-rismani-2024",
@@ -68,7 +70,10 @@
             "sec:results",
             "sec:method",
             "sec:computational",
-            "sec:supplementary"
+            "sec:computational",
+            "sec:supplementary",
+            "sec:results",
+            "sec:relatedwork"
           ]
         },
         {
@@ -79,13 +84,14 @@
             "main.tex"
           ],
           "overfull_hbox_above_10pt": [],
-          "page_count": 17,
+          "page_count": 19,
           "passes_needed": 4,
           "pdf_produced": true,
-          "pdf_sha256": "5de250ec9a9f6005d7ce6119bd1049f3b69ce43acd2fc9b35948794512532247",
+          "pdf_sha256": "45d51d9a0ba113bb3dd174076c803b69511a48e3408283d8d544461f33768988",
           "pdf_unresolved_marker_count": 0,
           "undefined_citations": [
             "moona-intelligence-replication",
+            "pawlak-rough-sets-1982",
             "stpa-handbook",
             "stpa-sec",
             "phase-rismani-2024",
@@ -103,6 +109,7 @@
             "ucan-specification",
             "biscuit-specification",
             "moona-intelligence-replication",
+            "pawlak-rough-sets-1982",
             "stpa-handbook",
             "stpa-sec",
             "phase-rismani-2024",
@@ -136,13 +143,17 @@
             "sec:results",
             "sec:method",
             "sec:computational",
-            "sec:supplementary"
+            "sec:computational",
+            "sec:supplementary",
+            "sec:results",
+            "sec:relatedwork"
           ]
         }
       ],
       "compiler": "tectonic",
       "compiler_log_undefined_citations": [
         "moona-intelligence-replication",
+        "pawlak-rough-sets-1982",
         "stpa-handbook",
         "stpa-sec",
         "phase-rismani-2024",
@@ -160,6 +171,7 @@
         "ucan-specification",
         "biscuit-specification",
         "moona-intelligence-replication",
+        "pawlak-rough-sets-1982",
         "stpa-handbook",
         "stpa-sec",
         "phase-rismani-2024",
@@ -193,7 +205,10 @@
         "sec:results",
         "sec:method",
         "sec:computational",
-        "sec:supplementary"
+        "sec:computational",
+        "sec:supplementary",
+        "sec:results",
+        "sec:relatedwork"
       ],
       "errors": [],
       "exit_code_zero": true,
@@ -202,16 +217,16 @@
         "main.tex"
       ],
       "overfull_hbox_above_10pt": [],
-      "page_count": 17,
+      "page_count": 19,
       "pass": true,
       "pdf_produced": true,
-      "pdf_sha256": "5de250ec9a9f6005d7ce6119bd1049f3b69ce43acd2fc9b35948794512532247",
+      "pdf_sha256": "45d51d9a0ba113bb3dd174076c803b69511a48e3408283d8d544461f33768988",
       "pdf_unresolved_marker_count": 0,
       "source_date_epoch": "1786609963",
       "two_build_identical": true
     },
     "G7_sidecar_sync": {
-      "abstract_char_count": 1892,
+      "abstract_char_count": 1899,
       "abstract_has_required_phrase": true,
       "abstract_within_max_chars": true,
       "metadata_has_required_author_line": true,
@@ -232,7 +247,7 @@
       "missing_venue_fields": [],
       "pass": true,
       "refs_bib_matches_generator": true,
-      "total_citations": 37
+      "total_citations": 40
     }
   }
 }

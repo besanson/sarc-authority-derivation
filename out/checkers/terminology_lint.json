@@ -4,15 +4,15 @@
     {
       "classification_counts": {
         "core": 1,
-        "general-theorem": 23,
-        "historical": 12,
-        "instance-certified": 35,
-        "reduct": 8,
+        "general-theorem": 22,
+        "historical": 13,
+        "instance-certified": 39,
+        "reduct": 17,
         "unclassified": 0
       },
       "clean": true,
-      "occurrence_count": 79,
-      "path": "paper5-authority-derivation-draft-v0.6.2.md",
+      "occurrence_count": 92,
+      "path": "paper5-authority-derivation-draft-v0.6.3.md",
       "term_pair_violations": [],
       "violations": []
     },
@@ -32,5 +32,5 @@
       "violations": []
     }
   ],
-  "total_occurrences": 88
+  "total_occurrences": 101
 }

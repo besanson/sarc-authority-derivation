@@ -943,6 +943,100 @@ that happen to share a declared source class, even when cardinality-
 based search finds several such alternatives. No cost value was
 adjusted after this package's own real solver run.
 
+## Fifteenth amendment (v0.6.3, commissioned manuscript audit, `review-secondary/manuscript-audit-2026-09-17.md`: fence extension -- decision/test-cost-sensitive reducts, supervisory-control sensor/observation selection; ABAC/STPA/capabilities wording tightened)
+
+A commissioned manuscript audit of v0.6.2
+(`review-secondary/manuscript-audit-2026-09-17.md`, attested as the
+same commissioned GPT reviewer as the prior review rounds) identified
+two neighbouring literature clusters understated by the fence as it
+stood -- decision/attribute reducts with costs, and minimum
+sensor/observation selection in supervisory control -- plus wording in
+the ABAC mining, STPA, shield-synthesis, runtime-enforcement,
+capability-systems, non-interference, and counterfactual-fairness
+paragraphs that overstated this paper's own distinction from each.
+Every finding was adjudicated against this artifact's own current
+committed state, not applied as a direct patch: the paper draft's own
+Section 9 carries the corrected paragraphs and the two new clusters
+(fetch-verified below), and its Contribution boundary paragraph now
+carries the audit's own proposed novelty statement verbatim. No result
+changed; no new experiment was run.
+
+### Decision reducts and test-cost-sensitive attribute reduction (Pawlak 1982; Skowron and Rauszer 1992; Min, He, Qian, and Zhu 2011)
+
+Already credited above (Third amendment) as the source of the
+core/reduct distinction Proposition 1' corrects to, and already cited
+(`prereg/v3-core-reduct-correction.md`) as the discernibility-matrix
+source `reduct.py`'s own exact reduct enumeration is positioned
+against. What the fence understated until this amendment: classical
+rough-set reducts are defined around exactly the structure this
+paper's own Definition 3/Definition 5 use -- attributes jointly
+sufficient and individually necessary -- and, once a declared
+per-attribute cost is introduced, test-cost-sensitive attribute
+reduction (Min, He, Qian, and Zhu 2011, Information Sciences 181(22))
+is established prior art for the problem of a sufficient reduct at
+minimum cost. This paper does not claim joint sufficiency,
+inclusion-minimal reducts, cores, discernibility functions, or
+cost-sensitive attribute reduction as new. Its contribution is to
+construct the decision system itself from declared governance losses
+plus executable reachability, interpret reducts as runtime
+authority-observation contracts, and expose that derivation through an
+executable compiler interface -- the loss-semantics-plus-reachability-
+to-runtime-contract bridge, not the reduct mathematics underneath it.
+
+### Observation/sensor selection in supervisory control (Rohloff, Khuller, and Kortsarz 2006; Hu and Chen 2026)
+
+The Eighth amendment's own controller-synthesis paragraph (Ramadge and
+Wonham 1987; Pnueli and Rosner 1989) characterized that literature as
+presupposing an already-fixed observable/controllable alphabet -- true
+of those two specific works, but not of the whole supervisory-control
+literature: a separate line of work explicitly studies
+minimum-cardinality and minimum-cost sensor or event observation
+sufficient for supervisor synthesis. Rohloff, Khuller, and Kortsarz
+(Discrete Event Dynamic Systems 16(1), 2006) formulate minimal sensor
+selection for supervisory control as a directed-graph cut problem with
+approximation guarantees; Hu and Chen (Mathematics 14(6), 2026)
+minimize the observation alphabet a supervisor needs while preserving
+control equivalence with the original supremal supervisor. This paper
+does not claim to originate minimum-observation synthesis. The
+distinction remains the object and semantics being compiled: candidate
+per-decision governance attributes, a declared loss-derived verdict,
+and an executable reachable-state relation, rather than event sensors
+preserving supervisory controllability or a temporal control
+specification -- and the output is a sufficient authority-observation
+contract, not a synthesized controller.
+
+### Wording tightened elsewhere in Section 9
+
+ABAC policy mining's own input/output description now states plainly
+what Xu and Stoller's method takes (an extant authorization relation or
+policy plus attribute data) and produces (a generalized ABAC rule set
+under a policy-quality objective), and drops the paragraph's own former
+"Guarantee: none against a ground truth" line -- broader than
+necessary, when AuthorityBench's own comparison already reports the
+method inconclusive rather than theoretically inferior. STPA is now
+fenced as classical, analyst-led hazard analysis specifically, with its
+automated and formal extensions (PHASE, Mylius, DeepSTPA) named as
+adjacent rather than folded into a single "written and reviewed by a
+person" characterization that does not hold for all five
+originally-cited works. Shield synthesis's "the strictly prior problem"
+is now "an orthogonal upstream problem in this artifact" -- the
+original wording read as a universal ordering claim shield synthesis
+itself does not make. Runtime enforcement and edit automata's "Neither
+asks which..." is now "Minimal selection of per-decision observation
+attributes is not the central problem those works formulate" --
+avoiding the same universal-negative shape. Capability systems now
+states plainly that Macaroons and UCAN already carry contextual caveats
+or conditions evaluated at delegation or invocation, rather than
+reading as if capability systems address no conditions at all.
+Non-interference and counterfactual fairness are now described as a
+conceptually related invariance under changes to selected inputs rather
+than as literally the same formal operation Definition 2 uses.
+
+C9's own status (paper draft Section 8) is updated to record this
+expansion; the claim itself stays Partial, since a fresh, independently
+re-verified comparison-matrix exercise beyond the fetch-verified record
+was not newly performed.
+
 ## Kill-criteria check (task brief R3)
 
 Searched explicitly, across all five literature clusters above, for

@@ -18,7 +18,7 @@ Terminology lint (Milestone A4, review-secondary/improvement-plan-9.5-
 never applied as a patch, per this repo's own external-review
 discipline).
 
-Live prose -- the v0.6.2 paper draft and README.md; this repository ships
+Live prose -- the v0.6.3 paper draft and README.md; this repository ships
 no separate RESEARCH-GUIDE.md (the Makefile's own `help` target names
 one that was never created), so "guide" resolves to README.md, the only
 guide-equivalent document actually present -- must never assert that a
@@ -58,21 +58,32 @@ checker exists to catch.
 **Term-pair misuse (v0.6.1, `review-secondary/paper-revision-outline-
 2026-09-15.md`, sha256 `9011e9e5d358d6fc50650ec5812f0c18905c21a165eb2a
 317626eea1de6c6374`, section A6 of the commissioned amendment applying
-it): four additional, independent checks** -- not the P*/sufficient/
-minimal/sound bucket system above, a separate MISUSE detector for four
-term pairs the outline's own claim checklist (C2, C3, C5, C8) flags as
-conflated in the pre-revision draft:
+it): four additional, independent checks, plus a fifth added in v0.6.3
+(`review-secondary/manuscript-audit-2026-09-17.md`, a commissioned
+manuscript audit)** -- not the P*/sufficient/minimal/sound bucket
+system above, a separate MISUSE detector for five term pairs flagged as
+conflated across the pre-revision drafts (the first four by the
+outline's own claim checklist, C2, C3, C5, C8; the fifth by the
+manuscript audit):
 
   minimal vs. minimum   -- "minimal" names Definition 5's inclusion-
                             minimality (a reduct: sufficient, no proper
                             subset is); "minimum" names an optimum under
                             an explicit objective (cardinality or cost)
                             and must always be paired with that
-                            objective's name. "minimal cardinality"/
+                            objective's name -- or, naming a *different*
+                            field's own objective rather than a claim
+                            about this artifact's own Definition 5
+                            (added v0.6.3: "minimum-observation", the
+                            supervisory-control literature's own fixed
+                            compound term, `_BARE_MINIMUM`'s allowlist
+                            extended to match, never this paper's own
+                            objective). "minimal cardinality"/
                             "minimal cost" (using minimal where the
                             objective-optimal claim minimum names is
                             meant) and a bare "minimum" with no
-                            cardinality/cost paired to it are both
+                            cardinality/cost/observation paired to it
+                            are both
                             VIOLATIONS.
   certificate vs summary -- `reduct.sufficiency`'s own success return is
                             a partition-cell COUNT and a uniformity
@@ -101,6 +112,16 @@ conflated in the pre-revision draft:
                             local variable README's own worked example
                             unpacks `compute_core`'s return tuple into)
                             is always a VIOLATION.
+  constructed vs real     -- every domain this artifact reports on is a
+                            declared, constructed model (`prereg/`),
+                            never a live capture of a real deployment --
+                            the same fact `constructed vs live` above
+                            checks from the opposite direction. "real"
+                            describing a domain (bare "real domain", or
+                            "real" followed by up to three more words
+                            before "domain", e.g. "real code/cloud
+                            authority domain") is a VIOLATION unless the
+                            same paragraph also negates it.
 
 Each check strips fenced AND inline code (`` `identifier` ``) before
 matching, so a code reference or a worked example's own variable names
@@ -118,7 +139,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.6.2.md", "README.md"]
+DEFAULT_TARGETS = ["paper5-authority-derivation-draft-v0.6.3.md", "README.md"]
 OUTPUT_PATH = Path("out/checkers/terminology_lint.json")
 
 CLAIM_TERMS: Dict[str, re.Pattern] = {
@@ -155,12 +176,13 @@ _REDUCT = re.compile(r"\bDefinition 5\b|\bthe (?:unique )?reduct\b|\ba reduct\b"
 # Term-pair misuse (A6 of the commissioned amendment -- module docstring).
 _INLINE_CODE = re.compile(r"`[^`\n]+`")
 _MINIMAL_MISUSED_FOR_MINIMUM = re.compile(r"\bminimal\b\s+(?:cardinality|cost)\b", re.IGNORECASE)
-_BARE_MINIMUM = re.compile(r"\bminimum\b(?!-?\s*(?:cardinality|cost|declared\s+cost))", re.IGNORECASE)
+_BARE_MINIMUM = re.compile(r"\bminimum\b(?!-?\s*(?:cardinality|cost|declared\s+cost|observation))", re.IGNORECASE)
 _CERTIFICATE_TERM = re.compile(r"\bcertificates?\b", re.IGNORECASE)
 _SUMMARY_TERM = re.compile(r"\bsummary\b", re.IGNORECASE)
 _LIVE_DOMAIN = re.compile(r"\blive\b\s+(?:deployment|domain|data|process|system)", re.IGNORECASE)
 _NEGATION_ANYWHERE = re.compile(r"\bnot\b|\bnever\b|\bno\b|n't\b|\bwithout\b", re.IGNORECASE)
 _REDUNDANT_TERM = re.compile(r"\bredundant\b", re.IGNORECASE)
+_REAL_DOMAIN = re.compile(r"\breal\b(?:\s+[\w/-]+){0,3}?\s+domain\b", re.IGNORECASE)
 
 
 def _strip_fenced_code(text: str) -> str:
@@ -224,6 +246,12 @@ def check_term_pairs(text: str) -> List[Dict[str, Any]]:
                 "pair": "core-vs-non-core", "issue": "redundant used where non-core (candidate_properties - core) was meant",
                 "line": _line_of(start + m.start()), "excerpt": " ".join(para.strip().split())[:220],
             })
+        for m in _REAL_DOMAIN.finditer(para):
+            if not _NEGATION_ANYWHERE.search(para):
+                violations.append({
+                    "pair": "constructed-vs-real", "issue": "real domain claimed without negation in the same paragraph -- every domain this artifact reports on is constructed",
+                    "line": _line_of(start + m.start()), "excerpt": " ".join(para.strip().split())[:220],
+                })
     return violations
 
 

@@ -2,7 +2,7 @@
 
 **This paper's own thesis** (**Definition 1** defines observation
 contract, **Definition 4** sufficiency,
-`paper5-authority-derivation-draft-v0.6.2.md`, never asserted loosely):
+`paper5-authority-derivation-draft-v0.6.3.md`, never asserted loosely):
 given a declared loss model and the states an
 autonomous system can reach, derive and certify the **minimal sufficient
 governance context** -- the minimal, cost-aware sets of runtime
@@ -13,9 +13,9 @@ Author: Gaston Besanson. Drafting, engineering, formal derivation, and
 citation verification were AI-assisted (Claude); the author is solely
 responsible for all claims.
 
-## Realistic multiple reducts: core != reduct, on a real domain
+## Realistic multiple reducts: core != reduct, on a constructed domain
 
-A real code/cloud execution-agent domain (`domain_v4.py`, not planted to
+A constructed code/cloud execution-agent domain (`domain_v4.py`, not planted to
 exhibit this): the individually-indispensable **core** is *not* enough
 on its own, and there is more than one way to close the gap.
 
@@ -44,7 +44,7 @@ EOF
 Prints a 6-of-10-attribute core that is **not sufficient**, and exactly
 two 7-attribute reducts, differing in one observation (`branch` vs.
 `environment`) -- machine-checked (`checkers/ch_b1_check.py`), not
-hand-picked. This is the flagship result: a real domain where a
+hand-picked. This is the flagship result: a constructed domain where a
 declared-only policy the shape of most shipped authority configs would
 not be exactly sufficient, and where the gap closes in more than one
 operationally-different way.
@@ -100,12 +100,15 @@ found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.6.2.md`](paper5-authority-derivation-draft-v0.6.2.md)
-([populated](paper5-authority-derivation-draft-v0.6.2-populated.md)) --
-a citation-restoration revision of v0.6.1 (itself a claim-led revision
-of v0.6 per a commissioned revision outline,
-`review-secondary/paper-revision-outline-2026-09-15.md`, adjudicated in
-the draft's own Section 8 and Section 13, not applied directly).
+[`paper5-authority-derivation-draft-v0.6.3.md`](paper5-authority-derivation-draft-v0.6.3.md)
+([populated](paper5-authority-derivation-draft-v0.6.3-populated.md)) --
+a wording-and-related-work revision of v0.6.2 per a commissioned
+manuscript audit
+(`review-secondary/manuscript-audit-2026-09-17.md`, committed unedited,
+adjudicated in the draft's own Section 9 and Section 13, not applied
+directly), itself a citation-restoration revision of v0.6.1 (a
+claim-led revision of v0.6 per a commissioned revision outline,
+`review-secondary/paper-revision-outline-2026-09-15.md`).
 
 ## Reproduction
 
@@ -155,10 +158,14 @@ of the commit that version-split makes
 [populated](paper5-authority-derivation-draft-v0.6-populated.md)), the
 consolidated, append-only-structured manuscript v0.6.1 restructured
 around a claim-led evidence table rather than a development chronology
-(`review-secondary/paper-revision-outline-2026-09-15.md`) -- and v0.6.1
-as of the commit this version-split makes
+(`review-secondary/paper-revision-outline-2026-09-15.md`) -- v0.6.1 as
+of the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.1.md),
-[populated](paper5-authority-derivation-draft-v0.6.1-populated.md)).
-None of v0.6's or v0.6.1's own content is retracted; the live paper's
-own Section 13 (Corrections) and Section 14 (Supplementary Material)
-point back to both.
+[populated](paper5-authority-derivation-draft-v0.6.1-populated.md)),
+whose one restored citation v0.6.2 carries forward unchanged
+-- and v0.6.2 as of the commit this version-split makes
+([source](paper5-authority-derivation-draft-v0.6.2.md),
+[populated](paper5-authority-derivation-draft-v0.6.2-populated.md)).
+None of v0.6's, v0.6.1's, or v0.6.2's own content is retracted; the
+live paper's own Section 13 (Corrections) and Section 14 (Supplementary
+Material) point back to all three.
