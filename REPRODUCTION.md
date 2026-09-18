@@ -54,6 +54,40 @@ treat it as one. Elapsed times will vary with hardware; the
 reachable-tuple counts, test counts, mutation score, and file hashes
 below do not.
 
+## Prerequisites
+
+Beyond `git` and Python 3.11 or 3.12 (already assumed above): three
+external executables, found missing on macOS by the first independent
+reproduction attempt (`besanson/sarc-authority-derivation#1`, recorded
+as negative -- see Corrections below), that `bash bootstrap.sh` now
+preflights before cloning anything --
+
+- **`pdfinfo`** and **`pdftotext`** (poppler-utils): this repository's
+  own `paper-tex/gates/run_gates.py` (PDF page count; the unresolved-
+  reference ground-truth check).
+- **`pandoc`**: the pinned `sarc-suite-one-pass` sibling's own
+  `release-check`, which `bash bootstrap.sh` runs as its own final
+  verification step (that sibling's G2-G6 tex-vs-markdown parity
+  gates; `pdftotext` again, plus `pandoc`).
+
+Install before running step 1:
+
+macOS (Homebrew):
+```bash
+brew install poppler pandoc
+```
+
+Debian/Ubuntu (apt):
+```bash
+sudo apt-get install poppler-utils pandoc
+```
+
+`bash bootstrap.sh` checks for all three itself and exits immediately
+with these same two commands if any is missing, before cloning
+anything -- so a missing prerequisite is one clear message, not a
+`FileNotFoundError` minutes into the delegated sibling's own test
+suite.
+
 ## 1. Bootstrap
 
 ```bash
@@ -305,6 +339,27 @@ this file's own prior committed copy) is superseded, not silently
 dropped -- kept here as the historical value a pre-fix checkout would
 still produce.
 
+**Undeclared prerequisites (found 2026-09-18, first independent
+reproduction attempt, `besanson/sarc-authority-derivation#1`).**
+Attempt 1 (macOS 26.6.2, Python 3.12.11, commit
+`1be1a0d90dbb607e1f08d61a908b322fd5957def`) is recorded as negative:
+`bash bootstrap.sh` did not complete. The delegated `sarc-suite-one-
+pass` sibling's own `release-check` -- which this script runs as its
+own final verification step -- reported 202 passed, 5 failed, each
+failure a `FileNotFoundError` for `pandoc` or `pdftotext`; this
+repository's own `paper-tex/gates/run_gates.py` separately needs
+`pdftotext` and `pdfinfo`. None of the three was installed by
+`bootstrap.sh`, checked by it, or declared anywhere in this document
+before this correction -- the reproducer correctly declined to install
+them by hand rather than deviate from the documented procedure, so no
+checker output, test suite, or mutation gate for this repository was
+reached. `bash bootstrap.sh` now preflights `pdfinfo`, `pdftotext`, and
+`pandoc` before cloning anything, exiting immediately with the exact
+install command for macOS (Homebrew) and Debian/Ubuntu (apt) if any is
+missing; the Prerequisites section above states the same three tools
+and commands. No result changed; no code this repository's own claims
+depend on was touched.
+
 ## Reporting an independent reproduction
 
 Point 8 of the standard above. Use the issue template at
@@ -319,3 +374,21 @@ solicit reproduction attempts or track who has or hasn't reproduced it
 -- the template exists so that whoever the author recruits has a
 precise, low-friction way to report back, and so that `FINAL-AUDIT.md`
 has something concrete to check for.
+
+## Reproduction attempts
+
+Logged here as they are filed (point 8 of the standard above), each
+entry naming the issue so a reader can check the full report rather
+than a paraphrase.
+
+**Attempt 1** (2026-09-18, macOS 26.6.2, Python 3.12.11, commit
+`1be1a0d90dbb607e1f08d61a908b322fd5957def`) -- **NEGATIVE**. `bash
+bootstrap.sh` did not complete: the delegated sibling release-check
+reported 202 passed, 5 failed (`FileNotFoundError` for `pandoc` and
+`pdftotext`, neither declared as a prerequisite anywhere in this
+document or checked by `bootstrap.sh` before this point). No checker
+output, test suite, or mutation gate for this repository was reached,
+so this attempt reproduces nothing beyond confirming the prerequisite
+gap itself -- recorded as negative, not minimized. Reported at
+`besanson/sarc-authority-derivation#1`. Repaired in the same commit
+this log entry is added in: see Corrections above.

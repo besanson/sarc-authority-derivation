@@ -35,6 +35,35 @@ REPO_ROOT="$SCRIPT_DIR"
 PARENT_DIR="$(dirname "$REPO_ROOT")"
 LOCKFILE="$REPO_ROOT/engines.lock"
 
+# Preflight, before cloning anything: every external executable this
+# repo's own paper-tex/gates/run_gates.py (pdfinfo, pdftotext) and the
+# pinned sarc-suite-one-pass sibling's own release-check (pdftotext,
+# pandoc) need. The first independent reproduction attempt
+# (besanson/sarc-authority-derivation#1) found both pandoc and pdftotext
+# missing on macOS, discovered late -- a FileNotFoundError five tests
+# into the delegated sibling release-check this script runs near the
+# bottom, not a clear message up front (REPRODUCTION.md's own
+# Corrections note). Do not silently skip the baseline: a missing tool
+# here must stop this script before it clones or builds anything, not
+# be discovered minutes later inside someone else's test suite.
+MISSING=""
+for tool in pdfinfo pdftotext pandoc; do
+    command -v "$tool" >/dev/null 2>&1 || MISSING="$MISSING $tool"
+done
+if [ -n "$MISSING" ]; then
+    echo "Missing required external tool(s):$MISSING" >&2
+    echo "(pdfinfo, pdftotext: this repo's own paper-tex/gates/run_gates.py; pdftotext, pandoc: the pinned sarc-suite-one-pass sibling's own release-check)" >&2
+    echo >&2
+    echo "Install on macOS (Homebrew):" >&2
+    echo "  brew install poppler pandoc" >&2
+    echo >&2
+    echo "Install on Debian/Ubuntu (apt):" >&2
+    echo "  sudo apt-get install poppler-utils pandoc" >&2
+    exit 1
+fi
+echo "Preflight OK: pdfinfo, pdftotext, pandoc all found on PATH."
+echo
+
 if [ ! -f "$LOCKFILE" ]; then
     echo "engines.lock not found at $LOCKFILE" >&2
     exit 1
