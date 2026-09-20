@@ -70,17 +70,18 @@ sweep:
 	python3 sweep.py
 
 # Phase 5: populate the paper draft from committed machine output only.
-# v0.6.4 is the live draft, a two-residue wording revision of v0.6.3
-# per the same commissioned manuscript audit
-# (review-secondary/manuscript-audit-2026-09-17.md, committed unedited
-# for v0.6.3 -- see the draft's own Section 13);
+# v0.6.5 is the live draft: the third independent reproduction attempt
+# succeeded (besanson/sarc-authority-derivation#3), closing
+# FINAL-AUDIT.md's own external-reproduction item -- see the draft's
+# own Section 13);
 # paper5-authority-derivation-draft-v0.1.md/-populated.md are frozen at
 # commit 37a2e7f, v0.2's at commit 7112031, v0.3's at commit 382be13,
 # v0.4's at the commit Package B's own version-split makes, v0.5's at
 # the commit that version-split makes, v0.6's at the commit that
 # version-split makes, v0.6.1's at the commit that version-split makes,
-# v0.6.2's at the commit that version-split makes, and v0.6.3's at the
-# commit this version-split makes -- see README.md's version-split
+# v0.6.2's at the commit that version-split makes, v0.6.3's at the
+# commit that version-split makes, and v0.6.4's at the commit this
+# version-split makes -- see README.md's version-split
 # note -- none touched by this pipeline).
 paper: experiments sweep formal
 	@echo "v0.4 isolation-hypothesis delta (prereg-p5-v3.1: isolated ArmState vs. v0.3's frozen shared-state result)..."
@@ -261,13 +262,13 @@ release-check:
 	@echo " seconds; committed as of the v0.4 commit, re-run explicitly via"
 	@echo " 'make paper' or 'python3 -m checkers.isolation_delta_check' after any"
 	@echo " change to experiments.py, prereg/seeds.json, or the declared loss model.)"
-	cp paper5-authority-derivation-draft-v0.6.4-populated.md /tmp/sarc-p5-populated-committed.md
+	cp paper5-authority-derivation-draft-v0.6.5-populated.md /tmp/sarc-p5-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.6.4-populated.md
+	diff /tmp/sarc-p5-populated-committed.md paper5-authority-derivation-draft-v0.6.5-populated.md
 	@rm -f /tmp/sarc-p5-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== release-check: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.6.4.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.6.5.md
 	@echo "=== release-check: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== release-check: terminology lint ==="
@@ -322,13 +323,13 @@ quick-reproduce:
 	@echo "formal double-run byte-identical: OK"
 	@echo "=== quick-reproduce: mutation testing SKIPPED (see release-check for the hard gate) ==="
 	@echo "=== quick-reproduce: populated-draft freshness ==="
-	cp paper5-authority-derivation-draft-v0.6.4-populated.md /tmp/sarc-p5-quick-populated-committed.md
+	cp paper5-authority-derivation-draft-v0.6.5-populated.md /tmp/sarc-p5-quick-populated-committed.md
 	python3 populate_paper.py
-	diff /tmp/sarc-p5-quick-populated-committed.md paper5-authority-derivation-draft-v0.6.4-populated.md
+	diff /tmp/sarc-p5-quick-populated-committed.md paper5-authority-derivation-draft-v0.6.5-populated.md
 	@rm -f /tmp/sarc-p5-quick-populated-committed.md
 	@echo "populated draft byte-identical to freshly regenerated: OK"
 	@echo "=== quick-reproduce: citation gate ==="
-	python3 citation_check.py paper5-authority-derivation-draft-v0.6.4.md
+	python3 citation_check.py paper5-authority-derivation-draft-v0.6.5.md
 	@echo "=== quick-reproduce: typed-numerals lint ==="
 	python3 -m checkers.typed_numerals_lint
 	@echo "=== quick-reproduce: terminology lint ==="
@@ -412,7 +413,7 @@ arxiv:
 clean:
 	@echo "Cleaning up outputs..."
 	rm -rf out/
-	rm -f paper5-authority-derivation-draft-v0.6.4-populated.md
+	rm -f paper5-authority-derivation-draft-v0.6.5-populated.md
 	rm -rf .pytest_cache .hypothesis
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete

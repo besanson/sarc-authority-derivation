@@ -208,10 +208,30 @@ history independence could not be certified, and it was not filed as a
 GitHub issue -- exactly as the commissioned report's own "Disposition"
 states, not reinterpreted here as more than it claims.
 
+**Update (2026-09-20, third independent reproduction attempt,
+`besanson/sarc-authority-derivation#3`).** An independent reproducer --
+not the author, not this development pipeline, and with no environment
+reused from attempts 1 or 2 -- ran the requested scope from a clean,
+detached-HEAD clone at commit `34cf82f05151971874f249e193543c2d6cf88b50`:
+`bash bootstrap.sh` (**PASS**, including the delegated upstream
+release-check this script runs as its own final verification step),
+`make package-smoke-test` (**PASS**), and CH-B1 (**PASS**, the
+documented 6-of-10-property core, `core sufficient: False`, and exactly
+the two documented 7-property reducts, with the committed
+`out/checkers/ch_b1_check.json` hash separately confirmed to match).
+Filed as `besanson/sarc-authority-derivation#3`, checked directly
+against the issue tracker rather than assumed. This is the independent-
+person, filed-as-an-issue reproduction the 2026-09-14 commissioned
+automated run explicitly declined to count as: an environment and a
+person not involved in this artifact's own development, running the
+documented commands, and reporting back. **Item 11 is now MET.**
+
 ## 12. Claims never exceed evidence
 
-**Met, with the two gaps stated in items 5 and 11.** Specific checks
-performed, not assumed:
+**Met, with the one gap stated in item 5** (item 11's own gap closed
+2026-09-20, third independent reproduction attempt,
+`besanson/sarc-authority-derivation#3` -- see item 11's own Update
+above). Specific checks performed, not assumed:
 
 - README's "Cost-aware synthesis" section names only the v7/CH-B2
   result it is actually about; it does not claim v8's result (a
@@ -228,37 +248,42 @@ performed, not assumed:
   (`checkers/ch_c1_check.py`'s own output field names, `NOVELTY.md`,
   this document) -- never rounded up to "5" or "several" without the
   qualifier.
-- `REPRODUCTION.md` and the issue template claim only that the
-  infrastructure for an independent reproduction exists and that the
-  author recruits the reproducer; neither they, nor README, nor
-  NOVELTY.md, claim that an independent reproduction has actually
-  happened -- item 11's own PENDING status (checked directly against
-  the issue tracker, not assumed) is not contradicted anywhere else in
-  this repository.
+- Item 11's new **MET** status is scoped to exactly what
+  `besanson/sarc-authority-derivation#3` showed -- an independent
+  reproduction of bootstrap, the package smoke test, and CH-B1 -- not
+  overclaimed as "every claim in this paper independently reproduced":
+  `REPRODUCTION.md`'s own attempts log, the live paper's own Section 11
+  (Reproducibility), Section 10's external-validation bullet, and
+  Section 8's C10 row all state the same MET status against the same
+  issue, checked directly for consistency across documents rather than
+  assumed.
 - The gap in item 5: the live paper's prose has not yet been updated
   to include Packages C's and D's own results -- so a reader of the
   paper alone, as opposed to this repository's own README/NOVELTY.md/
   commit history, would not yet see the full picture. This is a
   completeness gap, not a claims-exceed-evidence violation (the paper
   does not claim anything false; it is simply not yet current).
-- The gap in item 11: external reproduction itself has not happened
-  yet, only the infrastructure for it -- named plainly in item 11
-  rather than counting readiness as the outcome.
 
 ## Summary
 
-11 of 12 items met with direct evidence, confirmed against the GitHub
+12 of 12 items met with direct evidence, confirmed against the GitHub
 Actions API and the GitHub issue tracker rather than assumed. Item 11
-(external reproduction) is honestly **PENDING**: the infrastructure is
-built, registered, and committed, but no independent person has yet
-run it in an environment not used for this project's own development
-and filed a reproduction-report issue, and no document in this
-repository claims otherwise. Two further disclosed caveats on the
-eleven items met, neither hidden behind prose: item 1 carries an
-inherent, unavoidable limitation shared by any such document (this
-commit's own CI run cannot be confirmed before the commit exists --
-true of every commit including every prior package's own final commit,
-not specific to a gap in this one); item 5 carries one disclosed,
-honest completeness gap (the live paper's prose predates Packages C
-and D). No item is falsely claimed met. No frozen prior result was
-altered to produce this audit.
+(external reproduction), formerly the sole PENDING item, is now
+**MET**: a third independent reproduction attempt
+(`besanson/sarc-authority-derivation#3`, 2026-09-20) ran bootstrap
+(including the delegated upstream release-check), the package smoke
+test, and CH-B1 from a clean, detached-HEAD clone in an environment not
+used for this project's own development, and reported back a matching
+checker hash -- filed as a GitHub issue, checked directly against the
+tracker rather than assumed. Three disclosed caveats on the twelve
+items met, none hidden behind prose: item 1 carries an inherent,
+unavoidable limitation shared by any such document (this commit's own
+CI run cannot be confirmed before the commit exists -- true of every
+commit including every prior package's own final commit, not specific
+to a gap in this one); item 5 carries one disclosed, honest
+completeness gap (the live paper's prose predates Packages C and D);
+item 11's own MET status is scoped to exactly what issue #3's own
+report covers -- bootstrap, the package smoke test, and CH-B1, not
+CH-C1 or the optional mutation gate -- and is not generalized beyond
+that scope anywhere in this repository. No item is falsely claimed
+met. No frozen prior result was altered to produce this audit.

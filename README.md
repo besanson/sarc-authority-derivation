@@ -2,7 +2,7 @@
 
 **This paper's own thesis** (**Definition 1** defines observation
 contract, **Definition 4** sufficiency,
-`paper5-authority-derivation-draft-v0.6.4.md`, never asserted loosely):
+`paper5-authority-derivation-draft-v0.6.5.md`, never asserted loosely):
 given a declared loss model and the states an
 autonomous system can reach, derive and certify the **minimal sufficient
 governance context** -- the minimal, cost-aware sets of runtime
@@ -100,10 +100,13 @@ found, not reframed (`out/checkers/ch_c2_check.json`).
 
 ## Live paper
 
-[`paper5-authority-derivation-draft-v0.6.4.md`](paper5-authority-derivation-draft-v0.6.4.md)
-([populated](paper5-authority-derivation-draft-v0.6.4-populated.md)) --
-a two-residue wording revision of v0.6.3 per the same commissioned
-manuscript audit
+[`paper5-authority-derivation-draft-v0.6.5.md`](paper5-authority-derivation-draft-v0.6.5.md)
+([populated](paper5-authority-derivation-draft-v0.6.5-populated.md)) --
+records the third independent reproduction attempt succeeding
+(`besanson/sarc-authority-derivation#3`), closing `FINAL-AUDIT.md`'s
+own external-reproduction item; wording only, no new experiment, and
+itself a two-residue wording revision of v0.6.3 per the same
+commissioned manuscript audit
 (`review-secondary/manuscript-audit-2026-09-17.md`, committed unedited
 for v0.6.3, adjudicated in the draft's own Section 13, not applied
 directly), itself a wording-and-related-work revision of v0.6.2, a
@@ -167,10 +170,14 @@ whose one restored citation v0.6.2 carries forward unchanged, v0.6.2 as
 of the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.2.md),
 [populated](paper5-authority-derivation-draft-v0.6.2-populated.md)),
-whose wording and novelty-fence corrections v0.6.3 carries forward
--- and v0.6.3 as of the commit this version-split makes
+whose wording and novelty-fence corrections v0.6.3 carries forward,
+whose own two wording residues v0.6.4 carries forward -- v0.6.3 as of
+the commit that version-split makes
 ([source](paper5-authority-derivation-draft-v0.6.3.md),
-[populated](paper5-authority-derivation-draft-v0.6.3-populated.md)).
-None of v0.6's, v0.6.1's, v0.6.2's, or v0.6.3's own content is
-retracted; the live paper's own Section 13 (Corrections) and Section 14
-(Supplementary Material) point back to all four.
+[populated](paper5-authority-derivation-draft-v0.6.3-populated.md)) --
+and v0.6.4 as of the commit this version-split makes
+([source](paper5-authority-derivation-draft-v0.6.4.md),
+[populated](paper5-authority-derivation-draft-v0.6.4-populated.md)).
+None of v0.6's, v0.6.1's, v0.6.2's, v0.6.3's, or v0.6.4's own content
+is retracted; the live paper's own Section 13 (Corrections) and
+Section 14 (Supplementary Material) point back to all five.

@@ -14,7 +14,7 @@
           "page_count": 19,
           "passes_needed": 4,
           "pdf_produced": true,
-          "pdf_sha256": "6ca1e8fe4edd7c8a8d6d83898c828454d10af04aab6b996d78e8b9bb3cd83e06",
+          "pdf_sha256": "a32f91f40fbab3f46058485c5b93481359c8f0b4fa2e3cf3a4a9ace257c7fa25",
           "pdf_unresolved_marker_count": 0,
           "undefined_citations": [
             "moona-intelligence-replication",
@@ -71,9 +71,13 @@
             "sec:method",
             "sec:computational",
             "sec:computational",
+            "sec:reproducibility",
             "sec:supplementary",
             "sec:results",
-            "sec:relatedwork"
+            "sec:relatedwork",
+            "sec:claims",
+            "sec:limitations",
+            "sec:reproducibility"
           ]
         },
         {
@@ -87,7 +91,7 @@
           "page_count": 19,
           "passes_needed": 4,
           "pdf_produced": true,
-          "pdf_sha256": "6ca1e8fe4edd7c8a8d6d83898c828454d10af04aab6b996d78e8b9bb3cd83e06",
+          "pdf_sha256": "a32f91f40fbab3f46058485c5b93481359c8f0b4fa2e3cf3a4a9ace257c7fa25",
           "pdf_unresolved_marker_count": 0,
           "undefined_citations": [
             "moona-intelligence-replication",
@@ -144,9 +148,13 @@
             "sec:method",
             "sec:computational",
             "sec:computational",
+            "sec:reproducibility",
             "sec:supplementary",
             "sec:results",
-            "sec:relatedwork"
+            "sec:relatedwork",
+            "sec:claims",
+            "sec:limitations",
+            "sec:reproducibility"
           ]
         }
       ],
@@ -206,9 +214,13 @@
         "sec:method",
         "sec:computational",
         "sec:computational",
+        "sec:reproducibility",
         "sec:supplementary",
         "sec:results",
-        "sec:relatedwork"
+        "sec:relatedwork",
+        "sec:claims",
+        "sec:limitations",
+        "sec:reproducibility"
       ],
       "errors": [],
       "exit_code_zero": true,
@@ -220,7 +232,7 @@
       "page_count": 19,
       "pass": true,
       "pdf_produced": true,
-      "pdf_sha256": "6ca1e8fe4edd7c8a8d6d83898c828454d10af04aab6b996d78e8b9bb3cd83e06",
+      "pdf_sha256": "a32f91f40fbab3f46058485c5b93481359c8f0b4fa2e3cf3a4a9ace257c7fa25",
       "pdf_unresolved_marker_count": 0,
       "source_date_epoch": "1786609963",
       "two_build_identical": true

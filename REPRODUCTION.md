@@ -453,3 +453,27 @@ repository was reached, so, like attempt 1, this attempt reproduces
 nothing beyond the packaging gap itself -- recorded as negative, not
 minimized. Reported at `besanson/sarc-authority-derivation#2`. Repaired
 in the same commit this log entry is added in: see Corrections above.
+
+**Attempt 3** (2026-09-20, macOS, Python 3.12.11, commit
+`34cf82f05151971874f249e193543c2d6cf88b50`) -- **POSITIVE**. A clean,
+detached-HEAD clone with a freshly created `.venv` (no environment
+reused from attempts 1 or 2). `bash bootstrap.sh`: **PASS** (3:30.60) --
+the delegated sibling release-check passed in full this time, including
+its previously-failing arXiv packaging step, confirming attempt 2's own
+fix. `make package-smoke-test`: **PASS** (15.529s) -- wheel built,
+installed into a fresh venv, imported and derived a contract from
+outside this repository's own source tree. CH-B1 (the point-5 substantive
+result this document's own standard requires one of): **PASS** (8.879s)
+-- the documented 6-of-10-property core, `core sufficient: False`, and
+exactly the two documented 7-property reducts, all matching byte for
+byte; the committed `out/checkers/ch_b1_check.json` hash
+(`a5a884c0557cf1cb70c244a7fd9098d7285e07479c6fb911112a9c33d98b471a`) was
+separately confirmed to match. CH-C1 and the optional mutation gate
+(point 7, explicitly optional) were not run, consistent with this
+document's own standard: CH-B1 alone, plus the wheel install and
+bootstrap, already make a complete, countable report. No deviations
+from the documented procedure were reported. Reported at
+`besanson/sarc-authority-derivation#3` -- this repository's first
+**POSITIVE** independent reproduction, closing `FINAL-AUDIT.md` item 11
+(no repair needed this time: nothing here corrects a prior claim, so
+this entry has no paired Corrections note above).
