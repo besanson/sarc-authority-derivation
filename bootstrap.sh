@@ -64,6 +64,45 @@ fi
 echo "Preflight OK: pdfinfo, pdftotext, pandoc all found on PATH."
 echo
 
+# Preflight: GNU tar. The sibling's own release-check packages its own
+# arXiv submission tarball with `tar --sort=name --mtime=... --owner=0
+# --group=0 --numeric-owner`, a GNU-tar-only invocation (`--sort=name` is
+# not a BSD-tar option). The second independent reproduction attempt
+# (besanson/sarc-authority-derivation#2) hit exactly this on macOS, where
+# the system `tar` is BSD tar, after attempt one's own pandoc/pdftotext
+# fix got it past the earlier gap (REPRODUCTION.md's own Corrections
+# note). The pinned sibling must not be edited, so rather than skip or
+# patch its baseline, this script arranges for its Makefile to find GNU
+# tar under the name `tar` -- for that one delegated command only, never
+# system-wide.
+GNU_TAR_BINDIR=""
+if [ "$(uname -s)" = "Darwin" ]; then
+    if ! command -v gtar >/dev/null 2>&1; then
+        echo "GNU tar not found (macOS ships BSD tar; the sibling's own release-check needs GNU tar's --sort=name to package its arXiv submission tarball)." >&2
+        echo >&2
+        echo "Install on macOS (Homebrew):" >&2
+        echo "  brew install gnu-tar" >&2
+        exit 1
+    fi
+    GNU_TAR_BINDIR="$(brew --prefix gnu-tar 2>/dev/null)/libexec/gnubin"
+    if [ ! -x "$GNU_TAR_BINDIR/tar" ]; then
+        echo "gnu-tar is installed via Homebrew but its gnubin shim was not found at $GNU_TAR_BINDIR/tar" >&2
+        echo "Try: brew reinstall gnu-tar" >&2
+        exit 1
+    fi
+    echo "Preflight OK: GNU tar found (Homebrew gnu-tar); will be placed first on PATH for the sibling's own release-check only."
+else
+    if ! tar --version 2>/dev/null | grep -qi "GNU tar"; then
+        echo "System tar is not GNU tar (the sibling's own release-check needs GNU tar's --sort=name to package its arXiv submission tarball)." >&2
+        echo >&2
+        echo "Install on Debian/Ubuntu (apt):" >&2
+        echo "  sudo apt-get install tar" >&2
+        exit 1
+    fi
+    echo "Preflight OK: system tar is GNU tar."
+fi
+echo
+
 if [ ! -f "$LOCKFILE" ]; then
     echo "engines.lock not found at $LOCKFILE" >&2
     exit 1
@@ -118,7 +157,11 @@ pip install -q -c "$REPO_ROOT/constraints.txt" pytest hypothesis mutmut jsonsche
 echo
 echo "=== Verifying the imported baseline: sarc-suite-one-pass's own release-check ==="
 echo "(task brief Phase 0: this must pass before anything in this repo is built)"
-( cd "$ONE_PASS_DIR" && make release-check )
+if [ -n "$GNU_TAR_BINDIR" ]; then
+    ( cd "$ONE_PASS_DIR" && PATH="$GNU_TAR_BINDIR:$PATH" make release-check )
+else
+    ( cd "$ONE_PASS_DIR" && make release-check )
+fi
 echo
 echo "Imported baseline release-check: PASS"
 

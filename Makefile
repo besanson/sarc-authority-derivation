@@ -389,6 +389,12 @@ package-smoke-test:
 # ALSO pass under it first (a real second-toolchain check); always build
 # and gate under Tectonic last, so the main.pdf/parity-report.json this
 # target leaves on disk are always the canonical-toolchain build.
+#
+# Packaging step (paper-tex/make_arxiv_tarball.py), unlike the sibling's
+# own shell `tar --sort=name ...`: Python's tarfile module, not a system
+# `tar` binary, so this repository's own arxiv.tar.gz never depends on
+# which tar variant (GNU vs BSD) the machine building it ships -- see
+# REPRODUCTION.md's Corrections, besanson/sarc-authority-derivation#2.
 arxiv:
 	@echo "Regenerating paper-tex/refs.bib from verified-citations.json..."
 	cd paper-tex && python3 generate_refs_bib.py
@@ -400,6 +406,8 @@ arxiv:
 	fi
 	@echo "Building main.tex + running gates G1/G7/G8/G9 under Tectonic (canonical toolchain)..."
 	cd paper-tex && SARC_LATEX_COMPILER=tectonic python3 gates/run_gates.py
+	@echo "Packaging paper-tex/arxiv.tar.gz (main.tex, refs.bib; deterministic, tarfile-only)..."
+	cd paper-tex && python3 make_arxiv_tarball.py
 
 clean:
 	@echo "Cleaning up outputs..."
@@ -432,7 +440,7 @@ help:
 	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
 	@echo "  make time-quick-reproduce  Same harness, timing make quick-reproduce instead (repair 3): comparable bare-clone figure minus mutation"
 	@echo "  make package-smoke-test  Package A: build sdist+wheel, install into a fresh venv, black-box import+derive+CLI check -- no repo root, pythonpath, editable install, or siblings"
-	@echo "  make arxiv          LaTeX release kit: regenerate refs.bib, build main.tex under Tectonic, run gates G1/G7/G8/G9 (part of release-check/quick-reproduce)"
+	@echo "  make arxiv          LaTeX release kit: regenerate refs.bib, build main.tex under Tectonic, run gates G1/G7/G8/G9, package arxiv.tar.gz (part of release-check/quick-reproduce)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."

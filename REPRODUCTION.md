@@ -56,9 +56,10 @@ below do not.
 
 ## Prerequisites
 
-Beyond `git` and Python 3.11 or 3.12 (already assumed above): three
-external executables, found missing on macOS by the first independent
-reproduction attempt (`besanson/sarc-authority-derivation#1`, recorded
+Beyond `git` and Python 3.11 or 3.12 (already assumed above): four
+external executables, found missing (or, for GNU tar, present but the
+wrong variant) on macOS across the first two independent reproduction
+attempts (`besanson/sarc-authority-derivation#1` and `#2`, both recorded
 as negative -- see Corrections below), that `bash bootstrap.sh` now
 preflights before cloning anything --
 
@@ -69,24 +70,34 @@ preflights before cloning anything --
   `release-check`, which `bash bootstrap.sh` runs as its own final
   verification step (that sibling's G2-G6 tex-vs-markdown parity
   gates; `pdftotext` again, plus `pandoc`).
+- **GNU tar**: also that sibling's own `release-check`, which packages
+  its own arXiv submission tarball with `tar --sort=name --mtime=...
+  --owner=0 --group=0 --numeric-owner`, a GNU-tar-only invocation -- the
+  macOS-default BSD `tar` does not support `--sort=name` and fails
+  packaging outright. On macOS, install GNU tar via Homebrew (below);
+  `bash bootstrap.sh` finds it as `gtar` and places it first on PATH as
+  `tar` only for the duration of the delegated sibling release-check,
+  never system-wide, and without editing that pinned Makefile. On
+  Linux, the system `tar` is already GNU tar and is only verified, not
+  installed.
 
 Install before running step 1:
 
 macOS (Homebrew):
 ```bash
-brew install poppler pandoc
+brew install poppler pandoc gnu-tar
 ```
 
 Debian/Ubuntu (apt):
 ```bash
-sudo apt-get install poppler-utils pandoc
+sudo apt-get install poppler-utils pandoc tar
 ```
 
-`bash bootstrap.sh` checks for all three itself and exits immediately
-with these same two commands if any is missing, before cloning
-anything -- so a missing prerequisite is one clear message, not a
-`FileNotFoundError` minutes into the delegated sibling's own test
-suite.
+`bash bootstrap.sh` checks for all four itself and exits immediately
+with the exact install command if any check fails, before cloning
+anything -- so a missing or wrong-variant prerequisite is one clear
+message, not a `FileNotFoundError` or an "Option ... is not supported"
+minutes into the delegated sibling's own test suite.
 
 ## 1. Bootstrap
 
@@ -360,6 +371,39 @@ missing; the Prerequisites section above states the same three tools
 and commands. No result changed; no code this repository's own claims
 depend on was touched.
 
+**Undeclared GNU tar dependency on macOS (found 2026-09-20, second
+independent reproduction attempt, `besanson/sarc-authority-derivation#2`).**
+Attempt 2 (macOS 26.6.2, Python 3.12.11, commit
+`b45df48a1ee4a74e3879567983544fab75d3fad7`) is recorded as negative:
+`bash bootstrap.sh` again did not complete. Attempt 1's own prerequisite
+fix worked -- `pdfinfo`, `pdftotext`, and `pandoc` were all found -- and
+the delegated `sarc-suite-one-pass` sibling's own `release-check`
+progressed much further this time: its full test suite (207 passed), the
+formal double-run byte-identity check, and its own Tectonic gates G1
+through G9 all passed, before failing while packaging its own arXiv
+submission tarball with `tar: Option --sort=name is not supported` --
+`--sort=name` is a GNU tar extension the default macOS BSD `tar` does
+not implement. `bash bootstrap.sh` now also preflights GNU tar before
+cloning anything: on macOS, it checks for Homebrew's `gnu-tar` (as
+`gtar`) and, if found, places its `gnubin` shim directory first on PATH
+-- so the delegated command sees GNU tar under the name `tar` -- for the
+duration of the sibling's own `release-check` only, never system-wide,
+and without editing that pinned, read-only Makefile; on Linux, the
+system `tar` is verified to already be GNU tar rather than installed.
+Separately, and unlike the sibling's own shell `tar --sort=name ...`
+invocation, any arXiv submission tarball this repository's own `make
+arxiv` target produces (`paper-tex/arxiv.tar.gz`) is now built with
+Python's `tarfile` module (`paper-tex/make_arxiv_tarball.py`) instead of
+shelling out to a system `tar` binary at all: sorted entries, every
+entry's mtime fixed to this repository's own content-stable epoch
+(`paper-tex/gates/run_gates.py`'s `SOURCE_DATE_EPOCH`), uid and gid
+zero, byte-identical across two runs (`test_make_arxiv_tarball.py`) --
+so this repository's own packaging cannot hit the same portability gap
+regardless of which `tar` variant a reproducer's machine ships. The
+Prerequisites section above states GNU tar and the same per-platform
+commands. No result changed; no code this repository's own claims
+depend on was touched.
+
 ## Reporting an independent reproduction
 
 Point 8 of the standard above. Use the issue template at
@@ -392,3 +436,20 @@ so this attempt reproduces nothing beyond confirming the prerequisite
 gap itself -- recorded as negative, not minimized. Reported at
 `besanson/sarc-authority-derivation#1`. Repaired in the same commit
 this log entry is added in: see Corrections above.
+
+**Attempt 2** (2026-09-20, macOS 26.6.2, Python 3.12.11, commit
+`b45df48a1ee4a74e3879567983544fab75d3fad7`) -- **NEGATIVE**. `bash
+bootstrap.sh` again did not complete, but progressed much further than
+attempt 1: the prerequisite preflight passed (`pdfinfo`, `pdftotext`,
+`pandoc` all found), and the delegated sibling release-check passed its
+full test suite (207 passed), the formal double-run byte-identity
+check, and its own Tectonic gates G1 through G9 (`main.pdf`
+byte-identical across two builds, sha256
+`1add5a9a3111c119c9df372704e6f663e677dbcef762f369223ddce1bb2d4d7e`) --
+then failed packaging its own arXiv submission tarball: `tar: Option
+--sort=name is not supported`, the default macOS BSD `tar` rejecting a
+GNU-tar-only flag. No checker output or package-smoke output for this
+repository was reached, so, like attempt 1, this attempt reproduces
+nothing beyond the packaging gap itself -- recorded as negative, not
+minimized. Reported at `besanson/sarc-authority-derivation#2`. Repaired
+in the same commit this log entry is added in: see Corrections above.
