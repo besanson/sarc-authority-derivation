@@ -477,3 +477,9 @@ from the documented procedure were reported. Reported at
 **POSITIVE** independent reproduction, closing `FINAL-AUDIT.md` item 11
 (no repair needed this time: nothing here corrects a prior claim, so
 this entry has no paired Corrections note above).
+
+## Citation
+
+This repository (code, checkers, and the live paper draft) is archived
+on Zenodo. Cite the archived release by its DOI:
+[10.5281/zenodo.22884173](https://doi.org/10.5281/zenodo.22884173).

@@ -41,3 +41,4 @@ Linked artifacts
 -----------------
 GitHub repository: https://github.com/besanson/sarc-authority-derivation
 Companion imported baseline: sarc-suite-one-pass (arXiv 2608.18360)
+Zenodo archival DOI: 10.5281/zenodo.22884173 (https://doi.org/10.5281/zenodo.22884173)
