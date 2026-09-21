@@ -27,10 +27,13 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{microtype}
-% No G4 word-for-word prose-parity gate to preserve (only G1/G7/G8/G9
-% are ported), so ordinary dictionary hyphenation is left enabled -- it
-% is what actually resolves an overfull \hbox on a long unbreakable
-% identifier or URL, rather than working around one with extra stretch.
+% G4 (gates/run_gates.py) checks per-section word-count ratio bands and
+% sha-sampled sentences' own numbers/identifiers, not word-for-word or
+% hyphenation-sensitive matching (dehyphenate() already normalizes a
+% line-broken word before either check runs) -- so ordinary dictionary
+% hyphenation is left enabled -- it is what actually resolves an overfull
+% \hbox on a long unbreakable identifier or URL, rather than working
+% around one with extra stretch.
 \usepackage[margin=1in]{geometry}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \setlength{\emergencystretch}{8em}

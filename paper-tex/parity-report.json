@@ -237,6 +237,523 @@
       "source_date_epoch": "1786609963",
       "two_build_identical": true
     },
+    "G2_token_purity": {
+      "cite_needed_placeholder_count": 0,
+      "forbidden_token_counts": {
+        "**": 0,
+        "[GENERATED": 0,
+        "```": 0
+      },
+      "pass": true
+    },
+    "G3_number_parity": {
+      "pass": true,
+      "raw_whole_document_diff_informational_only": {
+        "added_in_pdf": {
+          "16": 1,
+          "18": 1,
+          "19": 1,
+          "20": 1,
+          "21": 1,
+          "27": 1,
+          "28": 1,
+          "29": 1,
+          "30": 1,
+          "31": 1,
+          "32": 1,
+          "36": 1,
+          "39": 1,
+          "40": 1
+        },
+        "missing_from_pdf": {
+          "0": 5,
+          "0.0": 3,
+          "0.0004": 1,
+          "0.0005": 1,
+          "0.85": 1,
+          "001": 1,
+          "003": 1,
+          "06": 2,
+          "09": 12,
+          "1": 15,
+          "1,014": 1,
+          "1,023": 1,
+          "1,024": 2,
+          "10": 2,
+          "100": 1,
+          "100,001": 1,
+          "11": 3,
+          "13": 1,
+          "137,711": 1,
+          "14": 4,
+          "15": 2,
+          "15,120": 1,
+          "1647.1": 1,
+          "17": 1,
+          "1966": 1,
+          "1982": 2,
+          "1987": 2,
+          "1989": 2,
+          "1992": 2,
+          "2": 16,
+          "2000": 1,
+          "2005": 1,
+          "2006": 1,
+          "2011": 2,
+          "2012": 1,
+          "2014": 1,
+          "2015": 2,
+          "2016": 1,
+          "2017": 1,
+          "2018": 1,
+          "2022": 1,
+          "2023": 1,
+          "2024": 1,
+          "2025": 1,
+          "2026": 13,
+          "2055.8": 1,
+          "2464.4": 1,
+          "2608.18360": 1,
+          "27,000": 1,
+          "3": 14,
+          "300": 3,
+          "35": 1,
+          "382": 1,
+          "4": 17,
+          "5": 13,
+          "6": 18,
+          "6,724,520": 1,
+          "6.1": 4,
+          "6.2": 4,
+          "6.3": 5,
+          "6.4": 4,
+          "6.5": 4,
+          "6.6": 1,
+          "60": 4,
+          "7": 11,
+          "7,776": 1,
+          "7112031": 1,
+          "782261": 1,
+          "8": 8,
+          "9": 4,
+          "9.5": 1,
+          "95": 2
+        }
+      },
+      "slot_number_count": 69,
+      "slot_numbers_missing_from_pdf": {
+        "0.0": [
+          "v52_derived_missed_ci",
+          "v52_derived_missed_ci",
+          "v52_derived_missed_ci"
+        ],
+        "0.0004": [
+          "v50_wall_time_min"
+        ],
+        "0.0005": [
+          "v50_wall_time_max"
+        ],
+        "1,001": [
+          "v5_3_family_a_reachable"
+        ],
+        "1,023": [
+          "ch_a10_subsets_considered"
+        ],
+        "1,024": [
+          "ch_a10_power_set_size",
+          "ch_b1_power_set_size"
+        ],
+        "1.00": [
+          "v50_xor_min_cost_cost"
+        ],
+        "1214.3": [
+          "ch_a1_baseline_missed"
+        ],
+        "14,256": [
+          "ch_a8_partition_cells"
+        ],
+        "15,552": [
+          "v2_rank0_size"
+        ],
+        "1515.7": [
+          "ch_a1_baseline_missed"
+        ],
+        "1647.1": [
+          "v52_baseline_missed_ci"
+        ],
+        "1817.1": [
+          "ch_a1_baseline_missed"
+        ],
+        "2,001": [
+          "v5_3_family_b_reachable"
+        ],
+        "20,736": [
+          "ch_a7_reachable_size_b"
+        ],
+        "2055.8": [
+          "v52_baseline_missed_ci"
+        ],
+        "2243.7": [
+          "ch_a1_true_violations"
+        ],
+        "231.2": [
+          "ch_a3_off_admissions",
+          "ch_a3_replay_probe_count",
+          "ch_a3_escalation_overhead"
+        ],
+        "24,624": [
+          "v2_grid_size_reachable",
+          "ch_a5_reachable_size",
+          "ch_a7_reachable_size_a",
+          "ch_a8_reachable_swept",
+          "ab_v2_reachable_tuple_count"
+        ],
+        "2464.4": [
+          "v52_baseline_missed_ci"
+        ],
+        "279.1": [
+          "spurious_escalations_overinclusive"
+        ],
+        "2800.6": [
+          "ch_a1_true_violations"
+        ],
+        "288.8": [
+          "ch_a3_off_admissions",
+          "ch_a3_replay_probe_count",
+          "ch_a3_escalation_overhead"
+        ],
+        "3,001": [
+          "v5_3_family_c_reachable"
+        ],
+        "3,888": [
+          "v2_downroute_new_tuples"
+        ],
+        "3.00": [
+          "v50_xor_cost_delta"
+        ],
+        "3357.5": [
+          "ch_a1_true_violations"
+        ],
+        "346.5": [
+          "ch_a3_off_admissions",
+          "ch_a3_replay_probe_count",
+          "ch_a3_escalation_overhead"
+        ],
+        "349,020": [
+          "v4_budget_predicate_decisions_swept"
+        ],
+        "380.4": [
+          "spurious_escalations_overinclusive"
+        ],
+        "4.00": [
+          "v50_xor_min_card_cost"
+        ],
+        "481.7": [
+          "spurious_escalations_overinclusive"
+        ],
+        "5,184": [
+          "v2_retry_delay_new_tuples"
+        ],
+        "7,776": [
+          "grid_size_reachable",
+          "ch_a2_pairtest_reachable_tuples"
+        ],
+        "8,640": [
+          "ab_dc_reachable_tuple_count"
+        ],
+        "85": [
+          "grant_check_sequences"
+        ],
+        "95": [
+          "ch_a1_baseline_missed",
+          "ch_a1_true_violations",
+          "ch_a3_off_admissions",
+          "ch_a3_replay_probe_count",
+          "ch_a3_escalation_overhead",
+          "spurious_escalations_overinclusive",
+          "v52_baseline_missed_ci",
+          "v52_derived_missed_ci"
+        ]
+      },
+      "tag_counts": {
+        "checked-scope-only": {
+          "expected_in_pdf_body": false,
+          "ok": true,
+          "pdf_count": 0,
+          "source_count": 2
+        },
+        "machine-checked": {
+          "expected_in_pdf_body": true,
+          "ok": true,
+          "pdf_count": 3,
+          "source_count": 6
+        },
+        "pending-human-review": {
+          "expected_in_pdf_body": false,
+          "ok": true,
+          "pdf_count": 0,
+          "source_count": 3
+        }
+      },
+      "unexplained_slot_numbers_missing_from_pdf": {}
+    },
+    "G4_prose_parity": {
+      "front_matter_metadata_check": {
+        "affiliation": {
+          "match": true,
+          "md": "Universidad Torcuato Di Tella",
+          "tex": "Universidad Torcuato Di Tella"
+        },
+        "author_name": {
+          "match": true,
+          "md": "Gaston Besanson",
+          "tex": "Gaston Besanson"
+        },
+        "pass": true,
+        "title": {
+          "match": true,
+          "md": "Compiling Sufficient Governance Context from Declared Losses and Reachable States",
+          "tex": "Compiling Sufficient Governance Context from Declared Losses and Reachable States"
+        }
+      },
+      "generated_at_head_sha": "93de11c6bd53752b99c7755193c2f7132268380e",
+      "pass": true,
+      "section_word_ratio_band_pct": [
+        15.0,
+        160.0
+      ],
+      "sections": {
+        "1. Introduction": {
+          "md_words": 550,
+          "pct_of_source": 74.0,
+          "pdf_words": 407,
+          "within_band": true
+        },
+        "10. Limitations": {
+          "md_words": 300,
+          "pct_of_source": 43.0,
+          "pdf_words": 129,
+          "within_band": true
+        },
+        "11. Reproducibility": {
+          "md_words": 237,
+          "pct_of_source": 57.806,
+          "pdf_words": 137,
+          "within_band": true
+        },
+        "12. Conclusion": {
+          "md_words": 226,
+          "pct_of_source": 61.947,
+          "pdf_words": 140,
+          "within_band": true
+        },
+        "13. Corrections": {
+          "md_words": 1171,
+          "pct_of_source": 50.555,
+          "pdf_words": 592,
+          "within_band": true
+        },
+        "14. Supplementary Material": {
+          "md_words": 685,
+          "pct_of_source": 29.343,
+          "pdf_words": 201,
+          "within_band": true
+        },
+        "2. Problem Formulation and Guarantee Boundary": {
+          "md_words": 884,
+          "pct_of_source": 60.181,
+          "pdf_words": 532,
+          "within_band": true
+        },
+        "3. Method: From Discernibility to Selected Contracts": {
+          "md_words": 453,
+          "pct_of_source": 64.901,
+          "pdf_words": 294,
+          "within_band": true
+        },
+        "4. Implementation and Verification Interface": {
+          "md_words": 344,
+          "pct_of_source": 66.279,
+          "pdf_words": 228,
+          "within_band": true
+        },
+        "5. Evaluation Design": {
+          "md_words": 339,
+          "pct_of_source": 59.882,
+          "pdf_words": 203,
+          "within_band": true
+        },
+        "6. Results: Semantic Correctness, Alternatives, and Cost": {
+          "md_words": 705,
+          "pct_of_source": 64.823,
+          "pdf_words": 457,
+          "within_band": true
+        },
+        "7. Computational Behaviour and Change Analysis": {
+          "md_words": 776,
+          "pct_of_source": 53.479,
+          "pdf_words": 415,
+          "within_band": true
+        },
+        "8. Claim-by-Claim Evidence": {
+          "md_words": 643,
+          "pct_of_source": 61.742,
+          "pdf_words": 397,
+          "within_band": true
+        },
+        "9. Related Work and Contribution Boundary": {
+          "md_words": 1097,
+          "pct_of_source": 57.976,
+          "pdf_words": 636,
+          "within_band": true
+        }
+      },
+      "sentence_sample": [
+        {
+          "found": true,
+          "identifiers": [
+            "CH-B2"
+          ],
+          "index": 8,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [
+            "6",
+            "10",
+            "2",
+            "7",
+            "6.124",
+            "7.354"
+          ],
+          "sentence": "On a preregistered constructed code/cloud domain (not planted for this purpose), the individually-indispensable core is NOT SUPPORTED as an observation contract"
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 21,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [
+            "11",
+            "14"
+          ],
+          "sentence": "Test counts, correction history, and engineering-gate counts are not scientific contributions and are not presented as such; they are reported, where relevant, "
+        },
+        {
+          "found": true,
+          "identifiers": [
+            "CH-B1"
+          ],
+          "index": 44,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "Mining agrees with the packaged minimum-cardinality answer on the procurement and code/cloud-core instances, and lands on the other known minimum-cardinality co"
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 45,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "By the registered decision rule applied to what was actually measured (two domains equal, one a benign tie, no strict-superset case on any domain), this compari"
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 116,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "No claim in this paper depends on that plan being carried out, and none of its content is presented as already having been."
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 117,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "Append-only, per this project's own discipline: nothing below is retracted or reworded; each correction is recorded alongside its original claim, not in place o"
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 133,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [
+            "5",
+            "6.3"
+          ],
+          "sentence": "Second, the shield-synthesis paragraph's closing \"upstream of the corrective strategy shield synthesis solves for\" is restated as \"an orthogonal upstream proble"
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 138,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "No result changed; no new experiment was run."
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 149,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [
+            "9"
+          ],
+          "sentence": "\u2610 Novelty fence (Section 9) reviewed by the author against NOVELTY.md's sources."
+        },
+        {
+          "found": true,
+          "identifiers": [],
+          "index": 152,
+          "missing_identifiers": [],
+          "missing_numbers": [],
+          "numbers": [],
+          "sentence": "Not submission-ready."
+        }
+      ],
+      "source_sha256": "b11d7b6ba013b96c76c5c81a7dd858441d63ddd49572a28a5391553f7d7a00aa"
+    },
+    "G5_structure_parity": {
+      "counts": {
+        "footnotes": {
+          "equal": true,
+          "source": 1,
+          "tex": 1
+        },
+        "sections": {
+          "equal": true,
+          "source": 14,
+          "tex": 14
+        },
+        "tables": {
+          "equal": true,
+          "source": 3,
+          "tex": 3
+        },
+        "theorem_environments": {
+          "equal": true,
+          "source": 6,
+          "tex": 6
+        }
+      },
+      "pass": true
+    },
+    "G6_disclosure_and_banners": {
+      "acknowledgements_sentence_present": true,
+      "honesty_banners_present": {
+        "Append-only: nothing below is retracted or reworde": true,
+        "This is a combination and an evaluated behaviour, ": true
+      },
+      "pass": true
+    },
     "G7_sidecar_sync": {
       "abstract_char_count": 1899,
       "abstract_has_required_phrase": true,

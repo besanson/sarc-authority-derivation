@@ -276,7 +276,7 @@ release-check:
 	python3 -m checkers.terminology_lint
 	@echo "=== release-check: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
-	@echo "=== release-check: LaTeX release kit (build + G1/G7/G8/G9) ==="
+	@echo "=== release-check: LaTeX release kit (build + G1-G9) ==="
 	$(MAKE) arxiv
 	@echo "=== release-check: reproducibility report (out/reproducibility-report.json) ==="
 	SARC_MAKE_TARGET=release-check python3 reproducibility_report.py
@@ -337,7 +337,7 @@ quick-reproduce:
 	python3 -m checkers.terminology_lint
 	@echo "=== quick-reproduce: PROOF-STATUS lint ==="
 	python3 -m checkers.proof_status_lint
-	@echo "=== quick-reproduce: LaTeX release kit (build + G1/G7/G8/G9) ==="
+	@echo "=== quick-reproduce: LaTeX release kit (build + G1-G9) ==="
 	$(MAKE) arxiv
 	@echo "=== quick-reproduce: reproducibility report (out/reproducibility-report.json) ==="
 	SARC_MAKE_TARGET=quick-reproduce python3 reproducibility_report.py
@@ -406,7 +406,7 @@ arxiv:
 	else \
 		echo "latexmk not found -- skipping the supported-alternative toolchain check (Tectonic, canonical, is checked next regardless)." ; \
 	fi
-	@echo "Building main.tex + running gates G1/G7/G8/G9 under Tectonic (canonical toolchain)..."
+	@echo "Building main.tex + running gates G1-G9 under Tectonic (canonical toolchain)..."
 	cd paper-tex && SARC_LATEX_COMPILER=tectonic python3 gates/run_gates.py
 	@echo "Packaging paper-tex/arxiv.tar.gz (main.tex, refs.bib; deterministic, tarfile-only)..."
 	cd paper-tex && python3 make_arxiv_tarball.py
@@ -442,7 +442,7 @@ help:
 	@echo "  make time-reproduction  Timed bare-clone reproduction: git clone + bootstrap.sh + make release-check (prereg-p5-v6.1, slow)"
 	@echo "  make time-quick-reproduce  Same harness, timing make quick-reproduce instead (repair 3): comparable bare-clone figure minus mutation"
 	@echo "  make package-smoke-test  Package A: build sdist+wheel, install into a fresh venv, black-box import+derive+CLI check -- no repo root, pythonpath, editable install, or siblings"
-	@echo "  make arxiv          LaTeX release kit: regenerate refs.bib, build main.tex under Tectonic, run gates G1/G7/G8/G9, package arxiv.tar.gz (part of release-check/quick-reproduce)"
+	@echo "  make arxiv          LaTeX release kit: regenerate refs.bib, build main.tex under Tectonic, run gates G1-G9, package arxiv.tar.gz (part of release-check/quick-reproduce)"
 	@echo "  make clean          Remove all outputs"
 	@echo ""
 	@echo "See README.md and RESEARCH-GUIDE.md for full documentation."
