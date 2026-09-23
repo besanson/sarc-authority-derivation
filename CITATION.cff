@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: >-
+  If you use this artifact (code, checkers, or the paper draft), please
+  cite it using the metadata below.
+title: >-
+  Compiling Sufficient Governance Context from Declared Losses and
+  Reachable States: Exact Observation-Contract Synthesis with
+  Cardinality and Cost Objectives
+authors:
+  - family-names: Besanson
+    given-names: Gaston
+    affiliation: Universidad Torcuato Di Tella
+date-released: "2026-09-23"
+doi: 10.5281/zenodo.22884173
+url: https://arxiv.org/abs/2609.26016
+repository-code: https://github.com/besanson/sarc-authority-derivation
+license: CC-BY-4.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22884173
+    description: Zenodo archival DOI for this repository
+  - type: other
+    value: "arXiv:2609.26016"
+    description: arXiv preprint identifier for the paper

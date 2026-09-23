@@ -482,4 +482,6 @@ this entry has no paired Corrections note above).
 
 This repository (code, checkers, and the live paper draft) is archived
 on Zenodo. Cite the archived release by its DOI:
-[10.5281/zenodo.22884173](https://doi.org/10.5281/zenodo.22884173).
+[10.5281/zenodo.22884173](https://doi.org/10.5281/zenodo.22884173). The
+paper itself is on arXiv:
+[2609.26016](https://arxiv.org/abs/2609.26016).

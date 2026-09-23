@@ -1,6 +1,6 @@
 # sarc-authority-derivation
 
-DOI: [10.5281/zenodo.22884173](https://doi.org/10.5281/zenodo.22884173)
+DOI: [10.5281/zenodo.22884173](https://doi.org/10.5281/zenodo.22884173) -- arXiv: [2609.26016](https://arxiv.org/abs/2609.26016)
 
 **This paper's own thesis** (**Definition 1** defines observation
 contract, **Definition 4** sufficiency,
